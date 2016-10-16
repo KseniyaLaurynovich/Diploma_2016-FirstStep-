@@ -1,6 +1,7 @@
 ﻿using FirstStep_Storage.Models.Contracts;
 using LinqToDB.Mapping;
 using System;
+using System.Collections.Generic;
 
 namespace FirstStep_Storage.Models
 {
@@ -27,5 +28,8 @@ namespace FirstStep_Storage.Models
 
         [Association(ThisKey = "SubjectId", OtherKey = "Id")]
         public Subject Subject { get; set; }
+
+        [Association(ThisKey = "Id", OtherKey = "TaskId")]
+        public ICollection<Test> Tests { get; set; }
     }
 }

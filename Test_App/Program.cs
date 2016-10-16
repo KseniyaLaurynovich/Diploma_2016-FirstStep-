@@ -31,7 +31,7 @@ namespace Test_App
 
             #region Repository
 
-            var _subjectRepository = new SubjectRepository();
+            var _subjectRepository = new TestRepository();
 
             //var newSubject = new Subject
             //{
@@ -46,7 +46,18 @@ namespace Test_App
 
             //var updatedSubject = _subjectRepository.GetById(newSubject.Id);
 
-            var items = _subjectRepository.Items().Where(i => i.Name == "Test_1").ToList();
+            var newTest = new Test
+            {
+                TaskId = 1,
+                Name = "Test",
+                InputArguments = "fsdf dsfs sdfas",
+                OutputArguments = "fdsafdfasdf"
+            };
+
+            _subjectRepository.Add(newTest);
+
+            _subjectRepository.Delete(newTest);
+            
 
             #endregion
         }

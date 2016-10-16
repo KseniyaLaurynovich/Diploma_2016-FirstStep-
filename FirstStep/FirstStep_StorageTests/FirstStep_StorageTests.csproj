@@ -59,6 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubjectRepository_Test.cs" />
     <Compile Include="TaskRepository_Test.cs" />
+    <Compile Include="TestRepository_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirstStep_Storage\FirstStep_Storage.csproj">

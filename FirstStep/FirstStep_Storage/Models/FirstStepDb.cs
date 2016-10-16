@@ -10,5 +10,6 @@ namespace FirstStep_Storage.Models
 
         public ITable<Task> Tasks { get { return GetTable<Task>();  } }
         public ITable<Subject> Subjects { get { return GetTable<Subject>(); } }
+        public ITable<Test> Tests { get { return GetTable<Test>(); } }
     }
 }

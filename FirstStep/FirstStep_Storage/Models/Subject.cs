@@ -22,5 +22,7 @@ namespace FirstStep_Storage.Models
 
         [Association(ThisKey = "Id", OtherKey = "SubjectId")]
         public ICollection<Task> Tasks { get; set; }
+
+        //todo add user id
     }
 }

@@ -44,15 +44,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IRepository.cs" />
+    <Compile Include="Configuration\DependencyResolverRegistry.cs" />
+    <Compile Include="Contracts\IDataRepository.cs" />
     <Compile Include="Models\FirstStepDb.cs" />
     <Compile Include="Contracts\IWithIdentity.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\GenericRepository.cs" />
-    <Compile Include="Repositories\SubjectRepository.cs" />
-    <Compile Include="Repositories\TaskRepository.cs" />
+    <Compile Include="Repositories\DataRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
