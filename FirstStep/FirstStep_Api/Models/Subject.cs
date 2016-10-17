@@ -1,6 +1,4 @@
-﻿using FirstStep_Storage.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace FirstStep_Api.Models
@@ -12,11 +10,12 @@ namespace FirstStep_Api.Models
         public DateTime CreationDate { get; set; }
 
         [Required]
-        [StringLength(2,)]
+        //[StringLength(2,10)]
         public string Name { get; set; }
 
         public string Description { get; set; }
 
+        [Required]
         public int NumberOfTasks { get; set; }
     }
 }

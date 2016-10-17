@@ -1,5 +1,6 @@
 ﻿using FirstStep_Api.Business.Configuration;
 using System.Web.Http;
+using FirstStep_Api.App_Start;
 
 namespace FirstStep_Api
 {
@@ -7,10 +8,9 @@ namespace FirstStep_Api
     {
         protected void Application_Start()
         {
-            DependencyResolverConfig.Initialize();
             MapperConfig.Initialize();
-
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            SimpleInjectorWebApiInitializer.Initialize();
         }
     }
 }
