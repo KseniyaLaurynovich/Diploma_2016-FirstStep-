@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FirstStep_Storage.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace FirstStep_Api.Models
@@ -15,7 +17,6 @@ namespace FirstStep_Api.Models
 
         public string Description { get; set; }
 
-        [Required]
-        public int NumberOfTasks { get; set; }
+        public IList<Task> Tasks { get; set; }
     }
 }

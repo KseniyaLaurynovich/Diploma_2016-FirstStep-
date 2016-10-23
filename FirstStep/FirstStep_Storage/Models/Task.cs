@@ -21,7 +21,7 @@ namespace FirstStep_Storage.Models
         public string AdditionalInfo { get; set; }
 
         [Column(Name = "Subject_Id"), NotNull]
-        public int? SubjectId { get; set; }
+        public int SubjectId { get; set; }
 
         [Column(Name = "CreationDate"), NotNull]
         public DateTime CreationDate { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace FirstStep_Storage.Models.Contracts
 {
-    internal interface IHasIdentity
+    public interface IHasIdentity
     {
         int Id { get; set; }
     }

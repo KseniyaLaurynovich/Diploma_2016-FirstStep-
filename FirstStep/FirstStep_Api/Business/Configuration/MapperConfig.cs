@@ -8,6 +8,7 @@ namespace FirstStep_Api.Business.Configuration
     {
         public static void Initialize()
         {
+            Mapper.Register<Storage.Task, Api.Task>();
             Mapper.Register<Storage.Subject, Api.Subject>();
         }
     }

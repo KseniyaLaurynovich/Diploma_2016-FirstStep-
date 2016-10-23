@@ -40,13 +40,15 @@ namespace FirstStep_Storage.Repositories
         {
             using (var dbConnection = new FirstStepDb())
             {
-                dbConnection.Delete(obj);
+                dbConnection.Delete();
             }
         }
 
         public IQueryable<T> Items<T>()
             where T : class, IHasIdentity
         {
+            LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
+
             using (var dbConnection = new FirstStepDb())
             {
                 return dbConnection.GetTable<T>().AsQueryable();
