@@ -1,25 +1,25 @@
-var React = require('react');
-var SubjectsList = require('../components/SubjectsList/SubjectsList');
-var subjectsHelper = require('../utils/subjectsHelper');
+import React from 'react';
+import { connect } from 'react-redux';
+
+import SubjectsList from '../components/SubjectsList/SubjectsList';
+import { getSubjectsForUser } from '../utils/subjectsHelper';
+import store from '../store';
 
 var SubjectListContainer = React.createClass({
-    getInitialState: function(){
-        return {
-            subjects: []
-        };
-    },
     componentWillMount: function(){
-        subjectsHelper.getSubjectsForUser(1).then(function(result){
-            this.setState({
-                subjects: result
-            });
-        }.bind(this));
+        getSubjectsForUser('f20d4514-88a1-4200-be97-4dbe56a3832b');
     },
     render: function(){
         return (
-            <SubjectsList subjects={this.state.subjects}/>
+            <SubjectsList subjects={this.props.subjects}/>
         );
     }
 });
 
-module.exports = SubjectListContainer;
+const mapStateToProps = store => {
+    return {
+        subjects: store.subjectsState
+    };
+};
+
+export default connect(mapStateToProps)(SubjectListContainer);

@@ -1,9 +1,8 @@
-var React = require('react');
-var Task = require('../Task/Task');
-var styles = require('./styles.css')
+import React from 'react';
+import Task from '../Task/Task';
+import styles from './styles.css';
 
-function Subject(props){
-    console.log(styles);
+export default function (props){
     return(
         <div className={styles.container}>
             <div className={styles.divider}>
@@ -16,5 +15,3 @@ function Subject(props){
         </div>
     );
 };
-
-module.exports = Subject;

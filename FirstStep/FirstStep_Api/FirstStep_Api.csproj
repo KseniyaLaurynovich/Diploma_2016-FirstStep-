@@ -15,7 +15,7 @@
     <RootNamespace>FirstStep_Api</RootNamespace>
     <AssemblyName>FirstStep_Api</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -52,8 +52,8 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector, Version=3.2.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.3.2.3\lib\net45\SimpleInjector.dll</HintPath>
+    <Reference Include="SimpleInjector, Version=3.2.5.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.2.5\lib\net45\SimpleInjector.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SimpleInjector.Extensions.ExecutionContextScoping, Version=3.2.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
@@ -64,8 +64,8 @@
       <HintPath>..\packages\SimpleInjector.Integration.WebApi.3.2.3\lib\net45\SimpleInjector.Integration.WebApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SimpleInjector.Packaging, Version=3.2.3.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
-      <HintPath>..\packages\SimpleInjector.Packaging.3.2.3\lib\net40-client\SimpleInjector.Packaging.dll</HintPath>
+    <Reference Include="SimpleInjector.Packaging, Version=3.2.5.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Packaging.3.2.5\lib\net40-client\SimpleInjector.Packaging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
@@ -123,18 +123,13 @@
     <Compile Include="Business\Configuration\SimpleInjectorWebApiInitializer.cs" />
     <Compile Include="Business\Configuration\MapperConfig.cs" />
     <Compile Include="Business\Configuration\WebApiConfig.cs" />
-    <Compile Include="Business\Contracts\ISubjectHelper.cs" />
-    <Compile Include="Business\Contracts\ITaskHelper.cs" />
-    <Compile Include="Business\Helpers\SubjectHelper.cs" />
-    <Compile Include="Business\Services\MapperService.cs" />
+    <Compile Include="Business\Helpers\ControllerHelper.cs" />
+    <Compile Include="Business\Response\Response.cs" />
     <Compile Include="Controllers\LocalizationController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Business\Helpers\TaskHelper.cs" />
-    <Compile Include="Models\Subject.cs" />
-    <Compile Include="Models\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -151,9 +146,17 @@
     <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FirstStep_Storage\FirstStep_Storage.csproj">
-      <Project>{ff57212d-d410-46e8-9026-4fd564187b2e}</Project>
-      <Name>FirstStep_Storage</Name>
+    <ProjectReference Include="..\BusinesModels\BusinesModels.csproj">
+      <Project>{d1b9b948-50df-4528-a26c-bb21de86e588}</Project>
+      <Name>BusinesModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BusinesServices\BusinesServices.csproj">
+      <Project>{0ca7b780-a3c4-4174-832f-23ca9ec6b1a3}</Project>
+      <Name>BusinesServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FirstStep_Common\FirstStep_Common.csproj">
+      <Project>{c9660770-c226-42e9-bc4d-2b5c5b232bac}</Project>
+      <Name>FirstStep_Common</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -171,7 +174,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53112</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://firststep.com</IISUrl>
+          <IISUrl>http://localhost:53112/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

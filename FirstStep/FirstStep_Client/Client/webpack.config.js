@@ -25,9 +25,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.DefinePlugin({
-          __API_URL__: JSON.stringify('http://firststep.com')
-        }),
         HTMLWebpackPluginConfig,
         ExtractTextWebpackPluginConfig
     ]

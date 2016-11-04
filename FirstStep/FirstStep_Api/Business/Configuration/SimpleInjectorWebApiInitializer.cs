@@ -2,9 +2,6 @@ using System.Web.Http;
 using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using System;
-using FirstStep_Api.Business.Contracts;
-using FirstStep_Api.Business.Helpers;
-using FirstStep_Api.Helpers;
 
 namespace FirstStep_Api.App_Start
 {
@@ -29,8 +26,7 @@ namespace FirstStep_Api.App_Start
         {
             container.RegisterPackages(AppDomain.CurrentDomain.GetAssemblies());
             
-            container.Register<ISubjectHelper, SubjectHelper>(Lifestyle.Scoped);
-            container.Register<ITaskHelper, TasksHelper>(Lifestyle.Scoped);
+            //custom 
         }
     }
 }

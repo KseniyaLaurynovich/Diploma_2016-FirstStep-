@@ -1,6 +1,7 @@
-﻿using FirstStep_Api.Business.Contracts;
-using FirstStep_Api.Models;
-using Newtonsoft.Json;
+﻿using BusinesModels;
+using BusinesServices.Contracts;
+using FirstStep_Api.Business.Helpers;
+using FirstStep_Api.Business.Response;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -12,46 +13,42 @@ namespace FirstStep_Api.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SubjectController : ApiController
     {
-        private ISubjectHelper _subjectHelper;
-        private ITaskHelper _taskHelper;
+        private ISubjectService _subjectService;
 
-        public SubjectController(ISubjectHelper subjectHelper, ITaskHelper taskHelper)
+        public SubjectController(ISubjectService subjectService)
         {
-            _subjectHelper = subjectHelper;
-            _taskHelper = taskHelper;
+            _subjectService = subjectService;
         }
 
         [Route("get/{userId}")]
         [HttpGet]
-        public HttpResponseMessage GetSubjectsForUser(int userId)
+        public HttpResponseMessage GetSubjectsForUser(string userId)
         {
-            var subjects = _subjectHelper
-                .GetSubjectsForUser(userId);
+            var subjects = _subjectService.GetByUser(userId);
 
-            foreach(var subject in subjects)
-            {
-                subject.Tasks = _taskHelper.GetBySubjectId(subject.Id);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.Accepted, JsonConvert.SerializeObject(subjects));
+            return Response.Create(Request, HttpStatusCode.Accepted, subjects);
         }
 
         [Route("save")]
         [HttpPost]
         public HttpResponseMessage SaveSubject(Subject subject)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                subject.Id = _subjectHelper.Save(subject);
-                return Request.CreateResponse(HttpStatusCode.Accepted, JsonConvert.SerializeObject(subject));
+                _subjectService.Save(subject);
+                return Response.Create(Request, HttpStatusCode.Accepted, subject);
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return Response.Create(
+                Request, HttpStatusCode.BadRequest, subject, ControllerHelper.GetErrosFromModelState(ModelState));
         }
 
-        public HttpResponseMessage DeleteSubject(int subjectId)
+        [Route("delete/{subjectId}")]
+        [HttpDelete]
+        public HttpResponseMessage DeleteSubject(string subjectId)
         {
-
+            _subjectService.Delete(subjectId);
+            return Response.Create(Request, HttpStatusCode.Accepted);
         }
     }
 }

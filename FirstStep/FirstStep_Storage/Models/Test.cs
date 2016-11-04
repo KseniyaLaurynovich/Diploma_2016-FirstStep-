@@ -3,11 +3,11 @@ using LinqToDB.Mapping;
 
 namespace FirstStep_Storage.Models
 {
-    [Table("Tests")]
+    [Table("Test")]
     public class Test : IHasIdentity
     {
-        [Column(Name = "Id"), PrimaryKey, Identity]
-        public int Id { get; set; }
+        [Column(Name = "Id"), PrimaryKey]
+        public string Id { get; set; }
 
         [Column(Name = "Tasks_Id"), NotNull]
         public int TaskId { get; set; }

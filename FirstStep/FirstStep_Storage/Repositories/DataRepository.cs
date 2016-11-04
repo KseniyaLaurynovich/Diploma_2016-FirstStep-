@@ -9,7 +9,7 @@ namespace FirstStep_Storage.Repositories
 {
     internal class DataRepository : IDataRepository
     {
-        public T GetById<T>(int id)
+        public T GetById<T>(string id)
             where T : class, IHasIdentity
         {
             using (var db = new FirstStepDb())
@@ -19,14 +19,14 @@ namespace FirstStep_Storage.Repositories
             }
         }
 
-        public int Save<T>(T obj)
+        public string Save<T>(T obj)
             where T : class, IHasIdentity
         {
             using (var dbConnection = new FirstStepDb())
             {
-                if (obj.Id == default(int))
+                if (obj.Id == null)
                 {
-                    return Convert.ToInt32(dbConnection.InsertWithIdentity(obj));
+                    return Convert.ToString(dbConnection.InsertWithIdentity(obj));
                 }
                 {
                     dbConnection.Update(obj);
@@ -40,7 +40,7 @@ namespace FirstStep_Storage.Repositories
         {
             using (var dbConnection = new FirstStepDb())
             {
-                dbConnection.Delete();
+                dbConnection.Delete(obj);
             }
         }
 

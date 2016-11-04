@@ -1,15 +1,12 @@
-﻿using ExpressMapper;
-using Storage = FirstStep_Storage.Models;
-using Api = FirstStep_Api.Models;
+﻿using FirstStep_Common;
 
 namespace FirstStep_Api.Business.Configuration
 {
-    public static class MapperConfig
+    public class MapperRegistration : IMapperRegistration
     {
-        public static void Initialize()
+        public void Register()
         {
-            Mapper.Register<Storage.Task, Api.Task>();
-            Mapper.Register<Storage.Subject, Api.Subject>();
+            
         }
     }
 }

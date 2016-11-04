@@ -1,13 +1,13 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var routes = require('./config/routers');
-var configureStore = require('./store/configureStore');
-var AppContainer = require('react-hot-loader').AppContainer;
-require("./material.min.css");
-
-const store = configureStore();
+import React from 'react';
+import ReactDOM from 'react-dom';
+import routes from './config/routers';
+import { AppContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+import store from './store';
 
 ReactDOM.render(
-    routes,
+   <Provider store={store}>
+    {routes}
+    </Provider>,
     document.getElementById('app')
 );

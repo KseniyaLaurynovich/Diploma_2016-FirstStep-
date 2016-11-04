@@ -1,12 +1,11 @@
-var axios = require('axios');
+import axios from 'axios';
+import store from '../store';
+import { getSubjectsSuccess } from '../actions/SubjectsActions';
 
-var helper = {
-    getSubjectsForUser: function(userId){
-        return axios.get('http://firststep.com/subjects/get/1')
-        .then(function(subjects){
-            return JSON.parse(subjects.data);
-        });
-    }
+export function getSubjectsForUser (userId){
+    return axios.get('http://firststep.com/subjects/get/' + userId)
+    .then(function(response){
+        store.dispatch(getSubjectsSuccess(JSON.parse(response.data.Data)));
+        return response;
+    });
 };
-
-module.exports = helper;

@@ -1,8 +1,8 @@
-import * as types from '../constants/ActionTypes';
+import { GET_SUBJECTS_SUCCESS } from '../constants/ActionTypes';
 
-export function addSubject(text) {
+export function getSubjectsSuccess(subjects) {
   return {
-    type: types.ADD_SUBJECT,
-    name
+    type: GET_SUBJECTS_SUCCESS,
+    subjects
   };
-}
+};

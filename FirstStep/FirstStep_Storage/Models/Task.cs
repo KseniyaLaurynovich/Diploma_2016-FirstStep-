@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace FirstStep_Storage.Models
 {
-    [Table(Name = "Tasks")]
+    [Table(Name = "Task")]
     public class Task : IHasIdentity
     {
-        [Column(Name = "Id"), PrimaryKey, Identity]
-        public int Id { get; set; }
+        [Column(Name = "Id"), PrimaryKey]
+        public string Id { get; set; }
 
         [Column(Name = "Name"), NotNull]
         public string Name { get; set; }
@@ -21,15 +21,9 @@ namespace FirstStep_Storage.Models
         public string AdditionalInfo { get; set; }
 
         [Column(Name = "Subject_Id"), NotNull]
-        public int SubjectId { get; set; }
+        public string SubjectId { get; set; }
 
         [Column(Name = "CreationDate"), NotNull]
         public DateTime CreationDate { get; set; }
-
-        [Association(ThisKey = "SubjectId", OtherKey = "Id")]
-        public Subject Subject { get; set; }
-
-        [Association(ThisKey = "Id", OtherKey = "TaskId")]
-        public ICollection<Test> Tests { get; set; }
     }
 }
