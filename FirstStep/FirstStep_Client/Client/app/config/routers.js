@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-import SubjectsListContainer from '../containers/SubjectsListContainer';
+import SubjectsGridContainer from '../containers/SubjectsGridContainer';
 
 export default (
   <Router history={hashHistory}>
-    <Route path='/' component={SubjectsListContainer}>
-      <IndexRoute component={SubjectsListContainer} />
+    <Route path='/' component={SubjectsGridContainer}>
+      <IndexRoute component={SubjectsGridContainer} />
       </Route>
     </Router>
 );

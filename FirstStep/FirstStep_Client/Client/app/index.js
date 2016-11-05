@@ -8,6 +8,6 @@ import store from './store';
 ReactDOM.render(
    <Provider store={store}>
     {routes}
-    </Provider>,
-    document.getElementById('app')
+   </Provider>,
+   document.getElementById('app')
 );

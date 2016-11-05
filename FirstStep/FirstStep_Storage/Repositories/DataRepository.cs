@@ -26,12 +26,14 @@ namespace FirstStep_Storage.Repositories
             {
                 if (obj.Id == null)
                 {
-                    return Convert.ToString(dbConnection.InsertWithIdentity(obj));
+                    obj.Id = Guid.NewGuid().ToString();
+                    dbConnection.Insert(obj);
                 }
                 {
                     dbConnection.Update(obj);
-                    return obj.Id;
                 }
+
+                return obj.Id;
             }
         }
 

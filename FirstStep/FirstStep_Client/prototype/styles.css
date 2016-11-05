@@ -123,3 +123,17 @@ header .mdl-layout__drawer-button{
     padding: 2px 10px;
     margin: 0 5px;
 }
+
+.add-button{
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 29px;
+    color: #b9c2cb;
+    width: 100%;
+    text-align: center;
+}
+
+.add-button:hover{
+    background-color: #e3eae7;
+}

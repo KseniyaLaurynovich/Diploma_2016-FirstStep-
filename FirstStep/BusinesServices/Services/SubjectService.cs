@@ -40,7 +40,7 @@ namespace BusinesServices.Services
             var storageSubject = Mapper.Map<Subject, Storage.Subject>(subject);
             var id = _dataRepository.Save(storageSubject);
 
-            storageSubject.Id = id;
+            subject.Id = id;
         }
 
         public void Delete(string id)

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { subjectReducer } from './subject-reducer';
+import { subjectReducer } from './subjectReducer';
 
 var reducers = combineReducers({
   subjectsState: subjectReducer

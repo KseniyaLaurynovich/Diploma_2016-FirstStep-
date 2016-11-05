@@ -8,10 +8,10 @@ export default function (props){
             <div className={styles.divider}>
                 <div className={styles.divider_text}>
                     <span>{props.subject.Name}</span>
-                    <span className={styles.divider_score}>{props.subject.Tasks.length}</span>
+                    <span className={styles.divider_score}>{props.subject.Tasks ? props.subject.Tasks.length : 0}</span>
                 </div>
             </div>
-            {props.subject.Tasks.map((task) => <Task key={task.Id} task={task}/>)}
+            {props.subject.Tasks && props.subject.Tasks.map((task) => <Task key={task.Id} task={task}/>)}
         </div>
     );
 };
