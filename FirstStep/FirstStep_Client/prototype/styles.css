@@ -112,6 +112,18 @@ header .mdl-layout__drawer-button{
     margin: auto;
 }
 
+.divider .divider_actions{
+    line-height: 26px;
+    font-size: 14px;
+    z-index: 2;
+    color: #b9c2cb;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizelegibility;
+}
+
 .divider .subject_number{
     position: relative;
     top: -1px;

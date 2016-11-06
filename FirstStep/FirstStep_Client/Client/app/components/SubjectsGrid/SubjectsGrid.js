@@ -1,26 +1,36 @@
 import React from 'react';
 import Subject from '../Subject/Subject';
-import AddButton from '../AddButton/AddButton';
-import Modal from 'react-modal';
+import Button from '../Button/Button';
+import Dialog from '../Dialog/Dialog';
 import styles from './styles.css';
+import SubjectForm from '../Forms/SubjectForm';
+import DeleteForm from '../Forms/DeleteForm';
 
 export default function (props){
         return (
             <div>
-                <AddButton click={props.openAddDialog}/>
+                <Button
+                 className={styles.divider_text}
+                 click={props.displayAddDialog}>Add</Button>
                 <div className="mdl-grid portfolio-max-width">
-                    {props.subjects.map((subject) => <Subject key={subject.Id} subject={subject}/>)}
+                    {props.subjects.map((subject) =>
+                        <Subject
+                        key={subject.Id}
+                        subject={subject}
+                        deleteClick={props.displayDeleteDialog}/>)}
                 </div>
-                <Modal
-                  isOpen={props.isAdding}>
-                  <h2>New subject</h2>
-                  <form onSubmit={props.addSubject}>
-                    <label>Subject name: </label>
-                    <input type='text' name="subjectName"/>
-                    <input type="submit" value="Save"/>
-                    <input type="reset" onClick={props.closeAddDialog} value="Cancel"/>
-                  </form>
-                </Modal>
+                <Dialog modalIsOpen={props.getAddDialogDisplay}>
+                  <SubjectForm
+                    handleSubmit={props.addSubject}
+                    handleCancel={props.hideAddDialog} />
+                </Dialog>
+                <Dialog modalIsOpen={props.getDeleteDialogDisplay}>
+                  <DeleteForm
+                    handleOk={props.deleteSubject}
+                    handleCancel={props.hideDeleteDialog} >
+                    Do you really want to delete this subject ?
+                  </DeleteForm>
+                </Dialog>
             </div>
         );
 };

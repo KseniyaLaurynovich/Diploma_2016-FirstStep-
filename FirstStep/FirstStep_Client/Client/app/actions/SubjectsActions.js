@@ -1,30 +1,38 @@
-import { GET_SUBJECTS_SUCCESS, ADD_SUBJECT_REQUEST_START, ADD_SUBJECT_REQUEST_END, ADD_SUBJECT_SUCCESS  } from '../constants/ActionTypes';
+import * as types from '../constants/ActionTypes';
 
 export function getSubjectsSuccess(subjects) {
   return {
-    type: GET_SUBJECTS_SUCCESS,
+    type: types.GET_SUBJECTS_SUCCESS,
     subjects: subjects,
     isAdding: false
   };
 };
 
-export function addSubjectStart(){
+export function setAddDialogVisibility(visible){
     return{
-        type: ADD_SUBJECT_REQUEST_START,
-        isAdding: true
+        type: types.CHANGE_ADD_DIALOG_VISIBILITY,
+        isAdding: visible
     };
 };
 
-export function addSubjectEnd(){
+export function setDeleteDialogVisibility(visible, subjectId){
     return{
-        type: ADD_SUBJECT_REQUEST_END,
-        isAdding: false
+        type: types.CHANGE_DELETE_DIALOG_VISIBILITY,
+        isDeleting: visible,
+        subjectId
     };
 };
 
 export function addSubjectSuccess(newSubject){
     return{
-        type: ADD_SUBJECT_SUCCESS,
+        type: types.ADD_SUBJECT_SUCCESS,
         subject: newSubject
+    }
+}
+
+export function deleteSubjectSuccess(subjectId){
+    return{
+        type: types.DELETE_SUBJECT_SUCCESS,
+        subjectId
     }
 }

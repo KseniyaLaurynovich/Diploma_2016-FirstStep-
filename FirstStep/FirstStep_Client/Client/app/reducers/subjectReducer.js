@@ -1,21 +1,30 @@
-import { GET_SUBJECTS_SUCCESS, ADD_SUBJECT_REQUEST_START, ADD_SUBJECT_REQUEST_END, ADD_SUBJECT_SUCCESS } from '../constants/ActionTypes';
+import * as types from '../constants/ActionTypes';
 
 const initialState = {
     subjects: [],
-    isAdding: false
+    isAdding: false,
+    isDeleting: false,
+    currentSubjectId: null
 };
 
 export function subjectReducer(state = initialState, action) {
   switch (action.type) {
-    case GET_SUBJECTS_SUCCESS:
+    case types.GET_SUBJECTS_SUCCESS:
         return Object.assign({}, state, { subjects:  action.subjects });
-    case ADD_SUBJECT_REQUEST_START:
+
+    case types.CHANGE_ADD_DIALOG_VISIBILITY:
         return Object.assign({}, state, { isAdding:  action.isAdding });
-    case ADD_SUBJECT_REQUEST_END:
-        return Object.assign({}, state, { isAdding:  action.isAdding });
-    case ADD_SUBJECT_SUCCESS:
+
+    case types.ADD_SUBJECT_SUCCESS:
         var subjects = state.subjects.concat(action.subject);
         return Object.assign({}, state, { subjects:  subjects, isAdding: false });
+
+    case types.DELETE_SUBJECT_SUCCESS:
+        var filtered = state.subjects.filter((value) => {return value.Id !== state.currentSubjectId});
+        return Object.assign({}, state, {subjects: filtered, isDeleting: false});
+
+    case types.CHANGE_DELETE_DIALOG_VISIBILITY:
+        return Object.assign({}, state, { currentSubjectId: action.subjectId, isDeleting: action.isDeleting });
     }
   return state;
 };

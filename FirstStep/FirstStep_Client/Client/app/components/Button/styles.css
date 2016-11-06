@@ -1,0 +1,13 @@
+.button{
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 29px;
+    color: #b9c2cb;
+    width: auto;
+    text-align: center;
+}
+
+.button:hover{
+    background-color: #e3eae7;
+}

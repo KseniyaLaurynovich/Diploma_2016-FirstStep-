@@ -1,38 +1,52 @@
 import React from 'react';
 import SubjectsGrid from '../components/SubjectsGrid/SubjectsGrid';
 import { connect } from 'react-redux';
-import { getSubjectsForUser, addSubject } from '../utils/subjectsHelper';
-import { addSubjectStart, addSubjectEnd } from '../actions/SubjectsActions';
+import { getSubjectsForUser, addSubject, deleteSubjectById } from '../utils/subjectsHelper';
+import { setAddDialogVisibility, setDeleteDialogVisibility } from '../actions/SubjectsActions';
 import store from '../store';
 
 var SubjectListContainer = React.createClass({
     componentWillMount: function(){
         getSubjectsForUser('f20d4514-88a1-4200-be97-4dbe56a3832b');
     },
-    openAddDialog: function(){
-        store.dispatch(addSubjectStart());
+    displayAddDialog: function(){
+        store.dispatch(setAddDialogVisibility(true));
     },
-    closeAddDialog: function(){
-        store.dispatch(addSubjectEnd());
+    hideAddDialog: function(){
+        store.dispatch(setAddDialogVisibility(false));
+    },
+    displayDeleteDialog: function(e){
+        store.dispatch(setDeleteDialogVisibility(true, e.target.dataset.relatedId));
+    },
+    hideDeleteDialog: function(){
+        store.dispatch(setDeleteDialogVisibility(false));
     },
     addSubject: function(e){
         e.preventDefault();
+        var subjectName = e.target.elements.subjectName.value;
         var newSubject = {
             UserId: 'f20d4514-88a1-4200-be97-4dbe56a3832b',
-            Name: e.target.elements.subjectName.value
+            Name: subjectName
         };
-
         addSubject(newSubject);
+    },
+    deleteSubject: function(){
+        deleteSubjectById(this.props.currentSubjectId);
     },
     render: function(){
         return (
             <SubjectsGrid
                 subjects={this.props.subjects}
-                openAddDialog={this.openAddDialog}
-                closeAddDialog={this.closeAddDialog}
+
+                getAddDialogDisplay={this.props.isAdding}
+                getDeleteDialogDisplay={this.props.isDeleting}
+                displayAddDialog={this.displayAddDialog}
+                displayDeleteDialog={this.displayDeleteDialog}
+                hideAddDialog={this.hideAddDialog}
+                hideDeleteDialog={this.hideDeleteDialog}
+
                 addSubject={this.addSubject}
-                isAdding={this.props.isAdding}
-                subjectModal="Hello"/>
+                deleteSubject={this.deleteSubject}/>
         );
     }
 });
@@ -40,7 +54,9 @@ var SubjectListContainer = React.createClass({
 const mapStateToProps = store => {
     return {
         subjects: store.subjectsState.subjects,
-        isAdding: store.subjectsState.isAdding
+        isAdding: store.subjectsState.isAdding,
+        isDeleting: store.subjectsState.isDeleting,
+        currentSubjectId: store.subjectsState.currentSubjectId
     };
 };
 
