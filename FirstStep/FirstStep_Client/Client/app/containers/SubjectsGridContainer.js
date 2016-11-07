@@ -1,8 +1,8 @@
 import React from 'react';
 import SubjectsGrid from '../components/SubjectsGrid/SubjectsGrid';
 import { connect } from 'react-redux';
-import { getSubjectsForUser, addSubject, deleteSubjectById } from '../utils/subjectsHelper';
-import { setAddDialogVisibility, setDeleteDialogVisibility } from '../actions/SubjectsActions';
+import { getSubjectsForUser, addSubject, deleteSubjectById, addTask } from '../utils/subjectsHelper';
+import { setAddDialogVisibility, setDeleteDialogVisibility, setTaskDialogVisibility } from '../actions/SubjectsGridActions';
 import store from '../store';
 
 var SubjectListContainer = React.createClass({
@@ -21,6 +21,12 @@ var SubjectListContainer = React.createClass({
     hideDeleteDialog: function(){
         store.dispatch(setDeleteDialogVisibility(false));
     },
+    displayTaskDialog: function(e){
+        store.dispatch(setTaskDialogVisibility(true, e.target.dataset.relatedId));
+    },
+    hideTaskDialog: function(){
+        store.dispatch(setTaskDialogVisibility(false));
+    },
     addSubject: function(e){
         e.preventDefault();
         var subjectName = e.target.elements.subjectName.value;
@@ -29,6 +35,17 @@ var SubjectListContainer = React.createClass({
             Name: subjectName
         };
         addSubject(newSubject);
+    },
+    addTask: function(e){
+        e.preventDefault();
+        var taskName = e.target.elements.taskName.value;
+        var taskDescription = e.target.elements.taskDescription.value;
+        var newTask = {
+            Name: taskName,
+            Description: taskDescription,
+            SubjectId: this.props.currentSubjectId
+        };
+        addTask(newTask);
     },
     deleteSubject: function(){
         deleteSubjectById(this.props.currentSubjectId);
@@ -40,13 +57,19 @@ var SubjectListContainer = React.createClass({
 
                 getAddDialogDisplay={this.props.isAdding}
                 getDeleteDialogDisplay={this.props.isDeleting}
+                getTaskDialogDisplay={this.props.isTaskAdding}
+
                 displayAddDialog={this.displayAddDialog}
                 displayDeleteDialog={this.displayDeleteDialog}
+                displayTaskDialog={this.displayTaskDialog}
+
                 hideAddDialog={this.hideAddDialog}
                 hideDeleteDialog={this.hideDeleteDialog}
+                hideTaskDialog={this.hideTaskDialog}
 
                 addSubject={this.addSubject}
-                deleteSubject={this.deleteSubject}/>
+                deleteSubject={this.deleteSubject}
+                addTask={this.addTask}/>
         );
     }
 });
@@ -54,6 +77,7 @@ var SubjectListContainer = React.createClass({
 const mapStateToProps = store => {
     return {
         subjects: store.subjectsState.subjects,
+        isTaskAdding: store.subjectsState.isTaskAdding,
         isAdding: store.subjectsState.isAdding,
         isDeleting: store.subjectsState.isDeleting,
         currentSubjectId: store.subjectsState.currentSubjectId

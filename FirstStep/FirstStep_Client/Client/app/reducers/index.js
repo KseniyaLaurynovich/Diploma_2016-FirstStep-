@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import { subjectReducer } from './subjectReducer';
+import { subjectsGridReducer } from './SubjectsGridReducer';
 import { reducer as reduxFormReducer } from 'redux-form';
 
 var reducers = combineReducers({
-  subjectsState: subjectReducer,
+  subjectsState: subjectsGridReducer,
   form: reduxFormReducer
 });
 

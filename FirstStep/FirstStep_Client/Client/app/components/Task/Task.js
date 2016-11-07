@@ -1,15 +1,22 @@
 import React from 'react';
+import Button from '../Button/Button';
 
 export default function (props){
         return(
-            <div className="mdl-cell mdl-card mdl-shadow--4dp portfolio-card">
-                <div className="mdl-card__title">
-                    <div className="mdl-card__title-text">
+            <div>
+                <div>
+                    <div>
                         {props.task.Name}
                     </div>
                 </div>
-                <div className="mdl-card__supporting-text">
+                <div>
                     {props.task.Description}
+                </div>
+                <div>
+                    <Button
+                     className="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect">
+                         <i className="material-icons">create</i>
+                     </Button>
                 </div>
             </div>
         );

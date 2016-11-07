@@ -10,11 +10,13 @@ namespace BusinesModels
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
         public string AdditionalInfo { get; set; }
 
-        public int SubjectId { get; set; }
+        [Required]
+        public string SubjectId { get; set; }
 
         public DateTime CreationDate { get; set; }
     }

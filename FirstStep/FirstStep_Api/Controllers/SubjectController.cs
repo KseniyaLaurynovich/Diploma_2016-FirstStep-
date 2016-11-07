@@ -22,7 +22,7 @@ namespace FirstStep_Api.Controllers
 
         [Route("get/{userId}")]
         [HttpGet]
-        public HttpResponseMessage GetSubjectsForUser(string userId)
+        public HttpResponseMessage GetForUser(string userId)
         {
             var subjects = _subjectService.GetByUser(userId);
 
@@ -31,7 +31,7 @@ namespace FirstStep_Api.Controllers
 
         [Route("save")]
         [HttpPost]
-        public HttpResponseMessage SaveSubject(Subject subject)
+        public HttpResponseMessage Save(Subject subject)
         {
             if (ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace FirstStep_Api.Controllers
 
         [Route("delete/{subjectId}")]
         [HttpDelete]
-        public HttpResponseMessage DeleteSubject(string subjectId)
+        public HttpResponseMessage Deletet(string subjectId)
         {
             _subjectService.Delete(subjectId);
             return Response.Create(Request, HttpStatusCode.Accepted);
