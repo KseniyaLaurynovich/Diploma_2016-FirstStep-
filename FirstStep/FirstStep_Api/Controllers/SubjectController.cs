@@ -45,7 +45,7 @@ namespace FirstStep_Api.Controllers
 
         [Route("delete/{subjectId}")]
         [HttpDelete]
-        public HttpResponseMessage Deletet(string subjectId)
+        public HttpResponseMessage Delete(string subjectId)
         {
             _subjectService.Delete(subjectId);
             return Response.Create(Request, HttpStatusCode.Accepted);
