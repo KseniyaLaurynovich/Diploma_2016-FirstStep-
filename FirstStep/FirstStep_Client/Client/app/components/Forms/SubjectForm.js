@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderTextBox } from './Fields';
 import { Field, reduxForm } from 'redux-form';
 
 const validate = values => {
@@ -9,22 +10,12 @@ const validate = values => {
   return errors;
 }
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
-    <label>{label}</label>
-    <div>
-      <input {...input} type={type}/>
-      {touched && error && <span>{error}</span>}
-    </div>
-  </div>
-)
-
 const subjectForm = (props) => {
  const { handleSubmit, pristine, handleCancel, submitting } = props
   return (
     <form onSubmit={handleSubmit}>
       <h2>New subject</h2>
-      <Field name="subjectName" type="text" component={renderField} label="Subject name: "/>
+      <Field name="subjectName" type="text" component={renderTextBox} label="Subject name: "/>
       <div>
         <button type="submit" disabled={pristine || submitting}>Save</button>
         <button type="reset" onClick={handleCancel}>Cancel</button>

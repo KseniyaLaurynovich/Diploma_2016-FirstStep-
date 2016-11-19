@@ -9,7 +9,6 @@ namespace FirstStep_Api.Controllers
 {
     [RoutePrefix("Account")]
     [Authorize(Roles = "Admin")]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class RolesController : BaseIdentityController
     {
         [HttpGet]

@@ -1,0 +1,21 @@
+.task {
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  font-size: 16px;
+  font-weight: 400;
+  min-height: 200px;
+  overflow: hidden;
+  width: 330px;
+  position: relative;
+  background: #fff;
+  border-radius: 2px;
+  box-sizing: border-box;
+  float: left;
+  margin: 5px;
+}
+.title {
+  color: #fff;
+  background-color: #46B6AC;
+}

@@ -4,6 +4,7 @@ using FirstStep_Api.App_Start;
 using FirstStep_Common;
 using System;
 using System.Linq;
+using System.Web;
 
 namespace FirstStep_Api
 {
@@ -14,6 +15,21 @@ namespace FirstStep_Api
             RegisterMappers();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             SimpleInjectorWebApiInitializer.Initialize();
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+
+            if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
+            {
+                //These headers are handling the "pre-flight" OPTIONS call sent by the browser
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+                HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Accept");
+                HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
+                HttpContext.Current.Response.End();
+            }
+
         }
 
         #region Helpers

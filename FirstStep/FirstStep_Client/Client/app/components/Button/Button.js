@@ -7,7 +7,7 @@ export default function(props){
         className={props.className}
         data-related-id={props.relatedId}
         onClick={props.onClick}>
-            a
+            {props.children}
         </button>
     );
 }

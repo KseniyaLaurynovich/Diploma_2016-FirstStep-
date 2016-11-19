@@ -8,7 +8,6 @@
     [Mark]             INT						NULL,
     [User_Id]         UNIQUEIDENTIFIER						NOT NULL,
     [FolderName] VARBINARY(100) NULL, 
-    CONSTRAINT [Project_Task] FOREIGN KEY ([Task_Id]) REFERENCES [dbo].[Task] ([Id]),
-    CONSTRAINT [Project_User] FOREIGN KEY ([User_Id]) REFERENCES [dbo].[User] ([Id])
+    CONSTRAINT [Project_Task] FOREIGN KEY ([Task_Id]) REFERENCES [dbo].[Task] ([Id])
 );
 

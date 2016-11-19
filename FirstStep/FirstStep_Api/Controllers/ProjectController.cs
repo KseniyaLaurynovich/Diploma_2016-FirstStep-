@@ -8,7 +8,6 @@ using System.Web.Http.Cors;
 namespace FirstStep_Api.Controllers
 {
     [RoutePrefix("project")]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class ProjectController : ApiController
     {
         private readonly IFileService _fileService;

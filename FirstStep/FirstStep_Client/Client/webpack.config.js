@@ -21,6 +21,7 @@ module.exports = {
     module: {
         loaders:  [
           { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+          { test: /\.json$/, loader: 'json-loader' },
           { test: /\.css$/, loader: ExtractTextWebpackPlugin.extract( 'style-loader', 'css-loader?modules=true&localIdentName=[name]__[local]___[hash:base64:5]' )}
         ]
     },

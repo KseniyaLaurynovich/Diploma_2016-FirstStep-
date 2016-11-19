@@ -26,7 +26,9 @@ export default function (props){
                     </Button>
                 </div>
             </div>
-            {props.subject.Tasks && props.subject.Tasks.map((task) => <Task key={task.Id} task={task}/>)}
+            <div>
+              {props.subject.Tasks && props.subject.Tasks.map((task) => <Task key={task.Id} task={task}/>)}
+            </div>
         </div>
     );
 };

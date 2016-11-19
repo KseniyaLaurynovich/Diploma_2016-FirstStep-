@@ -9,8 +9,8 @@ using System.Web.Http.Cors;
 
 namespace FirstStep_Api.Controllers
 {
+    [AllowAnonymous]
     [RoutePrefix("subjects")]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class SubjectController : ApiController
     {
         private ISubjectService _subjectService;

@@ -1,10 +1,12 @@
 ﻿using FirstStep_Api.Business.Models;
 using FirstStep_Api.Business.Providers;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
+using System.Web.Http.Cors;
 
 [assembly: OwinStartup(typeof(FirstStep_Api.App_Start.Startup))]
 namespace FirstStep_Api.App_Start

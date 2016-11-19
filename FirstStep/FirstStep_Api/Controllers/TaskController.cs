@@ -9,8 +9,8 @@ using System.Web.Http.Cors;
 
 namespace FirstStep_Api.Controllers
 {
+    [AllowAnonymous]
     [RoutePrefix("tasks")]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class TaskController : ApiController
     {
         private readonly ITaskService _taskService;

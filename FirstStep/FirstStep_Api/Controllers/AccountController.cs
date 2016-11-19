@@ -17,7 +17,6 @@ namespace FirstStep_Api.Controllers
 {
     [RoutePrefix("Account")]
     [Authorize]
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class AccountController : BaseIdentityController
     {
         private const string LocalLoginProvider = "Local";

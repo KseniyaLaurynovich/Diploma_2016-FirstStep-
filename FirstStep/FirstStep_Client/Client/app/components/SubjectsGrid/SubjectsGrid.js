@@ -7,6 +7,7 @@ import SubjectForm from '../Forms/SubjectForm';
 import DeleteForm from '../Forms/DeleteForm';
 import TaskForm from '../Forms/TaskForm';
 
+
 export default function (props){
         return (
             <div>
@@ -33,7 +34,7 @@ export default function (props){
                   <DeleteForm
                     handleOk={props.deleteSubject}
                     handleCancel={props.hideDeleteDialog} >
-                    Do you really want to delete this subject ?
+                    'Do you really want to delete this subject ?'
                   </DeleteForm>
                 </Dialog>
                 <Dialog modalIsOpen={props.getTaskDialogDisplay}>

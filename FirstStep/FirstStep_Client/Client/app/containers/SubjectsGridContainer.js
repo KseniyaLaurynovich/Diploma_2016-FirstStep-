@@ -16,13 +16,13 @@ var SubjectListContainer = React.createClass({
         store.dispatch(setAddDialogVisibility(false));
     },
     displayDeleteDialog: function(e){
-        store.dispatch(setDeleteDialogVisibility(true, e.target.dataset.relatedId));
+        store.dispatch(setDeleteDialogVisibility(true, e.target.parentNode.dataset.relatedId));
     },
     hideDeleteDialog: function(){
         store.dispatch(setDeleteDialogVisibility(false));
     },
     displayTaskDialog: function(e){
-        store.dispatch(setTaskDialogVisibility(true, e.target.dataset.relatedId));
+        store.dispatch(setTaskDialogVisibility(true, e.target.parentNode.dataset.relatedId));
     },
     hideTaskDialog: function(){
         store.dispatch(setTaskDialogVisibility(false));

@@ -7,7 +7,7 @@ export default function(props){
         <Modal
          isOpen={props.modalIsOpen}
          portalClassName={styles.dialog}>
-         {props.children}
+             {props.children}
        </Modal>
     );
 }

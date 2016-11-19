@@ -4,7 +4,6 @@
     [User_Id]    UNIQUEIDENTIFIER            NOT NULL,
     [Project_Id] UNIQUEIDENTIFIER            NOT NULL,
 	[DateTime]	  DATETIME					  NOT NULL,
-    CONSTRAINT [Comment_Project] FOREIGN KEY ([Project_Id]) REFERENCES [dbo].[Project] ([Id]),
-    CONSTRAINT [Comment_User] FOREIGN KEY ([User_Id]) REFERENCES [dbo].[User] ([Id])
+    CONSTRAINT [Comment_Project] FOREIGN KEY ([Project_Id]) REFERENCES [dbo].[Project] ([Id])
 );
 
