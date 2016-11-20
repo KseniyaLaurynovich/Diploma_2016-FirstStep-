@@ -13,7 +13,7 @@ export function login(email, password){
   }).then(function(result){
     var username = result.data.userName;
     var jwt = result.data.access_token;
-    var roles = [];
+    var roles = result.data.roles.split(',');
 
     store.dispatch(loginSuccess(username, jwt, roles));
   });
