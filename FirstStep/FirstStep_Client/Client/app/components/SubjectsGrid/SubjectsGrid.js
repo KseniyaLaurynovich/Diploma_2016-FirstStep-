@@ -20,22 +20,28 @@ export default function (props){
                         addTaskClick={props.displayTaskDialog}
                         deleteClick={props.displayDeleteDialog}/>)}
                 </Accordion>
-                <Dialog modalIsOpen={props.getAddDialogDisplay}>
+                <Dialog
+                  modalIsOpen={props.getAddDialogDisplay}
+                  close={props.hideAddDialog}
+                  header="New subject">
                   <SubjectForm
-                    handleSubmit={props.addSubject}
-                    handleCancel={props.hideAddDialog} />
+                  handleSubmit={props.addSubject}/>
                 </Dialog>
-                <Dialog modalIsOpen={props.getDeleteDialogDisplay}>
+                <Dialog
+                  modalIsOpen={props.getDeleteDialogDisplay}
+                  close={props.hideDeleteDialog}
+                  header="Delere subject">
                   <DeleteForm
-                    handleOk={props.deleteSubject}
-                    handleCancel={props.hideDeleteDialog} >
-                    'Do you really want to delete this subject ?'
+                  handleOk={props.hideDeleteDialog}>
+                    {"Do you really want to delete this subject ?"}
                   </DeleteForm>
                 </Dialog>
-                <Dialog modalIsOpen={props.getTaskDialogDisplay}>
+                <Dialog
+                  modalIsOpen={props.getTaskDialogDisplay}
+                  close={props.hideTaskDialog}
+                  header="New task">
                   <TaskForm
-                    handleSubmit={props.addTask}
-                    handleCancel={props.hideTaskDialog} />
+                  handleSubmit={props.addTask}/>
                 </Dialog>
             </div>
         );

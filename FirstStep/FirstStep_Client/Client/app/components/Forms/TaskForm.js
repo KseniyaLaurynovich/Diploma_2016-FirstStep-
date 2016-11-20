@@ -1,6 +1,7 @@
-import React from 'react';
-import {renderTextBox, renderTextArea} from './Fields';
-import { Field, reduxForm } from 'redux-form';
+import React from 'react'
+import {renderTextBox, renderTextArea} from './Fields'
+import { Field, reduxForm } from 'redux-form'
+import { Button } from 'react-bootstrap'
 
 const validate = values => {
   const errors = {}
@@ -17,12 +18,10 @@ const taskForm = (props) => {
  const { handleSubmit, pristine, handleCancel, submitting } = props
   return (
     <form onSubmit={handleSubmit}>
-      <h2>New task</h2>
       <Field name="taskName" type="text" component={renderTextBox} label="Name: "/>
       <Field name="taskDescription" component={renderTextArea} label="Description: "/>
       <div>
-        <button type="submit" disabled={pristine || submitting}>Save</button>
-        <button type="reset" onClick={handleCancel}>Cancel</button>
+        <Button type="submit" disabled={pristine || submitting}>Save</Button>
       </div>
     </form>
   )

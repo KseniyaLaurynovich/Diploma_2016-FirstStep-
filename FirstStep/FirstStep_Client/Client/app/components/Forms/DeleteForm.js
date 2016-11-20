@@ -8,7 +8,6 @@ export default function(props){
               {children}
               <div>
                 <Button onClick={handleOk}>OK</Button>
-                <Button onClick={handleCancel}>Cancel</Button>
               </div>
           </div>
     );
