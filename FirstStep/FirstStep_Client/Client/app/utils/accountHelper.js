@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '../store'
-import { loginSuccess } from '../actions/AccountActions'
+import { loginSuccess, loginFailed } from '../actions/AccountActions'
+import { push } from 'react-router-redux'
 
 
 export function login(email, password){
@@ -10,12 +11,6 @@ export function login(email, password){
     url: 'http://test_site.com/token',
     headers:{"Content-Type": "application/x-www-form-urlencoded"},
     data: data
-  }).then(function(result){
-    var username = result.data.userName;
-    var jwt = result.data.access_token;
-    var roles = result.data.roles.split(',');
-
-    store.dispatch(loginSuccess(username, jwt, roles));
   });
 }
 

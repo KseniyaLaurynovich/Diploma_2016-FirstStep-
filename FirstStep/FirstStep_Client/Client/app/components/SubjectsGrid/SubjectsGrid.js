@@ -1,30 +1,25 @@
-import React from 'react';
-import Subject from '../Subject/Subject';
-import Button from '../Button/Button';
-import Dialog from '../Dialog/Dialog';
-import styles from './styles.css';
-import SubjectForm from '../Forms/SubjectForm';
-import DeleteForm from '../Forms/DeleteForm';
-import TaskForm from '../Forms/TaskForm';
+import React from 'react'
+import Subject from '../Subject/Subject'
+import Dialog from '../Dialog/Dialog'
+import styles from './styles.css'
+import SubjectForm from '../Forms/SubjectForm'
+import DeleteForm from '../Forms/DeleteForm'
+import TaskForm from '../Forms/TaskForm'
+import { Button, Accordion } from 'react-bootstrap'
 
 
 export default function (props){
         return (
             <div>
-                <Button
-                 className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
-                 onClick={props.displayAddDialog}>
-                  <i className="material-icons">add</i>
-                 </Button>
-                <div className="mdl-list">
+                <Button onClick={props.displayAddDialog}>+</Button>
+                <Accordion>
                     {props.subjects.map((subject) =>
                         <Subject
-                        className="mdl-list__item"
                         key={subject.Id}
                         subject={subject}
                         addTaskClick={props.displayTaskDialog}
                         deleteClick={props.displayDeleteDialog}/>)}
-                </div>
+                </Accordion>
                 <Dialog modalIsOpen={props.getAddDialogDisplay}>
                   <SubjectForm
                     handleSubmit={props.addSubject}

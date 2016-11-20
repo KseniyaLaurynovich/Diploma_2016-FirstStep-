@@ -1,10 +1,14 @@
 import React from 'react'
 import Registration from '../components/Registration/Registration'
 import * as helpers from '../utils/accountHelper'
+import store from '../store'
+import { connect } from 'react-redux'
+import { registrationFailed } from '../actions/AccountActions'
 
 var RegistrationContainer = React.createClass({
-  username: "",
-  password: "",
+  contextTypes: {
+    router: React.PropTypes.object
+  },
   handleRegistration: function(e){
     e.preventDefault();
 
@@ -16,6 +20,9 @@ var RegistrationContainer = React.createClass({
 
     helpers.register(userData)
     .then(function(result){
+      this.context.router.push('/login');
+    },function(error){
+      store.dispath(registrationFailed(error));
     })
 
   },
@@ -23,11 +30,15 @@ var RegistrationContainer = React.createClass({
     return (
       <Registration
         handleSubmit={this.handleRegistration}
-        username={this.username}
-        password={this.password}
-        password={this.confirmPassword}/>
+        error={this.error}/>
     );
   }
 });
 
-export default RegistrationContainer;
+const mapStateToProps = store => {
+    return {
+        error: store.registration.error
+    };
+};
+
+export default connect(mapStateToProps)(RegistrationContainer);

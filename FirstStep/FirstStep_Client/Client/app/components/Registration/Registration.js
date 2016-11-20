@@ -1,11 +1,13 @@
 import React from 'react'
+import styles from './styles.css'
 import { renderTextBox } from '../Forms/Fields'
 import { Field, reduxForm } from 'redux-form'
+import { Button, Panel } from 'react-bootstrap'
 
 const validate = values => {
   const errors = {}
-  if (!values.username || values.username == '') {
-    errors.username = 'User name is required'
+  if (!values.email || values.email == '') {
+    errors.email = 'Email is required'
   }
   if(!values.password || values.password == ''){
     errors.password = 'Password is required'
@@ -22,20 +24,22 @@ const validate = values => {
 }
 
 const registrationForm = (props) => {
-  const { handleSubmit, pristine, handleCancel, submitting } = props
+  const { handleSubmit, pristine, handleCancel, submitting, error } = props
   return(
-    <form onSubmit={handleSubmit}>
-      <Field name="email"
-        type="email"
-        component={renderTextBox}
-        label="Email:" value={props.username}/>
-      <Field name="password" type="password" component={renderTextBox} label="Password:" value={props.password}/>
-      <Field name="confirmPassword" type="password" component={renderTextBox} label="Confirm password:" value={props.confirmPassword}/>
-
-      <div>
-        <button type="submit" disabled={pristine || submitting}>Sign up</button>
-      </div>
-    </form>
+    <Panel className={styles.form}>
+      <form onSubmit={handleSubmit}>
+        {error && <span>{error}</span>}
+        <Field name="email"
+          type="email"
+          component={renderTextBox}
+          label="Email:"/>
+        <Field name="password" type="password" component={renderTextBox} label="Password:" value={props.password}/>
+        <Field name="confirmPassword" type="password" component={renderTextBox} label="Confirm password:" value={props.confirmPassword}/>
+        <div>
+          <Button type="submit" disabled={pristine || submitting}>Sign up</Button>
+        </div>
+      </form>
+    </Panel>
   );
 };
 

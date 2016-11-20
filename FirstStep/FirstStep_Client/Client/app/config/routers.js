@@ -7,7 +7,7 @@ import RegistrationContainer from '../containers/RegistrationContainer';
 
 export default (
   <Router history={hashHistory}>
-    <Route path='/' component={requireAuthentication(SubjectsGridContainer, ["Teacher"])}>
+    <Route path='/' component={SubjectsGridContainer}>
       <IndexRoute component={SubjectsGridContainer} />
     </Route>
     <Route path="/login" component={LoginContainer}/>

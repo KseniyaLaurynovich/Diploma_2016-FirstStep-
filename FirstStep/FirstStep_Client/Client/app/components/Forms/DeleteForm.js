@@ -1,5 +1,5 @@
-import React from 'react';
-import Button from '../Button/Button';
+import React from 'react'
+import { Button } from 'react-bootstrap'
 
 export default function(props){
      const { handleOk, handleCancel, children } = props;
