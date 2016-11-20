@@ -22,14 +22,6 @@ namespace FirstStep_Api.Controllers
         private const string LocalLoginProvider = "Local";
 
         [HttpPost]
-        [Route("Logout")]
-        public IHttpActionResult Logout()
-        {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-            return Ok();
-        }
-
-        [HttpPost]
         [Route("ChangePassword")]
         public IHttpActionResult ChangePassword(ChangePasswordModel model)
         {

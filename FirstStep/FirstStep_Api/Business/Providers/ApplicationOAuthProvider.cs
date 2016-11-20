@@ -9,6 +9,8 @@ using Microsoft.Owin.Security.OAuth;
 using FirstStep_Api.App_Start;
 using System.Web;
 using System.Web.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Linq;
 
 namespace FirstStep_Api.Business.Providers
 {
@@ -29,6 +31,7 @@ namespace FirstStep_Api.Business.Providers
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
+            var roleManager = context.OwinContext.GetUserManager<ApplicationRoleManager>();
 
             var user = await userManager.FindAsync(context.UserName, context.Password);
 
@@ -43,7 +46,9 @@ namespace FirstStep_Api.Business.Providers
             ClaimsIdentity cookiesIdentity = user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
+            var roles = await userManager.GetRolesAsync(user.Id);
+
+            AuthenticationProperties properties = CreateProperties(user.UserName, roles);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -84,11 +89,12 @@ namespace FirstStep_Api.Business.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        private AuthenticationProperties CreateProperties(string userName, IList<string> roles)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "userName", userName }
+                { "userName", userName },
+                { "roles", string.Join(",", roles) }
             };
             return new AuthenticationProperties(data);
         }
