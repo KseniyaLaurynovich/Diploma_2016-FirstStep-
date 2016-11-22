@@ -2,13 +2,14 @@
 using BusinesServices.Contracts;
 using FirstStep_Api.Business.Helpers;
 using FirstStep_Api.Business.Response;
+using Microsoft.AspNet.Identity;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
 namespace FirstStep_Api.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Teacher")]
     [RoutePrefix("subjects")]
     public class SubjectController : ApiController
     {
@@ -23,7 +24,7 @@ namespace FirstStep_Api.Controllers
         [HttpGet]
         public HttpResponseMessage GetForUser()
         {
-            var currentUserId = RequestContext.Principal.Identity.ToString();
+            var currentUserId = User.Identity.GetUserId();
             var subjects = _subjectService.GetByUser(currentUserId);
 
             return Response.Create(Request, HttpStatusCode.Accepted, subjects);
@@ -33,7 +34,7 @@ namespace FirstStep_Api.Controllers
         [HttpPost]
         public HttpResponseMessage Save(Subject subject)
         {
-            subject.UserId = RequestContext.Principal.Identity.ToString(); 
+            subject.UserId = User.Identity.GetUserId(); 
             if (ModelState.IsValid)
             {
                 _subjectService.Save(subject);

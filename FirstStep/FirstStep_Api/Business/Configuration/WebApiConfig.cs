@@ -13,7 +13,8 @@ namespace FirstStep_Api.Business.Configuration
         {
             config.EnableCors();
             config.SuppressDefaultHostAuthentication();
-            //config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            config.Filters.Add(new AuthorizeAttribute());
 
             config.MapHttpAttributeRoutes();
         }
