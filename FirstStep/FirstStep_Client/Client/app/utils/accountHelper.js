@@ -3,7 +3,6 @@ import store from '../store'
 import { loginSuccess, loginFailed } from '../actions/AccountActions'
 import { push } from 'react-router-redux'
 
-
 export function login(email, password){
   var data = "username=" + email + "&password=" + password + "&grant_type=password";
   return axios({

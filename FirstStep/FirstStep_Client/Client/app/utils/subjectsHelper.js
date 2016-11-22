@@ -1,32 +1,40 @@
-import axios from 'axios';
-import store from '../store';
-import { getSubjectsSuccess, addSubjectSuccess, deleteSubjectSuccess, addTaskSuccess } from '../actions/SubjectsGridActions';
+import axios from 'axios'
+import { loadAuthCookie } from './cookieHelper'
 
-export function getSubjectsForUser (userId){
-    return axios.get('http://test_site.com/subjects/get/' + userId)
-    .then(function(response){
-        store.dispatch(getSubjectsSuccess(JSON.parse(response.data.Data)));
-        return response;
+export function getSubjectsForUser (){
+    var token = loadAuthCookie().jwt;
+    return  axios({
+      method: 'get',
+      url: 'http://test_site.com/subjects/get/',
+      headers:{"Authorization": "Bearer " + token }
     });
 };
 
 export function addSubject(subject){
-    return axios.post('http://test_site.com/subjects/save', subject)
-    .then(function(response){
-        store.dispatch(addSubjectSuccess(JSON.parse(response.data.Data)))
+    var token = loadAuthCookie().jwt;
+    return  axios({
+      method: 'post',
+      url: 'http://test_site.com/subjects/save',
+      headers:{"Authorization": "Bearer " + token },
+      data: subject
     });
 }
 
 export function addTask(task){
-    return axios.post('http://test_site.com/tasks/save', task)
-    .then(function(response){
-        store.dispatch(addTaskSuccess(JSON.parse(response.data.Data)))
+    var token = loadAuthCookie().jwt;
+    return  axios({
+      method: 'post',
+      url: 'http://test_site.com/tasks/save',
+      headers:{"Authorization": "Bearer " + token },
+      data: task
     });
 }
 
 export function deleteSubjectById(subjectId){
-    return axios.delete('http://test_site.com/subjects/delete/' + subjectId)
-    .then(function(response){
-        store.dispatch(deleteSubjectSuccess(subjectId))
+    var token = loadAuthCookie().jwt;
+    return  axios({
+      method: 'delete',
+      url: 'http://test_site.com/subjects/delete/' + subjectId,
+      headers:{"Authorization": "Bearer " + token }
     });
 }

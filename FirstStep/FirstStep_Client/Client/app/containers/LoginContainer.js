@@ -4,6 +4,7 @@ import * as helpers from '../utils/accountHelper'
 import store from '../store'
 import { connect } from 'react-redux'
 import { loginSuccess, loginFailed } from '../actions/AccountActions'
+import { login } from '../utils/cookieHelper'
 
 var LoginContainer = React.createClass({
   contextTypes: {
@@ -18,11 +19,15 @@ var LoginContainer = React.createClass({
 
     helpers.login(email, password)
     .then(function(result){
-        var username = result.data.userName;
-        var jwt = result.data.access_token;
-        var roles = result.data.roles.split(',');
+        var userData = {
+          username: result.data.userName,
+          jwt: result.data.access_token,
+          roles: result.data.roles.split(',')
+        }
+        var expires = result.data[".expires"];
 
-        store.dispatch(loginSuccess(username, jwt, roles));
+        store.dispatch(loginSuccess(userData.username, userData.jwt, userData.roles));
+        login(userData, Date.parse(expires));
         router.push("/");
       }, function(error){
         var loginError = error.response.data.error_description;

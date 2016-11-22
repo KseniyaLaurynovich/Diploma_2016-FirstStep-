@@ -5,11 +5,10 @@ using FirstStep_Api.Business.Response;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace FirstStep_Api.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [RoutePrefix("subjects")]
     public class SubjectController : ApiController
     {
@@ -20,11 +19,12 @@ namespace FirstStep_Api.Controllers
             _subjectService = subjectService;
         }
 
-        [Route("get/{userId}")]
+        [Route("get")]
         [HttpGet]
-        public HttpResponseMessage GetForUser(string userId)
+        public HttpResponseMessage GetForUser()
         {
-            var subjects = _subjectService.GetByUser(userId);
+            var currentUserId = RequestContext.Principal.Identity.ToString();
+            var subjects = _subjectService.GetByUser(currentUserId);
 
             return Response.Create(Request, HttpStatusCode.Accepted, subjects);
         }
@@ -33,6 +33,7 @@ namespace FirstStep_Api.Controllers
         [HttpPost]
         public HttpResponseMessage Save(Subject subject)
         {
+            subject.UserId = RequestContext.Principal.Identity.ToString(); 
             if (ModelState.IsValid)
             {
                 _subjectService.Save(subject);

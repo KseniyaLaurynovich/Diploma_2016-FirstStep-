@@ -1,40 +1,46 @@
 import React from 'react';
 import SubjectsGrid from '../components/SubjectsGrid/SubjectsGrid';
 import { connect } from 'react-redux';
-import { getSubjectsForUser, addSubject, deleteSubjectById, addTask } from '../utils/subjectsHelper';
-import { setAddDialogVisibility, setDeleteDialogVisibility, setTaskDialogVisibility } from '../actions/SubjectsGridActions';
 import store from '../store';
+import { getSubjectsForUser, addSubject, deleteSubjectById, addTask } from '../utils/subjectsHelper';
+import * as actions from '../actions/SubjectsGridActions';
 
 var SubjectListContainer = React.createClass({
     componentWillMount: function(){
-        getSubjectsForUser('f20d4514-88a1-4200-be97-4dbe56a3832b');
+        getSubjectsForUser()
+        .then(function(response){
+            store.dispatch(actions.getSubjectsSuccess(JSON.parse(response.data.Data)));
+            return response;
+        });
     },
     displayAddDialog: function(){
-        store.dispatch(setAddDialogVisibility(true));
+        store.dispatch(actions.setAddDialogVisibility(true));
     },
     hideAddDialog: function(){
-        store.dispatch(setAddDialogVisibility(false));
+        store.dispatch(actions.setAddDialogVisibility(false));
     },
     displayDeleteDialog: function(id){
-        store.dispatch(setDeleteDialogVisibility(true, id));
+        store.dispatch(actions.setDeleteDialogVisibility(true, id));
     },
     hideDeleteDialog: function(){
-        store.dispatch(setDeleteDialogVisibility(false));
+        store.dispatch(actions.setDeleteDialogVisibility(false));
     },
     displayTaskDialog: function(id){
-        store.dispatch(setTaskDialogVisibility(true, id));
+        store.dispatch(actions.setTaskDialogVisibility(true, id));
     },
     hideTaskDialog: function(){
-        store.dispatch(setTaskDialogVisibility(false));
+        store.dispatch(actions.setTaskDialogVisibility(false));
     },
     addSubject: function(e){
         e.preventDefault();
         var subjectName = e.target.elements.subjectName.value;
         var newSubject = {
-            UserId: 'f20d4514-88a1-4200-be97-4dbe56a3832b',
             Name: subjectName
         };
-        addSubject(newSubject);
+        addSubject(newSubject)
+        .then(function(response){
+            store.dispatch(actions.addSubjectSuccess(JSON.parse(response.data.Data)))
+        });
     },
     addTask: function(e){
         e.preventDefault();
@@ -45,10 +51,16 @@ var SubjectListContainer = React.createClass({
             Description: taskDescription,
             SubjectId: this.props.currentSubjectId
         };
-        addTask(newTask);
+        addTask(newTask)
+        .then(function(response){
+            store.dispatch(actions.addTaskSuccess(JSON.parse(response.data.Data)))
+        });
     },
     deleteSubject: function(){
-        deleteSubjectById(this.props.currentSubjectId);
+        deleteSubjectById(this.props.currentSubjectId)
+        .then(function(response){
+            store.dispatch(actions.deleteSubjectSuccess(subjectId))
+        });
     },
     render: function(){
         return (

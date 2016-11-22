@@ -23,3 +23,9 @@ export function  registrationFailed(registrationError){
     registrationError
   }
 }
+
+export function logout(){
+  return {
+    types: types.LOGOUT
+  }
+}

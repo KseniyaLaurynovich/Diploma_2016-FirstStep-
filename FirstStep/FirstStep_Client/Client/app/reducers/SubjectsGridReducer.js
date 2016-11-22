@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes';
+import * as types from '../constants/ActionTypes'
 
 const initialState = {
     subjects: [],
@@ -32,6 +32,9 @@ export function subjectsGridReducer(state = initialState, action) {
 
     case types.ADD_TASK_SUCCESS:
         var current = state.subjects.filter((value) => {return value.Id === state.currentSubjectId})[0];
+        if(!current.Tasks){
+          current.Tasks = [];
+        }
         current.Tasks.push(action.task);
         return Object.assign({}, state, { isTaskAdding: false });
     }
