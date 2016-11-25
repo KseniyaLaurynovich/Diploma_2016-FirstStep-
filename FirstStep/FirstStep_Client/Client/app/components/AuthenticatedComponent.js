@@ -18,17 +18,14 @@ export function requireAuthentication(Component, allowedRoles) {
         }
         componentWillMount () {
             this.loadCookie();
-            this.checkAuth(this.props.isAuthenticated, this.props.roles);
-        }
-        componentWillReceiveProps (nextProps) {
-            this.loadCookie();
-            this.checkAuth(nextProps.isAuthenticated, this.props.roles);
+            var auth = store.getState().auth;
+            this.checkAuth(auth.isAuthenticated, auth.roles);
         }
         checkAuth (isAuthenticated, roles) {
             if (!isAuthenticated
                 || !allowedRoles.some(element => roles.indexOf(element) != -1)) {
                 let redirectAfterLogin = this.props.location.pathname;
-                window.location.href = CLIENT_ROOT_URL + '/login';
+                window.location.href = 'http://localhost:8080/#/login';
             }
         }
 
@@ -36,13 +33,13 @@ export function requireAuthentication(Component, allowedRoles) {
             return (
                 <div>
                     {this.props.isAuthenticated === true
-                      && allowedRoles.some(element => roles.indexOf(element) != -1
+                      && this.props.roles
+                      && allowedRoles.some(element => this.props.roles.indexOf(element) != -1)
                         ? <Component {...this.props}/>
                         : null
                     }
                 </div>
             )
-
         }
     }
 

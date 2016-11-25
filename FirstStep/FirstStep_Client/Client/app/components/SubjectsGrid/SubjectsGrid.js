@@ -32,7 +32,7 @@ export default function (props){
                   close={props.hideDeleteDialog}
                   header="Delere subject">
                   <DeleteForm
-                  handleOk={props.hideDeleteDialog}>
+                  handleOk={props.deleteSubject}>
                     {"Do you really want to delete this subject ?"}
                   </DeleteForm>
                 </Dialog>

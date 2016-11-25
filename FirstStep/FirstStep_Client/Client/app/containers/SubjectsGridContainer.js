@@ -57,7 +57,8 @@ var SubjectListContainer = React.createClass({
         });
     },
     deleteSubject: function(){
-        deleteSubjectById(this.props.currentSubjectId)
+        var subjectId = this.props.currentSubjectId;
+        deleteSubjectById(subjectId)
         .then(function(response){
             store.dispatch(actions.deleteSubjectSuccess(subjectId))
         });
