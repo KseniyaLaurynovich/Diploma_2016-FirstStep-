@@ -19,7 +19,7 @@ namespace FirstStep_Api
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:8080");
 
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
             {

@@ -13,7 +13,8 @@ export default function(props){
        </Navbar.Header>
        <Nav>
          <NavItem eventKey={1} href="#">Login</NavItem>
-         <NavItem eventKey={2} href="#">Logout</NavItem>
+         <NavItem eventKey={2} href="#">Tasks</NavItem>
+         <NavItem eventKey={3} href="#">Logout</NavItem>
        </Nav>
      </Navbar>
      <main className="container">

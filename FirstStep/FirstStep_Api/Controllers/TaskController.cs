@@ -9,7 +9,7 @@ using System.Web.Http.Cors;
 
 namespace FirstStep_Api.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [RoutePrefix("tasks")]
     public class TaskController : ApiController
     {
@@ -32,6 +32,14 @@ namespace FirstStep_Api.Controllers
 
             return Response.Create(
                 Request, HttpStatusCode.BadRequest, task, ControllerHelper.GetErrosFromModelState(ModelState));
+        }
+
+        [Route("get/{id}")]
+        [HttpGet]
+        public HttpResponseMessage GetById(string id)
+        {
+            var task = _taskService.GetById(id);
+            return Response.Create(Request, HttpStatusCode.Accepted, task);
         }
     }
 }
