@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinesModels
+namespace BusinesServices.Models
 {
     public class Task
     {
@@ -19,5 +20,10 @@ namespace BusinesModels
         public string SubjectId { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public IList<Test> Tests { get; set; }
+
+        public IList<Group> Groups { get; set; }
+
     }
 }

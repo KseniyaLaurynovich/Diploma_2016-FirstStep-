@@ -1,4 +1,4 @@
-﻿using BusinesModels;
+﻿using BusinesServices.Models;
 using BusinesServices.Contracts;
 using BusinesServices.Helpers;
 using ExpressMapper;
@@ -34,7 +34,7 @@ namespace BusinesServices.Services
             }
         }
 
-        private BusinesModels.File GetUserBaseFolder(string userId)
+        private BusinesServices.Models.File GetUserBaseFolder(string userId)
         {
             var userFolderPath = _storageProcedures.GetUserBaseFolder(userId);
 
@@ -44,10 +44,10 @@ namespace BusinesServices.Services
                 userFolderPath = _storageProcedures.GetUserBaseFolder(userId);
             }
 
-            return Mapper.Map<Storage.File, BusinesModels.File>(userFolderPath);
+            return Mapper.Map<Storage.File, BusinesServices.Models.File>(userFolderPath);
         }
 
-        private bool IsHasTheSameSubfolder(BusinesModels.File file, string subfolderName)
+        private bool IsHasTheSameSubfolder(BusinesServices.Models.File file, string subfolderName)
         {
             return _dataRepository.Items<Storage.File>()
                 .Where(f => f.ParentId == file.Id 

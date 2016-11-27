@@ -26,6 +26,6 @@ export function  registrationFailed(registrationError){
 
 export function logout(){
   return {
-    types: types.LOGOUT
+    type: types.LOGOUT
   }
 }

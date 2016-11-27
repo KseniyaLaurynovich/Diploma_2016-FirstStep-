@@ -47,6 +47,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,16 +64,17 @@
     <Compile Include="Contracts\ITaskService.cs" />
     <Compile Include="Helpers\ArchiveHelper.cs" />
     <Compile Include="Helpers\FolderHelper.cs" />
+    <Compile Include="Models\File.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Subject.cs" />
+    <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\Test.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\SubjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TaskService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinesModels\BusinesModels.csproj">
-      <Project>{d1b9b948-50df-4528-a26c-bb21de86e588}</Project>
-      <Name>BusinesModels</Name>
-    </ProjectReference>
     <ProjectReference Include="..\FirstStep_Common\FirstStep_Common.csproj">
       <Project>{c9660770-c226-42e9-bc4d-2b5c5b232bac}</Project>
       <Name>FirstStep_Common</Name>

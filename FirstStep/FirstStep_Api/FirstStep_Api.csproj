@@ -211,10 +211,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BusinesModels\BusinesModels.csproj">
-      <Project>{d1b9b948-50df-4528-a26c-bb21de86e588}</Project>
-      <Name>BusinesModels</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BusinesServices\BusinesServices.csproj">
       <Project>{0ca7b780-a3c4-4174-832f-23ca9ec6b1a3}</Project>
       <Name>BusinesServices</Name>

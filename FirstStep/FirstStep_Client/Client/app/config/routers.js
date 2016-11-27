@@ -13,7 +13,7 @@ export default (
       <IndexRoute component={requireAuthentication(SubjectsGridContainer, ["Teacher"])} />
       <Route path="/login" component={LoginContainer}/>
       <Route path="/registration" component={RegistrationContainer}/>
-      <Route path="/task/:taskId" component={TaskDetailsContainer}/>
+      <Route path="/task/:taskId" component={requireAuthentication(TaskDetailsContainer, ["Teacher"])}/>
     </Route>
   </Router>
 );

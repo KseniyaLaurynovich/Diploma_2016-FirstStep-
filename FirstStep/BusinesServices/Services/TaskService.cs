@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinesModels;
+using BusinesServices.Models;
 using BusinesServices.Contracts;
 using FirstStep_Storage.Contracts;
 using Storage = FirstStep_Storage.Models;
 using ExpressMapper;
+using System.Linq;
 
 namespace BusinesServices.Services
 {
@@ -25,7 +26,19 @@ namespace BusinesServices.Services
 
         public Task GetById(string id)
         {
-            return Mapper.Map<Storage.Task, Task>(_dataRepository.GetById<Storage.Task>(id));
+            var task = Mapper.Map<Storage.Task, Task>(_dataRepository.GetById<Storage.Task>(id));
+
+            var groupsIds = 
+                _dataRepository.Items<Storage.UserTask>().Where(g => g.TaskId.Equals(id)).Select(t => t.Id).ToList();
+            task.Groups = Mapper.Map<IList<Storage.Group>, IList<Group>>(
+                _dataRepository.Items<Storage.Group>().Where(g => groupsIds.Contains(g.Id)).ToList());
+
+            var testsIds =
+                            _dataRepository.Items<Storage.Test>().Where(g => g.TaskId.Equals(id)).Select(t => t.Id).ToList();
+            task.Tests = Mapper.Map<IList<Storage.Test>, IList<Test>>(
+                _dataRepository.Items<Storage.Test>().Where(g => testsIds.Contains(g.Id)).ToList());
+
+            return task;
         }
 
         public void Save(Task task)

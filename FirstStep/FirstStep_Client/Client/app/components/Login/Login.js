@@ -28,8 +28,6 @@ const loginForm = (props) => {
           <Link className="btn btn-default" to='/registration'>Registration</Link>
           <input className="btn btn-default" type="submit" disabled={pristine || submitting} value="Login"/>
         </div>
-
-        <Link to="/">Home</Link>
       </form>
     </Panel>
   );

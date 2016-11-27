@@ -1,4 +1,4 @@
-﻿namespace BusinesModels
+﻿namespace BusinesServices.Models
 {
     public class File
     {

@@ -4,15 +4,15 @@ using LinqToDB.Mapping;
 namespace FirstStep_Storage.Models
 {
     [Table(Name = "UserSubject")]
-    public class UserSubject : IHasIdentity
+    public class UserTask : IHasIdentity
     {
         [Column(Name = "Id"), PrimaryKey]
         public string Id { get; set; }
 
-        [Column(Name = "Subject_Id"), NotNull]
-        public string SubjectId { get; set; }
+        [Column(Name = "Task_Id"), NotNull]
+        public string TaskId { get; set; }
 
-        [Column(Name = "User_Id"), NotNull]
-        public string UserId { get; set; }
+        [Column(Name = "Group_Id"), NotNull]
+        public string GroupId { get; set; }
     }
 }

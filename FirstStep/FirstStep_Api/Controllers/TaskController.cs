@@ -1,4 +1,4 @@
-﻿using BusinesModels;
+﻿using BusinesServices.Models;
 using BusinesServices.Contracts;
 using FirstStep_Api.Business.Helpers;
 using FirstStep_Api.Business.Response;

@@ -12,9 +12,15 @@ export default function(props){
          </Navbar.Brand>
        </Navbar.Header>
        <Nav>
-         <NavItem eventKey={1} href="#">Login</NavItem>
-         <NavItem eventKey={2} href="#">Tasks</NavItem>
-         <NavItem eventKey={3} href="#">Logout</NavItem>
+
+         {props.roles.indexOf('Teacher') != -1
+         ? (<NavItem eventKey={2} href="#">Tasks</NavItem>)
+         : null}
+
+
+         {!props.isAuthenticated
+         ?(<NavItem eventKey={1} href="#" onClick={props.login}>Login</NavItem>)
+         :(<NavItem eventKey={3} href="#" onClick={props.logout}>Logout</NavItem>)}
        </Nav>
      </Navbar>
      <main className="container">

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusinesModels
+namespace BusinesServices.Models
 {
     public class Subject
     {

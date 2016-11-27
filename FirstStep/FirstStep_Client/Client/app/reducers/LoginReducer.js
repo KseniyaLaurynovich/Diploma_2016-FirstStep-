@@ -17,7 +17,6 @@ export function loginReducer(state = initialState, action) {
     case types.LOGIN_FAILED:
         return Object.assign({}, state, { error: action.loginError});
     case types.LOGOUT:
-      logout();
       return Object.assign({}, state, initialState);
     }
   return state;

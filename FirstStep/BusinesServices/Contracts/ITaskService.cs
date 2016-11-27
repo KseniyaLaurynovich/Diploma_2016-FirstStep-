@@ -1,4 +1,4 @@
-﻿using BusinesModels;
+﻿using BusinesServices.Models;
 using System.Collections.Generic;
 
 namespace BusinesServices.Contracts

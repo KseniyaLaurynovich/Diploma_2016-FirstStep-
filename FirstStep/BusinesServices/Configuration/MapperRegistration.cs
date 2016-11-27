@@ -1,6 +1,6 @@
 ﻿using ExpressMapper;
 using Storage = FirstStep_Storage.Models;
-using Busines = BusinesModels;
+using Busines = BusinesServices.Models;
 using FirstStep_Common;
 
 namespace BusinesServices.Configuration
