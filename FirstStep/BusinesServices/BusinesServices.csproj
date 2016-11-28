@@ -60,8 +60,11 @@
     <Compile Include="Configuration\DependencyResolverPackage.cs" />
     <Compile Include="Configuration\MapperRegistration.cs" />
     <Compile Include="Contracts\IFileService.cs" />
+    <Compile Include="Contracts\IGroupService.cs" />
+    <Compile Include="Contracts\IProjectService.cs" />
     <Compile Include="Contracts\ISubjectService.cs" />
     <Compile Include="Contracts\ITaskService.cs" />
+    <Compile Include="Contracts\ITestService.cs" />
     <Compile Include="Helpers\ArchiveHelper.cs" />
     <Compile Include="Helpers\FolderHelper.cs" />
     <Compile Include="Models\File.cs" />
