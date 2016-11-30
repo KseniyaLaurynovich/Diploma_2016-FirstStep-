@@ -23,7 +23,5 @@ namespace BusinesServices.Models
 
         public IList<Test> Tests { get; set; }
 
-        public IList<Group> Groups { get; set; }
-
     }
 }

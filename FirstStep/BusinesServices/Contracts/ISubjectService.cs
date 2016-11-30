@@ -8,5 +8,6 @@ namespace BusinesServices.Contracts
         IList<Subject> GetByUser(string userId);
         void Save(Subject subject);
         void Delete(string id);
+        void AssignToGroup(string groupId, string subjectId);
     }
 }

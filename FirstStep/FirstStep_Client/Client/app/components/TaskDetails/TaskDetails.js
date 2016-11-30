@@ -11,7 +11,8 @@ export default function(props){
       </Tab>
       <Tab eventKey={2} title="Tests">Tab 2 content</Tab>
       <Tab eventKey={3} title="Assing groups">Tab 3 content</Tab>
-      <Tab eventKey={3} title="History">Tab 4 content</Tab>
+      <Tab eventKey={4} title="History">Tab 4 content</Tab>
+      <Tab eventKey={5} title="Visibility">Tab 5 content</Tab>
     </Tabs>
   );
 }

@@ -12,6 +12,7 @@ namespace FirstStep_Storage.Configuration
             container.Register<ISubjectService, SubjectService>(Lifestyle.Scoped);
             container.Register<ITaskService, TaskService>(Lifestyle.Scoped);
             container.Register<IFileService, FileService>(Lifestyle.Scoped);
+            container.Register<IGroupService, GroupService>(Lifestyle.Scoped);
         }
     }
 }

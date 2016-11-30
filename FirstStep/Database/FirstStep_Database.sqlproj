@@ -77,12 +77,13 @@
     <Build Include="dbo\Tables\TryingHistory.sql" />
     <Build Include="dbo\Tables\Trying.sql" />
     <Build Include="dbo\Tables\UserGroup.sql" />
-    <Build Include="dbo\Tables\UserTask.sql" />
+    <Build Include="dbo\Tables\GroupSubject.sql" />
     <Build Include="dbo\Tables\Folder.sql" />
     <Build Include="dbo\Tables\FileTable.sql" />
     <Build Include="dbo\StorageProcedures\CreateUserBaseFolder.sql" />
     <Build Include="dbo\StorageProcedures\GetUserBaseFolder.sql" />
     <Build Include="dbo\StorageProcedures\GetProjectFolder.sql" />
+    <Build Include="dbo\Tables\TaskVisibility.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="FirstStep_Database.refactorlog" />

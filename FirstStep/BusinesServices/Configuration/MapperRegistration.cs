@@ -12,6 +12,7 @@ namespace BusinesServices.Configuration
             Mapper.Register<Storage.Subject, Busines.Subject>();
             Mapper.Register<Storage.Task, Busines.Task>();
             Mapper.Register<Storage.File, Busines.File>();
+            Mapper.Register<Storage.Group, Busines.Group>();
         } 
     }
 }

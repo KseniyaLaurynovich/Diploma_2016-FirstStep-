@@ -1,9 +1,11 @@
 ﻿using BusinesServices.Models;
+using System.Collections.Generic;
 
 namespace BusinesServices.Contracts
 {
     public interface IGroupService
     {
+        IList<Group> GetAll();
         void Save(Group group);
         void Delete(string id);
         void GetById(string id);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BusinesServices.Models
@@ -14,5 +13,7 @@ namespace BusinesServices.Models
         public string Name { get; set; }
 
         public IList<Task> Tasks { get; set; }
+
+        public IList<Group> AssignGroups { get; set; }
     }
 }

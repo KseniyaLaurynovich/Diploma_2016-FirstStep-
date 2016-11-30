@@ -28,11 +28,6 @@ namespace BusinesServices.Services
         {
             var task = Mapper.Map<Storage.Task, Task>(_dataRepository.GetById<Storage.Task>(id));
 
-            var groupsIds = 
-                _dataRepository.Items<Storage.UserTask>().Where(g => g.TaskId.Equals(id)).Select(t => t.Id).ToList();
-            task.Groups = Mapper.Map<IList<Storage.Group>, IList<Group>>(
-                _dataRepository.Items<Storage.Group>().Where(g => groupsIds.Contains(g.Id)).ToList());
-
             var testsIds =
                             _dataRepository.Items<Storage.Test>().Where(g => g.TaskId.Equals(id)).Select(t => t.Id).ToList();
             task.Tests = Mapper.Map<IList<Storage.Test>, IList<Test>>(
