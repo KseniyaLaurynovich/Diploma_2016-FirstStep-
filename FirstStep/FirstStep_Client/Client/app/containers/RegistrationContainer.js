@@ -18,9 +18,10 @@ var RegistrationContainer = React.createClass({
       confirmPassword: e.target.elements.confirmPassword.value
     }
 
+    var router = this.context.router;
     helpers.register(userData)
     .then(function(result){
-      this.context.router.push('/login');
+      router.push('/login');
     },function(error){
       store.dispath(registrationFailed(error));
     })

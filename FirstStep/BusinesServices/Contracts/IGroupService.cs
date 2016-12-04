@@ -8,9 +8,10 @@ namespace BusinesServices.Contracts
         IList<Group> GetAll();
         void Save(Group group);
         void Delete(string id);
-        void GetById(string id);
-        void AssignUser(string userId);
-        void AssignUsers(string[] usersIds);
-        void RemoveFromGroup(string userId);
+        Group GetById(string id);
+
+        void AssignToGroup(string groupId, string subjectId);
+
+        void UnassignFromGroup(string groupId, string subjectId);
     }
 }

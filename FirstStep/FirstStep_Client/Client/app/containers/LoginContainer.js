@@ -25,10 +25,17 @@ var LoginContainer = React.createClass({
           roles: result.data.roles.split(',')
         }
         var expires = result.data[".expires"];
+        var date = new Date(Date.parse(expires));
 
-        store.dispatch(loginSuccess(userData.username, userData.jwt, userData.roles));
-        login(userData, Date.parse(expires));
-        router.push("/");
+        store.dispatch(loginSuccess(userData.username, userData.jwt, userData.roles, date));
+        login(userData, date);
+
+        if(userData.roles.indexOf('Admin') !== -1){
+          router.push("/admin");
+        }
+        else{
+          router.push("/");
+        }
       }, function(error){
         var loginError = error.response.data.error_description;
         store.dispatch(loginFailed(loginError));

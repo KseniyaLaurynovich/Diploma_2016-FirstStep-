@@ -1,11 +1,12 @@
 import * as types from '../constants/ActionTypes'
 
-export function  loginSuccess(username, jwt, roles){
+export function  loginSuccess(username, jwt, roles, expires){
   return{
     type: types.LOGIN_SUCCESS,
     username,
     jwt,
     roles,
+    expires,
     isAuthenticated: true
   }
 }
@@ -27,5 +28,12 @@ export function  registrationFailed(registrationError){
 export function logout(){
   return {
     type: types.LOGOUT
+  }
+}
+
+export function getAllUsersSuccess(users){
+  return{
+    type: types.GET_ALL_USERS_SUCCESS,
+    users
   }
 }

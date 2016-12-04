@@ -1,16 +1,16 @@
-﻿using FirstStep_Storage.Contracts;
+﻿using System;
+using FirstStep_Storage.Contracts;
 using FirstStep_Storage.Models;
 using FirstStep_Storage.Models.Contracts;
 using System.Linq;
-using System;
 using LinqToDB;
 
 namespace FirstStep_Storage.Repositories
 {
-    internal class DataRepository : IDataRepository
+    public class DataRepository<T> : IDataRepository<T>
+        where T : class, IHasIdentity
     {
-        public T GetById<T>(string id)
-            where T : class, IHasIdentity
+        public virtual T GetById(string id)
         {
             using (var db = new FirstStepDb())
             {
@@ -19,8 +19,7 @@ namespace FirstStep_Storage.Repositories
             }
         }
 
-        public string Save<T>(T obj)
-            where T : class, IHasIdentity
+        public virtual string Save(T obj) 
         {
             using (var dbConnection = new FirstStepDb())
             {
@@ -29,6 +28,7 @@ namespace FirstStep_Storage.Repositories
                     obj.Id = Guid.NewGuid().ToString();
                     dbConnection.InsertWithIdentity(obj);
                 }
+                else
                 {
                     dbConnection.Update(obj);
                 }
@@ -37,8 +37,7 @@ namespace FirstStep_Storage.Repositories
             }
         }
 
-        public void Delete<T>(T obj)
-            where T : class, IHasIdentity
+        public virtual void Delete(T obj)
         {
             using (var dbConnection = new FirstStepDb())
             {
@@ -46,14 +45,13 @@ namespace FirstStep_Storage.Repositories
             }
         }
 
-        public IQueryable<T> Items<T>()
-            where T : class, IHasIdentity
+        public virtual IQueryable<T> Items()
         {
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
 
             using (var dbConnection = new FirstStepDb())
             {
-                return dbConnection.GetTable<T>().AsQueryable();
+                return dbConnection.GetTable<T>();
             }
         }
     }

@@ -9,7 +9,11 @@ namespace FirstStep_Storage.Configuration
     {
         public void RegisterServices(Container container)
         {
-            container.Register<IDataRepository, DataRepository>(Lifestyle.Scoped);
+            container.Register<IFileRepository, FileRepository>(Lifestyle.Scoped);
+            container.Register<ISubjectRepository, SubjectRespository>(Lifestyle.Scoped);
+            container.Register<ITaskRepository, TaskRepository>(Lifestyle.Scoped);
+            container.Register<IGroupRepository, GroupRepository>(Lifestyle.Scoped);
+            container.Register<ISubjectGroupRepository, SubjectGroupRepository>(Lifestyle.Scoped);
             container.Register<IStorageProcedureRepository, StorageProcedureRepository>(Lifestyle.Scoped);
         }
     }

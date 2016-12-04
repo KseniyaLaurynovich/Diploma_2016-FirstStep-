@@ -13,7 +13,7 @@ export function requireAuthentication(Component, allowedRoles) {
           var userData = loadAuthCookie();
           if(userData){
             store.dispatch(
-              loginSuccess(userData.username, userData.jwt, userData.roles));
+              loginSuccess(userData.username, userData.jwt, userData.roles, userData.expires));
           }
         }
         componentWillMount () {

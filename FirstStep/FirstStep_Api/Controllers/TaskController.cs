@@ -5,11 +5,10 @@ using FirstStep_Api.Business.Response;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 
 namespace FirstStep_Api.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Teacher")]
     [RoutePrefix("tasks")]
     public class TaskController : ApiController
     {

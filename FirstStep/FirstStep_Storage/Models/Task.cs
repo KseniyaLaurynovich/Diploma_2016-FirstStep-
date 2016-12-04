@@ -25,5 +25,8 @@ namespace FirstStep_Storage.Models
 
         [Column(Name = "CreationDate"), NotNull]
         public DateTime CreationDate { get; set; }
+
+        [Association(ThisKey = "Id", OtherKey = "TaskId")]
+        public ICollection<Test> Tests { get; set; }
     }
 }

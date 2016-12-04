@@ -11,36 +11,30 @@ namespace BusinesServices.Services
 {
     public class TaskService : ITaskService
     {
-        private IDataRepository _dataRepository;
+        private readonly ITaskRepository _taskRepository;
 
-        public TaskService(IDataRepository dataRepository)
+        public TaskService(ITaskRepository taskRepository)
         {
-            _dataRepository = dataRepository;
+            _taskRepository = taskRepository;
         }
 
         public void Delete(string id)
         {
-            var deletingTask = _dataRepository.GetById<Storage.Task>(id);
-            _dataRepository.Delete(deletingTask);
+            var deletingTask = _taskRepository.GetById(id);
+            _taskRepository.Delete(deletingTask);
         }
 
         public Task GetById(string id)
         {
-            var task = Mapper.Map<Storage.Task, Task>(_dataRepository.GetById<Storage.Task>(id));
-
-            var testsIds =
-                            _dataRepository.Items<Storage.Test>().Where(g => g.TaskId.Equals(id)).Select(t => t.Id).ToList();
-            task.Tests = Mapper.Map<IList<Storage.Test>, IList<Test>>(
-                _dataRepository.Items<Storage.Test>().Where(g => testsIds.Contains(g.Id)).ToList());
-
-            return task;
+            return Mapper.Map<Storage.Task, Task>(
+                _taskRepository.GetById(id)); ;
         }
 
         public void Save(Task task)
         {
             var storageTask = Mapper.Map<Task, Storage.Task>(task);
             storageTask.CreationDate = DateTime.Now;
-            var id = _dataRepository.Save(storageTask);
+            var id = _taskRepository.Save(storageTask);
 
             task.Id = id;
             task.CreationDate = storageTask.CreationDate;

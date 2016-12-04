@@ -9,8 +9,8 @@ namespace FirstStep_Storage.Models
         [Column(Name = "Id"), PrimaryKey]
         public string Id { get; set; }
 
-        [Column(Name = "Tasks_Id"), NotNull]
-        public int TaskId { get; set; }
+        [Column(Name = "Task_Id"), NotNull]
+        public string TaskId { get; set; }
 
         [Column(Name = "Name"), NotNull]
         public string Name { get; set; }

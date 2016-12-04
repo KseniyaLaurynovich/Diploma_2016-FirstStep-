@@ -148,10 +148,6 @@
       <HintPath>..\packages\WebActivator.1.4.4\lib\net40\WebActivator.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebApi.StructureMap, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebApi.StructureMap.1.0.7.0\lib\WebApi.StructureMap.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -193,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AssignedGroup.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\CreateRoleModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />

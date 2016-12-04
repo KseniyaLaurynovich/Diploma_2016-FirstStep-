@@ -1,58 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
 using BusinesServices.Contracts;
-using BusinesServices.Models;
 using FirstStep_Storage.Contracts;
 using System.Linq;
 using ExpressMapper;
+using FirstStep_Storage.Models;
+using Group = BusinesServices.Models.Group;
 
 namespace BusinesServices.Services
 {
     internal class GroupService : IGroupService
     {
-        private IDataRepository _dataRepository;
+        private readonly IGroupRepository _groupRepository;
 
-        public GroupService(IDataRepository dataRepository)
-        {
-            _dataRepository = dataRepository;
-        }
+        private readonly ISubjectGroupRepository _subjectGroupRepository;
 
-        public void AssignUser(string userId)
+        public GroupService(IGroupRepository groupRepository, ISubjectGroupRepository subjectGroupRepository)
         {
-            throw new NotImplementedException();
-        }
-
-        public void AssignUsers(string[] usersIds)
-        {
-            throw new NotImplementedException();
+            _groupRepository = groupRepository;
+            _subjectGroupRepository = subjectGroupRepository;
         }
 
         public void Delete(string id)
         {
-            throw new NotImplementedException();
+            var group = _groupRepository.GetById(id);
+
+            if (group != null)
+            {
+                _groupRepository.Delete(group);
+            }
         }
 
         public IList<Group> GetAll()
         {
-            return _dataRepository
-                .Items<FirstStep_Storage.Models.Group>()
+            return _groupRepository
+                .Items()
                 .Select(g => Mapper.Map< FirstStep_Storage.Models.Group, Group>(g))
                 .ToList();
         }
 
-        public void GetById(string id)
+        public Group GetById(string id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveFromGroup(string userId)
-        {
-            throw new NotImplementedException();
+            return Mapper.Map<FirstStep_Storage.Models.Group, Group>
+                (_groupRepository.GetById(id));
         }
 
         public void Save(Group group)
         {
-            throw new NotImplementedException();
+            group.Id = _groupRepository.Save(
+                Mapper.Map<Group, FirstStep_Storage.Models.Group>(group));
+        }
+
+        public void AssignToGroup(string groupId, string subjectId)
+        {
+            _subjectGroupRepository.Save(new SubjectGroup()
+            {
+                SubjectId = subjectId,
+                GroupId = groupId
+            });
+        }
+
+        public void UnassignFromGroup(string groupId, string subjectId)
+        {
+            var subjectGroup = _subjectGroupRepository.Items()
+                .FirstOrDefault(sg => sg.GroupId == groupId && sg.SubjectId == subjectId);
+
+            if (subjectGroup != null)
+            {
+                _subjectGroupRepository.Delete(subjectGroup);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ export function logout(){
 
 export function login(userData, expires){
     logout();
-    cookie.save('userData', userData, { path: '/' });
+    cookie.save('userData', userData, { path: '/', expires: expires});
 }
 
 export function loadAuthCookie(){

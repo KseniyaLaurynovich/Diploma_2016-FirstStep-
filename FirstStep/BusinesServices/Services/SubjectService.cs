@@ -5,38 +5,33 @@ using FirstStep_Storage.Contracts;
 using System.Collections.Generic;
 using System.Linq;
 using Storage = FirstStep_Storage.Models;
-using System;
 
 namespace BusinesServices.Services
 {
     public class SubjectService : ISubjectService
     {
-        private IDataRepository _dataRepository;
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly IGroupRepository _groupRepository;
 
-        public SubjectService(IDataRepository dataRepository)
+        public SubjectService(ISubjectRepository subjectRepository, 
+            IGroupRepository groupRepository)
         {
-            _dataRepository = dataRepository;
+            _subjectRepository = subjectRepository;
+            _groupRepository = groupRepository;
         }
 
         public IList<Subject> GetByUser(string userId)
         {
-            var subjects = _dataRepository.Items<Storage.Subject>()
-                .Where(subject => subject.UserId.Equals(userId))
+            var subjects = _subjectRepository.GetByUser(userId)
                 .Select(Mapper.Map<Storage.Subject, Subject>)
                 .ToList();
 
-            foreach(var subject in subjects??Enumerable.Empty<Subject>())
+            foreach(var subject in subjects)
             {
-                subject.Tasks = _dataRepository.Items<Storage.Task>()
-                    .Where(task => task.SubjectId.Equals(subject.Id))
-                    .Select(Mapper.Map<Storage.Task, Task>)
+                subject.AssignGroups = _groupRepository
+                    .GetGroupsBySubject(subject.Id)
+                    .Select(Mapper.Map<Storage.Group, Group>)
                     .ToList();
-
-                subject.AssignGroups = Mapper.Map<List<Storage.Group>, List<Group>>(
-                                      (from gs in _dataRepository.Items<Storage.GroupSubject>()
-                                       join g in _dataRepository.Items<Storage.Group>() on gs.GroupId equals g.Id
-                                       where gs.SubjectId == subject.Id
-                                       select g).ToList());
             }
 
             return subjects;
@@ -45,25 +40,17 @@ namespace BusinesServices.Services
         public void Save(Subject subject)
         {
             var storageSubject = Mapper.Map<Subject, Storage.Subject>(subject);
-            var id = _dataRepository.Save(storageSubject);
+            var id = _subjectRepository.Save(storageSubject);
 
             subject.Id = id;
         }
 
         public void Delete(string id)
         {
-            var deletingSubject = _dataRepository.GetById<Storage.Subject>(id);
-            _dataRepository.Delete(deletingSubject);
+            var deletingSubject = _subjectRepository.GetById(id);
+            _subjectRepository.Delete(deletingSubject);
         }
 
-        public void AssignToGroup(string groupId, string subjectId)
-        {
-            _dataRepository.Save(
-                new FirstStep_Storage.Models.GroupSubject
-                {
-                    GroupId = groupId,
-                    SubjectId = subjectId
-                });
-        }
+        
     }
 }

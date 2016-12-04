@@ -1,5 +1,4 @@
-﻿using BusinesServices.Models;
-using BusinesServices.Contracts;
+﻿using BusinesServices.Contracts;
 using BusinesServices.Helpers;
 using ExpressMapper;
 using FirstStep_Storage.Contracts;
@@ -11,12 +10,13 @@ namespace BusinesServices.Services
 {
     internal class FileService : IFileService
     {
-        private readonly IDataRepository _dataRepository;
+        private readonly IFileRepository _fileRepository;
         private readonly IStorageProcedureRepository _storageProcedures;
 
-        public FileService(IDataRepository dataRepository, IStorageProcedureRepository storageProcedures)
+        public FileService(IFileRepository fileRepository, 
+            IStorageProcedureRepository storageProcedures)
         {
-            _dataRepository = dataRepository;
+            _fileRepository = fileRepository;
             _storageProcedures = storageProcedures;
         }
 
@@ -49,10 +49,10 @@ namespace BusinesServices.Services
 
         private bool IsHasTheSameSubfolder(BusinesServices.Models.File file, string subfolderName)
         {
-            return _dataRepository.Items<Storage.File>()
-                .Where(f => f.ParentId == file.Id 
-                    && f.Name.ToUpper() == subfolderName.ToUpper())
-                .Any();
+            return _fileRepository
+                .Items()
+                .Any(f => f.ParentId == file.Id 
+                    && f.Name.ToUpper().Equals(subfolderName.ToUpper()));
         }
 
     }

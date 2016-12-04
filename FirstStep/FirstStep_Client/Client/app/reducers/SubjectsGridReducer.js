@@ -2,10 +2,13 @@ import * as types from '../constants/ActionTypes'
 
 const initialState = {
     subjects: [],
+    subject: null,
     isTaskAdding: false,
     isAdding: false,
     isDeleting: false,
-    currentSubjectId: null
+    isGroupManaging: false,
+    currentSubjectId: null,
+    groups: []
 };
 
 export function subjectsGridReducer(state = initialState, action) {
@@ -30,6 +33,9 @@ export function subjectsGridReducer(state = initialState, action) {
     case types.CHANGE_TASK_DIALOG_VISIBILITY:
         return Object.assign({}, state, { currentSubjectId: action.subjectId, isTaskAdding: action.isTaskAdding });
 
+    case types.CHANGE_GROUP_DIALOG_VISIBILITY:
+        return Object.assign({}, state, { isGroupManaging: action.isGroupManaging, subject: action.subject });
+
     case types.ADD_TASK_SUCCESS:
         var current = state.subjects.filter((value) => {return value.Id === state.currentSubjectId})[0];
         if(!current.Tasks){
@@ -37,6 +43,19 @@ export function subjectsGridReducer(state = initialState, action) {
         }
         current.Tasks.push(action.task);
         return Object.assign({}, state, { isTaskAdding: false });
+
+    case types.GET_GROUPS_SUCCESS:
+      return Object.assign({}, state, {groups: action.groups});
+
+    case types.ASSIGN_GROUP_SUCCESS:
+      var refreshSubjects = state.subjects.filter((item) => item.Id !== action.subject.Id);
+      refreshSubjects.push(action.subject);
+      return Object.assign({}, state, {subject: action.subject, subjects: refreshSubjects});
+
+    case types.UNASSIGN_GROUP_SUCCESS:
+      var refreshSubjects = state.subjects.filter((item) => item.Id !== action.subject.Id);
+      refreshSubjects.push(action.subject);
+      return Object.assign({}, state, {subject: action.subject, subjects: refreshSubjects});
     }
   return state;
 };

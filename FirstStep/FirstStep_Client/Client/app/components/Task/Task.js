@@ -4,13 +4,13 @@ import { Button, Panel} from 'react-bootstrap'
 import { Link } from 'react-router'
 
 export default function (props){
+  console.log(props.task)
         var link = "/task/" + props.task.Id;
         return(
-        <Panel className={styles.container} header={props.task.Name} eventKey={props.task.Id} >
-               {props.task.Description}
-          <div>
-            <Link className="btn btn-default" to={link}>...</Link>
-          </div>
-        </Panel>
+        <div className="col-md-4">
+           <h1>{props.task.Name}</h1>
+           <p>{props.task.Description}</p>
+           <Link className="btn btn-primary" to={link}>More</Link>
+         </div>
         );
 };

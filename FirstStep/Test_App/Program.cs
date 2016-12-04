@@ -12,6 +12,10 @@ namespace Test_App
     {
         static void Main(string[] args)
         {
+            var rep = new GroupRepository();
+            var ss = rep.GetGroupsBySubject("a203326d-7cfd-4988-b9d2-9654c26f589a");
+
+
             #region Compilator
 
             //var configSection = (CppCompilerSection)ConfigurationManager.GetSection("compilerGroup/cppCompiler");
@@ -57,7 +61,7 @@ namespace Test_App
             //_subjectRepository.Add(newTest);
 
             //_subjectRepository.Delete(newTest);
-            
+
 
             #endregion
         }

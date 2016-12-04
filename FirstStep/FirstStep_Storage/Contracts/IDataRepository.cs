@@ -3,18 +3,15 @@ using System.Linq;
 
 namespace FirstStep_Storage.Contracts
 {
-    public interface IDataRepository
+    public interface IDataRepository<T>
+        where T : class, IHasIdentity
     {
-        string Save<T>(T obj)
-            where T : class, IHasIdentity;
+        string Save(T obj);
 
-        void Delete<T>(T obj)
-            where T : class, IHasIdentity;
+        void Delete(T obj);
 
-        T GetById<T>(string id)
-            where T : class, IHasIdentity;
+        T GetById(string id);
 
-        IQueryable<T> Items<T>()
-            where T : class, IHasIdentity;
+        IQueryable<T> Items();
     }
 }

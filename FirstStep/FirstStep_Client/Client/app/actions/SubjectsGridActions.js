@@ -23,6 +23,14 @@ export function setDeleteDialogVisibility(visible, subjectId){
     };
 };
 
+export function setManageGroupsDialogVisibility(visible, subject){
+    return{
+        type: types.CHANGE_GROUP_DIALOG_VISIBILITY,
+        isGroupManaging: visible,
+        subject
+    };
+};
+
 export function addSubjectSuccess(newSubject){
     return{
         type: types.ADD_SUBJECT_SUCCESS,

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import store from '../store';
 import { getSubjectsForUser, addSubject, deleteSubjectById, addTask } from '../utils/subjectsHelper';
 import * as actions from '../actions/SubjectsGridActions';
+import * as groupsActions from '../actions/GroupsActions';
+import { getAllGroups, assignGroup, unassignGroup } from '../utils/groupsHelper'
 
 var SubjectListContainer = React.createClass({
     componentWillMount: function(){
@@ -24,6 +26,17 @@ var SubjectListContainer = React.createClass({
     },
     hideDeleteDialog: function(){
         store.dispatch(actions.setDeleteDialogVisibility(false));
+    },
+    displayManageGroupDialog: function(subject){
+        store.dispatch(actions.setManageGroupsDialogVisibility(true, subject));
+
+        getAllGroups().then(function(result){
+          var groups = JSON.parse(result.data.Data);
+          store.dispatch(groupsActions.getGroupsSuccess(groups));
+        });
+    },
+    hideManageGroupDialog: function(){
+        store.dispatch(actions.setManageGroupsDialogVisibility(false));
     },
     displayTaskDialog: function(id){
         store.dispatch(actions.setTaskDialogVisibility(true, id));
@@ -63,26 +76,49 @@ var SubjectListContainer = React.createClass({
             store.dispatch(actions.deleteSubjectSuccess(subjectId))
         });
     },
+    assignSubjectGroup: function(subject, group){
+      assignGroup(subject.Id, group.Id)
+      .then(function(result){
+        var groupId = group.Id;
+        subject.AssignGroups.push(group);
+        store.dispatch(groupsActions.assignGroupSuccess(subject));
+      })
+    },
+    unassignSubjectGroup: function(subject, group){
+      unassignGroup(subject.Id, group.Id)
+      .then(function(result){
+        subject.AssignGroups =
+          subject.AssignGroups.filter((item) => item.Id !== group.Id);
+        store.dispatch(groupsActions.unassignGroupSuccess(subject));
+      })
+    },
     render: function(){
         return (
             <SubjectsGrid
                 subjects={this.props.subjects}
+                groups={this.props.groups}
+                subject={this.props.subject}
 
                 getAddDialogDisplay={this.props.isAdding}
                 getDeleteDialogDisplay={this.props.isDeleting}
                 getTaskDialogDisplay={this.props.isTaskAdding}
+                getManageGroupDialogDisplay={this.props.isGroupManaging}
 
                 displayAddDialog={this.displayAddDialog}
                 displayDeleteDialog={this.displayDeleteDialog}
                 displayTaskDialog={this.displayTaskDialog}
+                displayManageGroupsDialog={this.displayManageGroupDialog}
 
                 hideAddDialog={this.hideAddDialog}
                 hideDeleteDialog={this.hideDeleteDialog}
                 hideTaskDialog={this.hideTaskDialog}
+                hideManageGroupsDialog={this.hideManageGroupDialog}
 
                 addSubject={this.addSubject}
                 deleteSubject={this.deleteSubject}
-                addTask={this.addTask}/>
+                addTask={this.addTask}
+                assignGroup={this.assignSubjectGroup}
+                unassignGroup={this.unassignSubjectGroup}/>
         );
     }
 });
@@ -93,7 +129,10 @@ const mapStateToProps = store => {
         isTaskAdding: store.subjectsState.isTaskAdding,
         isAdding: store.subjectsState.isAdding,
         isDeleting: store.subjectsState.isDeleting,
-        currentSubjectId: store.subjectsState.currentSubjectId
+        currentSubjectId: store.subjectsState.currentSubjectId,
+        isGroupManaging: store.subjectsState.isGroupManaging,
+        subject: store.subjectsState.subject,
+        groups: store.subjectsState.groups
     };
 };
 
