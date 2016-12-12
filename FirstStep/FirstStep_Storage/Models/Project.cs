@@ -4,16 +4,16 @@ using System;
 
 namespace FirstStep_Storage.Models
 {
-    [Table(Name = "Project")]
+    [Table(Name = "Projects")]
     public class Project : IHasIdentity
     {
         [Column(Name = "Id"), PrimaryKey]
         public string Id { get; set; }
 
-        [Column(Name = "Task_Id"), NotNull]
+        [Column(Name = "TaskId"), NotNull]
         public string TaskId { get; set; }
 
-        [Column(Name = "User_Id"), NotNull]
+        [Column(Name = "UserId"), NotNull]
         public string UserId { get; set; }
 
         [Column(Name = "ProjectFolder"), NotNull]
@@ -30,5 +30,8 @@ namespace FirstStep_Storage.Models
 
         [Column(Name = "Mark"), Nullable]
         public int? Mark { get; set; }
+
+        [Association(ThisKey = "TaskId", OtherKey = "Id")]
+        public Task Task { get; set; }
     }
 }

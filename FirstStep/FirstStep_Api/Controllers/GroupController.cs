@@ -18,7 +18,7 @@ namespace FirstStep_Api.Controllers
         }
 
         [Route("get")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Admin")]
         [HttpGet]
         public HttpResponseMessage GetAll()
         {
@@ -28,7 +28,7 @@ namespace FirstStep_Api.Controllers
         }
 
         [Route("assign")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Admin")]
         [HttpPut]
         public HttpResponseMessage AssignSubjectToGroup(AssignedGroup model)
         {
@@ -37,7 +37,7 @@ namespace FirstStep_Api.Controllers
         }
 
         [Route("unassign")]
-        [Authorize(Roles = "Teacher")]
+        [Authorize(Roles = "Teacher, Admin")]
         [HttpPut]
         public HttpResponseMessage RemoveGropuFromSubject(AssignedGroup model)
         {

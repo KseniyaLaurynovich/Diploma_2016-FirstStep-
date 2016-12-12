@@ -5,7 +5,7 @@ namespace FirstStep_Api.Business.Models
     public class AuthContext : IdentityDbContext<ApplicationUser>
     {
         public AuthContext()
-            : base("FirstStepAuthDb", throwIfV1Schema: false)
+            : base("FirstStepDb", throwIfV1Schema: false)
         {
         }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table } from 'react-bootstrap'
+import { Table, ButtonGroup, Button } from 'react-bootstrap'
 
 export default function(props){
   return(
@@ -22,11 +22,17 @@ export default function(props){
           <td>{index + 1}</td>
           {
             props.fields.map((field) =>
-              <td key={item.Key + item[field.Key]}>{item[field.Key]}</td>
+              <td key={field.Key + item.Id}>{item[field.Key]}</td>
             )
           }
            <td>
-
+             <ButtonGroup>
+               {
+                 props.actions.map((action) =>
+                   <Button key={action.Title} bsSize="small" onClick={() => action.Action(item)} bsStyle="default">{action.Title}</Button>
+                 )
+               }
+            </ButtonGroup>
            </td>
          </tr>
        )

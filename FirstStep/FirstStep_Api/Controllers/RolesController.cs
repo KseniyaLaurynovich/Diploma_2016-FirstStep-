@@ -2,12 +2,16 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
+using FirstStep_Api.Business.Response;
+using FirstStep_Api.ViewModels;
 
 namespace FirstStep_Api.Controllers
 {
-    [RoutePrefix("Account")]
+    [RoutePrefix("Roles")]
     [Authorize(Roles = "Admin")]
     public class RolesController : BaseIdentityController
     {
@@ -27,10 +31,14 @@ namespace FirstStep_Api.Controllers
         }
 
         [HttpGet]
-        [Route("")]
+        [Route("getall")]
         public IHttpActionResult GetAllRoles()
         {
-            var roles = RoleManager.Roles;
+            var roles = RoleManager.Roles.Select(r => new RoleViewModel
+            {
+                Id = r.Id,
+                Name = r.Name
+            }).ToList();
             return Ok(roles);
         }
 
@@ -78,6 +86,34 @@ namespace FirstStep_Api.Controllers
 
             return NotFound();
 
+        }
+
+        [Route("assign/{userId}/{role}")]
+        [HttpPut]
+        public IHttpActionResult AssignSubjectToGroup(string userId, string role)
+        {
+            UserManager.AddToRole(userId, role);
+            var roleViewMOdel = RoleManager.Roles.Where(r => r.Name.Equals(role)).Select(r => new RoleViewModel
+            {
+                Id = r.Id,
+                Name = r.Name
+            }).FirstOrDefault();
+
+            return Ok(roleViewMOdel);
+        }
+
+        [Route("unassign/{userId}/{role}")]
+        [HttpPut]
+        public IHttpActionResult RemoveGropuFromSubject(string userId, string role)
+        {
+            UserManager.RemoveFromRole(userId, role);
+            var roleViewModel = RoleManager.Roles.Where(r => r.Name.Equals(role)).Select(r => new RoleViewModel
+            {
+                Id = r.Id,
+                Name = r.Name
+            }).FirstOrDefault();
+
+            return Ok(roleViewModel);
         }
     }
 }

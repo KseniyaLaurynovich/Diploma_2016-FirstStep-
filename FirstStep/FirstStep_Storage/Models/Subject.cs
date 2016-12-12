@@ -4,13 +4,13 @@ using LinqToDB.Mapping;
 
 namespace FirstStep_Storage.Models
 {
-    [Table(Name = "Subject")]
+    [Table(Name = "Subjects")]
     public class Subject : IHasIdentity
     {
         [Column(Name = "Id"), PrimaryKey]
         public string Id { get; set; }
 
-        [Column(Name = "User_Id"), NotNull]
+        [Column(Name = "UserId"), NotNull]
         public string UserId { get; set; }
 
         [Column(Name = "Name"), NotNull]

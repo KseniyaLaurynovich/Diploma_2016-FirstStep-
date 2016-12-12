@@ -9,6 +9,20 @@ export const renderTextBox = ({ input, label, type, meta: { touched, error } }) 
   </FormGroup>
 );
 
+export const renderDropdown = ({input, label, meta: { touched, error }, options }) => (
+  <FormGroup>
+    <ControlLabel htmlFor="text-field">{label}</ControlLabel>
+      <FormControl componentClass="select" {...input}>
+        {
+          options.map((option) =>
+            <option value={option.Key} key={option.Key}>{option.Value}</option>
+          )
+        }
+        </FormControl>
+    { touched && error && <span>{error}</span> }
+  </FormGroup>
+);
+
 export const renderTextArea = ({input, label, meta: { touched, error } }) => (
   <FormGroup>
     <ControlLabel htmlFor="text-field">{label}</ControlLabel>

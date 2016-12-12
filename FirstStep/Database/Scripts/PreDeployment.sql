@@ -8,6 +8,6 @@ go
 
 ALTER DATABASE [$(DatabaseName)]
 ADD FILE
-  (NAME = 'FileTable', FILENAME = 'D:\FileStream\SMT')
+  (NAME = 'Files', FILENAME = 'D:\FileStream\SMT')
 to filegroup FileGroup_Projects;
 go

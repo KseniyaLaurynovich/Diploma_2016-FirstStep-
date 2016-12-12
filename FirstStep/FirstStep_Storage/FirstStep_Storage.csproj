@@ -57,6 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\DependencyResolverPackage.cs" />
+    <Compile Include="Contracts\IAssignRuleRepository.cs" />
+    <Compile Include="Contracts\ICommentRepository.cs" />
     <Compile Include="Contracts\IDataRepository.cs" />
     <Compile Include="Contracts\IFileRepository.cs" />
     <Compile Include="Contracts\IGroupRepository.cs" />
@@ -65,25 +67,25 @@
     <Compile Include="Contracts\ISubjectGroupRepository.cs" />
     <Compile Include="Contracts\ISubjectRepository.cs" />
     <Compile Include="Contracts\ITaskRepository.cs" />
+    <Compile Include="Contracts\ITryingHistoryRepository.cs" />
     <Compile Include="Helpers\QueryExtensions.cs" />
     <Compile Include="Models\AssignRule.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\FirstStepDb.cs" />
     <Compile Include="Contracts\IWithIdentity.cs" />
-    <Compile Include="Models\Folder.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Task.cs" />
-    <Compile Include="Models\TaskVisibility.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\Trying.cs" />
     <Compile Include="Models\TryingHistory.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserGroup.cs" />
     <Compile Include="Models\SubjectGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AssignRuleRepository.cs" />
+    <Compile Include="Repositories\CommentsRepository.cs" />
     <Compile Include="Repositories\DataRepository.cs" />
     <Compile Include="Repositories\FileRepository.cs" />
     <Compile Include="Repositories\GroupRepository.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Repositories\SubjectRespository.cs" />
     <Compile Include="Repositories\TaskRepository.cs" />
     <Compile Include="Repositories\TestRepository.cs" />
+    <Compile Include="Repositories\TryingHistoryRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,9 +1,12 @@
-import { combineReducers } from 'redux';
-import { subjectsGridReducer } from './SubjectsGridReducer';
+import { combineReducers } from 'redux'
+import { subjectsGridReducer } from './SubjectsGridReducer'
 import { registrationReducer } from './RegistrationReducer'
-import { loginReducer } from './LoginReducer';
-import { taskReducer }  from './TasksReducer';
-import { usersReducer }  from './UsersReducer';
+import { loginReducer } from './LoginReducer'
+import { taskReducer }  from './TasksReducer'
+import { usersReducer }  from './UsersReducer'
+import { subjectsReducer } from './SubjectsReducer'
+import { tasksManagingReducer } from './TasksManagingReducer'
+import { taskFormManagingReducer } from './TaskFormReducer'
 import { reducer as reduxFormReducer } from 'redux-form';
 
 var reducers = combineReducers({
@@ -12,7 +15,10 @@ var reducers = combineReducers({
   auth: loginReducer,
   registration: registrationReducer,
   taskDetails: taskReducer,
-  usersManaging: usersReducer
+  usersManaging: usersReducer,
+  subjectsManaging: subjectsReducer,
+  tasksManaging: tasksManagingReducer,
+  taskForm: taskFormManagingReducer
 });
 
 export default reducers;

@@ -1,4 +1,5 @@
-﻿using BusinesServices.Models;
+﻿using System.Linq;
+using BusinesServices.Models;
 using BusinesServices.Contracts;
 using FirstStep_Api.Business.Helpers;
 using FirstStep_Api.Business.Response;
@@ -6,14 +7,15 @@ using Microsoft.AspNet.Identity;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using ExpressMapper.Extensions;
+using FirstStep_Api.ViewModels;
 
 namespace FirstStep_Api.Controllers
 {
-    [Authorize(Roles = "Teacher")]
     [RoutePrefix("subjects")]
-    public class SubjectController : ApiController
+    public class SubjectController : BaseIdentityController
     {
-        private ISubjectService _subjectService;
+        private readonly ISubjectService _subjectService;
 
         public SubjectController(ISubjectService subjectService)
         {
@@ -21,6 +23,7 @@ namespace FirstStep_Api.Controllers
         }
 
         [Route("get")]
+        [Authorize(Roles = "Teacher")]
         [HttpGet]
         public HttpResponseMessage GetForUser()
         {
@@ -30,7 +33,20 @@ namespace FirstStep_Api.Controllers
             return Response.Create(Request, HttpStatusCode.Accepted, subjects);
         }
 
+        [Route("getall")]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public HttpResponseMessage GetAll()
+        {
+            var subjects = _subjectService
+                .GetAll()
+                .Select(s => s.Map<Subject, SubjectViewModel>())
+                .ToList();
+            return Response.Create(Request, HttpStatusCode.Accepted, subjects);
+        }
+
         [Route("save")]
+        [Authorize(Roles = "Teacher")]
         [HttpPost]
         public HttpResponseMessage Save(Subject subject)
         {
@@ -45,7 +61,24 @@ namespace FirstStep_Api.Controllers
                 Request, HttpStatusCode.BadRequest, subject, ControllerHelper.GetErrosFromModelState(ModelState));
         }
 
+        [Route("save/{userId}")]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public HttpResponseMessage Save(Subject subject, [FromUri]string userId)
+        {
+            subject.UserId = userId;
+            if (ModelState.IsValid)
+            {
+                _subjectService.Save(subject);
+                return Response.Create(Request, HttpStatusCode.Accepted, subject.Map<Subject, SubjectViewModel>());
+            }
+
+            return Response.Create(
+                Request, HttpStatusCode.BadRequest, subject.Map<Subject, SubjectViewModel>(), ControllerHelper.GetErrosFromModelState(ModelState));
+        }
+
         [Route("delete/{subjectId}")]
+        [Authorize(Roles = "Teacher,Admin")]
         [HttpDelete]
         public HttpResponseMessage Delete(string subjectId)
         {

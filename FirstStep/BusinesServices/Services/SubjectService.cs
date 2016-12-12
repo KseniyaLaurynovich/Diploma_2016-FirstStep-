@@ -4,6 +4,7 @@ using ExpressMapper;
 using FirstStep_Storage.Contracts;
 using System.Collections.Generic;
 using System.Linq;
+using ExpressMapper.Extensions;
 using Storage = FirstStep_Storage.Models;
 
 namespace BusinesServices.Services
@@ -51,6 +52,25 @@ namespace BusinesServices.Services
             _subjectRepository.Delete(deletingSubject);
         }
 
-        
+        public IList<Subject> GetAll()
+        {
+            var subjects = _subjectRepository.Items()
+                .Select(Mapper.Map<Storage.Subject, Subject>)
+                .ToList();
+            foreach (var subject in subjects)
+            {
+                subject.AssignGroups = _groupRepository
+                    .GetGroupsBySubject(subject.Id)
+                    .Select(Mapper.Map<Storage.Group, Group>)
+                    .ToList();
+            }
+
+            return subjects;
+        }
+
+        public Subject GetById(string subjectId)
+        {
+            return _subjectRepository.GetById(subjectId).Map<Storage.Subject, Subject>();
+        }
     }
 }

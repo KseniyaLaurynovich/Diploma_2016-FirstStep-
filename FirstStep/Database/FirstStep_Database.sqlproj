@@ -65,25 +65,31 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\StorageProcedures" />
+    <Folder Include="dbo\Triggers" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Comment.sql" />
-    <Build Include="dbo\Tables\Group.sql" />
-    <Build Include="dbo\Tables\Project.sql" />
-    <Build Include="dbo\Tables\Subject.sql" />
-    <Build Include="dbo\Tables\Task.sql" />
-    <Build Include="dbo\Tables\AssignRule.sql" />
-    <Build Include="dbo\Tables\Test.sql" />
-    <Build Include="dbo\Tables\TryingHistory.sql" />
-    <Build Include="dbo\Tables\Trying.sql" />
-    <Build Include="dbo\Tables\UserGroup.sql" />
-    <Build Include="dbo\Tables\GroupSubject.sql" />
-    <Build Include="dbo\Tables\Folder.sql" />
-    <Build Include="dbo\Tables\FileTable.sql" />
+    <Build Include="dbo\Tables\Comments.sql" />
+    <Build Include="dbo\Tables\Groups.sql" />
+    <Build Include="dbo\Tables\Projects.sql" />
+    <Build Include="dbo\Tables\Subjects.sql" />
+    <Build Include="dbo\Tables\Tasks.sql" />
+    <Build Include="dbo\Tables\AssignRules.sql" />
+    <Build Include="dbo\Tables\Tests.sql" />
+    <Build Include="dbo\Tables\TryingsHistory.sql" />
+    <Build Include="dbo\Tables\Tryings.sql" />
+    <Build Include="dbo\Tables\UserGroups.sql" />
+    <Build Include="dbo\Tables\GroupSubjects.sql" />
+    <Build Include="dbo\Tables\Files.sql" />
     <Build Include="dbo\StorageProcedures\CreateUserBaseFolder.sql" />
     <Build Include="dbo\StorageProcedures\GetUserBaseFolder.sql" />
     <Build Include="dbo\StorageProcedures\GetProjectFolder.sql" />
-    <Build Include="dbo\Tables\TaskVisibility.sql" />
+    <Build Include="dbo\Tables\AspNetRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
+    <Build Include="dbo\Tables\AspNetUsers.sql" />
+    <Build Include="dbo\Tables\AspNetUserRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
+    <Build Include="dbo\Triggers\InsteadInsertSubjectTrigger.sql" />
+    <Build Include="dbo\Triggers\InsteadUpdateSubjectTrigger.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="FirstStep_Database.refactorlog" />

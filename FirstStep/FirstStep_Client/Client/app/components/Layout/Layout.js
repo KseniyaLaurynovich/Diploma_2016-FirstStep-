@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './styles.css'
+import { Link } from 'react-router'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 
 export default function(props){
@@ -27,7 +28,31 @@ export default function(props){
               {
                 props.roles.indexOf('Admin') != -1
                   ? (
-                    <li><a href="#">Users</a></li>)
+                    <li><Link className="btn btn-primary" to="/users">Users</Link></li>)
+                  : null
+              }
+              {
+                props.roles.indexOf('Admin') != -1
+                  ? (
+                    <li><Link className="btn btn-primary" to="/subjects">Subjects</Link></li>)
+                  : null
+              }
+              {
+                props.roles.indexOf('Admin') != -1
+                  ? (
+                    <li><Link className="btn btn-primary" to="/tasks">Tasks</Link></li>)
+                  : null
+              }
+              {
+                props.roles.indexOf('Admin') != -1
+                  ? (
+                    <li><a href="#">Tests</a></li>)
+                  : null
+              }
+              {
+                props.roles.indexOf('Admin') != -1
+                  ? (
+                    <li><a href="#">Projects</a></li>)
                   : null
               }
               {

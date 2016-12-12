@@ -21,6 +21,8 @@ namespace BusinesServices.Models
 
         public DateTime CreationDate { get; set; }
 
+        public DateTime LastModified { get; set; }
+
         public IList<Test> Tests { get; set; }
 
     }

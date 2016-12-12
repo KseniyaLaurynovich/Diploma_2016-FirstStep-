@@ -3,13 +3,13 @@ using LinqToDB.Mapping;
 
 namespace FirstStep_Storage.Models
 {
-    [Table("Test")]
+    [Table(Name = "Tests")]
     public class Test : IHasIdentity
     {
         [Column(Name = "Id"), PrimaryKey]
         public string Id { get; set; }
 
-        [Column(Name = "Task_Id"), NotNull]
+        [Column(Name = "TaskId"), NotNull]
         public string TaskId { get; set; }
 
         [Column(Name = "Name"), NotNull]
@@ -29,5 +29,8 @@ namespace FirstStep_Storage.Models
 
         [Column(Name = "Weight"), NotNull]
         public int Weight { get; set; }
+
+        [Association(ThisKey = "TaskId", OtherKey = "Id")]
+        public Task Task { get; set; }
     }
 }

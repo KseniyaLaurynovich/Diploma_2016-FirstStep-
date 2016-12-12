@@ -6,6 +6,7 @@ using FirstStep_Storage.Contracts;
 using Storage = FirstStep_Storage.Models;
 using ExpressMapper;
 using System.Linq;
+using ExpressMapper.Extensions;
 
 namespace BusinesServices.Services
 {
@@ -22,6 +23,11 @@ namespace BusinesServices.Services
         {
             var deletingTask = _taskRepository.GetById(id);
             _taskRepository.Delete(deletingTask);
+        }
+
+        public IList<Task> GetAll()
+        {
+            return _taskRepository.Items().Select(t => t.Map<Storage.Task, Task>()).ToList();
         }
 
         public Task GetById(string id)

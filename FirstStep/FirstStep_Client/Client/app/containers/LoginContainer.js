@@ -31,7 +31,7 @@ var LoginContainer = React.createClass({
         login(userData, date);
 
         if(userData.roles.indexOf('Admin') !== -1){
-          router.push("/admin");
+          router.push("/users");
         }
         else{
           router.push("/");
@@ -43,7 +43,15 @@ var LoginContainer = React.createClass({
   },
   render: function(){
     return(
-      <Login handleSubmit={this.handleSubmit} error={this.props.error}/>
+      <div className="section">
+        <div className="container">
+          <div className="row">
+          <div className="col-md-6 col-md-offset-3">
+            <Login handleSubmit={this.handleSubmit} error={this.props.error}/>
+          </div>
+        </div>
+      </div>
+    </div>
     );
   }
 });

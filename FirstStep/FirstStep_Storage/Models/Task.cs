@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace FirstStep_Storage.Models
 {
-    [Table(Name = "Task")]
+    [Table(Name = "Tasks")]
     public class Task : IHasIdentity
     {
         [Column(Name = "Id"), PrimaryKey]
@@ -20,11 +20,14 @@ namespace FirstStep_Storage.Models
         [Column(Name = "AdditionalInfo"), Nullable]
         public string AdditionalInfo { get; set; }
 
-        [Column(Name = "Subject_Id"), NotNull]
+        [Column(Name = "SubjectId"), NotNull]
         public string SubjectId { get; set; }
 
         [Column(Name = "CreationDate"), NotNull]
         public DateTime CreationDate { get; set; }
+
+        [Column(Name = "LastModified"), NotNull]
+        public DateTime LastModified { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "TaskId")]
         public ICollection<Test> Tests { get; set; }

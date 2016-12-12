@@ -1,17 +1,21 @@
-﻿using FirstStep_Api.App_Start;
-using FirstStep_Api.Business.Models;
+﻿using FirstStep_Api.Business.Models;
 using FirstStep_Api.Business.Providers;
 using FirstStep_Api.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Web.ApplicationServices;
 using System.Web.Http;
-using System.Web.Http.Cors;
+using BusinesServices.Contracts;
+using ExpressMapper.Extensions;
+using FirstStep_Api.Business.Helpers;
+using FirstStep_Api.Business.Response;
+using FirstStep_Api.ViewModels;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace FirstStep_Api.Controllers
 {
@@ -19,7 +23,12 @@ namespace FirstStep_Api.Controllers
     [Authorize]
     public class AccountController : BaseIdentityController
     {
-        private const string LocalLoginProvider = "Local";
+        private readonly ISubjectService _subjectService;
+
+        public AccountController(ISubjectService subjectService)
+        {
+            _subjectService = subjectService;
+        }
 
         [HttpPost]
         [Route("ChangePassword")]
@@ -52,8 +61,10 @@ namespace FirstStep_Api.Controllers
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
             var result = UserManager.Create(user, model.Password);
+
+            UserManager.AddClaim(user.Id, ClaimsProvider.CreateClaim(ClaimTypes.Name, model.FirstName));
+            UserManager.AddClaim(user.Id, ClaimsProvider.CreateClaim(ClaimTypes.Surname, model.LastName));
 
             if (!result.Succeeded)
             {
@@ -67,11 +78,51 @@ namespace FirstStep_Api.Controllers
         [Route("users")]
         public IHttpActionResult GetUsers()
         {
-            return Ok(UserManager.Users.ToList());
+            var s = UserManager.Users.ToList();
+            var users = new List<UserViewModel>();
+
+            foreach (var user in s)
+            {
+                users.Add(user.Map<ApplicationUser, UserViewModel>());
+            }
+            return Ok(users);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("edit")]
+        [HttpPut]
+        public IHttpActionResult EditUser(UserViewModel model)
+        {
+            var user = UserManager.FindById(model.Id);
+            user.Email = model.Email;
+
+            var result = UserManager.Update(user);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            var nameClaim = user.Claims.FirstOrDefault(c => c.ClaimType.Equals(ClaimTypes.Name));
+            if (nameClaim != null)
+            {
+                UserManager.RemoveClaim(user.Id, ClaimsProvider.CreateClaim(nameClaim.ClaimType, nameClaim.ClaimValue));
+            }
+            UserManager.AddClaim(user.Id, ClaimsProvider.CreateClaim(ClaimTypes.Name, model.FirstName));
+
+            var lastNameClaim = user.Claims.FirstOrDefault(c => c.ClaimType.Equals(ClaimTypes.Surname));
+            if (lastNameClaim != null)
+            {
+                UserManager.RemoveClaim(user.Id, ClaimsProvider.CreateClaim(lastNameClaim.ClaimType, lastNameClaim.ClaimValue));
+            }
+            UserManager.AddClaim(user.Id, ClaimsProvider.CreateClaim(ClaimTypes.Surname, model.LastName));
+
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
         [Route("user/{id:guid}")]
+        [HttpGet]
         public IHttpActionResult GetUser(string Id)
         {
             var user = UserManager.FindById(Id);
@@ -86,9 +137,11 @@ namespace FirstStep_Api.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("user/{id:guid}")]
+        [Route("delete/{id}")]
+        [HttpDelete]
         public IHttpActionResult DeleteUser(string id)
         {
+            //todo add deleting with all references
             var appUser = UserManager.FindById(id);
 
             if (appUser != null)
@@ -108,7 +161,44 @@ namespace FirstStep_Api.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("user/{id:guid}/roles")]
+        [HttpGet]
+        [Route("userDetails/{userId}")]
+        public HttpResponseMessage GetUserDetails(string userId)
+        {
+            var user = UserManager.FindById(userId);
+
+            if (user == null)
+            {
+                return Response.Create(
+                    Request, HttpStatusCode.BadRequest, userId);
+            }
+
+            var model = new UserDetailsViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                FirstName = user.Claims.FirstOrDefault(c => c.ClaimType.Equals(ClaimTypes.Name))?.ClaimValue,
+                LastName = user.Claims.FirstOrDefault(c => c.ClaimType.Equals(ClaimTypes.Surname))?.ClaimValue,
+                Roles = user.Roles
+                    .Select(i => RoleManager.Roles.FirstOrDefault(r => r.Id.Equals(i.RoleId)))
+                    .Where(i => i != null)
+                    .Select(r => new RoleViewModel
+                    {
+                        Id = r.Id,
+                        Name = r.Name
+                    })
+                    .ToArray(),
+                Subjects = _subjectService.GetByUser(userId).ToArray()
+
+            };
+
+            return Response.Create(
+                Request, HttpStatusCode.OK, model);
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("user/{id}/roles")]
         [HttpPut]
         public IHttpActionResult AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
         {
@@ -209,16 +299,5 @@ namespace FirstStep_Api.Controllers
 
             return Ok();
         }
-
-        #region Helpers
-
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
-
-        
-
-        #endregion
     }
 }

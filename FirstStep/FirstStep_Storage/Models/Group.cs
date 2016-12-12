@@ -3,7 +3,7 @@ using LinqToDB.Mapping;
 
 namespace FirstStep_Storage.Models
 {
-    [Table(Name = "Group")]
+    [Table(Name = "Groups")]
     public class Group : IHasIdentity
     {
         [Column(Name = "Id"), PrimaryKey]

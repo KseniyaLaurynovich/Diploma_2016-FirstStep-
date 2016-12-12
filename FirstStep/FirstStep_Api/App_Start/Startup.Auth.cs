@@ -7,6 +7,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Web.Http.Cors;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 [assembly: OwinStartup(typeof(FirstStep_Api.App_Start.Startup))]
 namespace FirstStep_Api.App_Start
@@ -26,6 +27,8 @@ namespace FirstStep_Api.App_Start
         {
             app.CreatePerOwinContext(AuthContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+            app.CreatePerOwinContext<AuthContext>(AuthContext.Create);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
 

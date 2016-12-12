@@ -7,6 +7,8 @@ import RegistrationContainer from '../containers/RegistrationContainer'
 import LayoutContainer from '../containers/LayoutContainer'
 import TaskDetailsContainer from '../containers/TaskDetailsContainer'
 import UsersManagingContainer from '../containers/UsersManagingContainer'
+import SubjectsManagingContainer from '../containers/SubjectsManagingContainer'
+import TasksManagingContainer from '../containers/TasksManagingContainer'
 
 export default (
   <Router history={hashHistory}>
@@ -15,9 +17,9 @@ export default (
       <Route path="/login" component={LoginContainer}/>
       <Route path="/registration" component={RegistrationContainer}/>
       <Route path="/task/:taskId" component={requireAuthentication(TaskDetailsContainer, ["Teacher"])}/>
-    </Route>
-    <Route path='/admin' component={LayoutContainer}>
-      <IndexRoute component={requireAuthentication(UsersManagingContainer, ["Admin"])} />
+      <Route path="/users" component={requireAuthentication(UsersManagingContainer, ["Admin"])} />
+      <Route path="/subjects" component={requireAuthentication(SubjectsManagingContainer, ["Admin"])} />
+      <Route path="/tasks" component={requireAuthentication(TasksManagingContainer, ["Admin"])} />
     </Route>
   </Router>
 );
