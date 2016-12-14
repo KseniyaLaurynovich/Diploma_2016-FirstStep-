@@ -78,3 +78,17 @@ export function deleteTaskSuccess(task){
     task
   }
 }
+
+export function setAddTestDialogVisibility(visibility, task){
+  return{
+    type: types.CHANGE_ADD_TEST_DIALOG_VISIBILITY,
+    task,
+    isTestAdding: visibility
+  }
+}
+
+export function changeNewTestType(){
+  return{
+    type: types.CHANGE_NEW_TEST_TYPE
+  }
+}

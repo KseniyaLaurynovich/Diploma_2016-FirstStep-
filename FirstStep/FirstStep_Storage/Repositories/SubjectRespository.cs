@@ -8,16 +8,19 @@ namespace FirstStep_Storage.Repositories
 {
     internal class SubjectRespository : DataRepository<Subject>, ISubjectRepository
     {
-        public override IQueryable<Subject> Items()
+        public override IList<Subject> Items()
         {
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
 
+            IList<Subject> result;
             using (var dbConnection = new FirstStepDb())
             {
-                return dbConnection.Subjects
+                result = dbConnection.Subjects
                         .LoadWith(s => s.Tasks)
-                        .LoadWith(s => s.SubjectGroups);
+                        .LoadWith(s => s.SubjectGroups)
+                        .ToList();
             }
+            return result;
         }
 
         public IList<Subject> GetByUser(string userId)

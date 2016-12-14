@@ -9,6 +9,7 @@ import TaskDetailsContainer from '../containers/TaskDetailsContainer'
 import UsersManagingContainer from '../containers/UsersManagingContainer'
 import SubjectsManagingContainer from '../containers/SubjectsManagingContainer'
 import TasksManagingContainer from '../containers/TasksManagingContainer'
+import GroupsManagingContainer from '../containers/GroupsManagingContainer'
 
 export default (
   <Router history={hashHistory}>
@@ -20,6 +21,7 @@ export default (
       <Route path="/users" component={requireAuthentication(UsersManagingContainer, ["Admin"])} />
       <Route path="/subjects" component={requireAuthentication(SubjectsManagingContainer, ["Admin"])} />
       <Route path="/tasks" component={requireAuthentication(TasksManagingContainer, ["Admin"])} />
+      <Route path="/groups" component={requireAuthentication(GroupsManagingContainer, ["Admin"])} />
     </Route>
   </Router>
 );

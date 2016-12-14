@@ -4,7 +4,7 @@ AS
 
 	DECLARE @parentdir table(path hierarchyid not null);
 
-	INSERT INTO [dbo].[FileTable] (name,is_directory) 
+	INSERT INTO [dbo].[Files] (name,is_directory) 
 	OUTPUT INSERTED.path_locator into @parentdir
 	SELECT @folderName, 1
 GO

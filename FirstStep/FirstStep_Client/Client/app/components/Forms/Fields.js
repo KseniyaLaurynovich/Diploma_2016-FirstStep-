@@ -30,3 +30,11 @@ export const renderTextArea = ({input, label, meta: { touched, error } }) => (
     { touched && error && <span>{error}</span> }
   </FormGroup>
 );
+
+export const renderSwitch = ({input, label, meta: { touched, error } }) => (
+  <FormGroup>
+    <ControlLabel htmlFor="text-field">{label}</ControlLabel>
+    <FormControl id="text-field" componentClass="checkbox" {...input}/>
+    { touched && error && <span>{error}</span> }
+  </FormGroup>
+);

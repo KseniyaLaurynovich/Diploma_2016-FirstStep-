@@ -7,11 +7,14 @@ const initialState = {
     isAdding: false,
     isEditing: false,
     isDeleting: false,
-    currentTask: null
+    currentTask: null,
+    isFile: false
 };
 
 export function tasksManagingReducer(state = initialState, action){
   switch(action.type){
+    case types.CHANGE_NEW_TEST_TYPE:
+      return Object.assign({}, state, { isFile: !state.isFile });
     case types.GET_TASKS_SUCCESS:
       return Object.assign({}, state, { tasks: action.tasks });
     case types.CHANGE_ADMIN_ADD_TASK_DIALOG_VISIBILITY:
@@ -41,6 +44,8 @@ export function tasksManagingReducer(state = initialState, action){
     case types.ADMIN_DELETE_TASK_SUCCESS:
       var refreshTasks = state.tasks.filter((task) => task.Id !== action.task.Id);
       return Object.assign({}, state, { tasks: refreshTasks, isDeleting: false, currentTask: null })
+    case types.CHANGE_ADD_TEST_DIALOG_VISIBILITY:
+        return Object.assign({}, state, { currentTask: action.task, isTestAdding: action.isTestAdding })
   }
   return state;
 }

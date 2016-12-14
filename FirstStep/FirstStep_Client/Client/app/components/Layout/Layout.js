@@ -28,43 +28,25 @@ export default function(props){
               {
                 props.roles.indexOf('Admin') != -1
                   ? (
-                    <li><Link className="btn btn-primary" to="/users">Users</Link></li>)
+                    <li><Link  to="/users">Users</Link></li>)
                   : null
               }
               {
                 props.roles.indexOf('Admin') != -1
                   ? (
-                    <li><Link className="btn btn-primary" to="/subjects">Subjects</Link></li>)
+                    <li><Link  to="/subjects">Subjects</Link></li>)
                   : null
               }
               {
                 props.roles.indexOf('Admin') != -1
                   ? (
-                    <li><Link className="btn btn-primary" to="/tasks">Tasks</Link></li>)
+                    <li><Link  to="/tasks">Tasks</Link></li>)
                   : null
               }
               {
                 props.roles.indexOf('Admin') != -1
                   ? (
-                    <li><a href="#">Tests</a></li>)
-                  : null
-              }
-              {
-                props.roles.indexOf('Admin') != -1
-                  ? (
-                    <li><a href="#">Projects</a></li>)
-                  : null
-              }
-              {
-                props.roles.indexOf('Admin') != -1
-                  ? (
-                    <li><a href="#">Roles</a></li>)
-                  : null
-              }
-              {
-                props.roles.indexOf('Admin') != -1
-                  ? (
-                    <li><a href="#">Groups</a></li>)
+                    <li><Link  to="/groups">Groups</Link></li>)
                   : null
               }
               {

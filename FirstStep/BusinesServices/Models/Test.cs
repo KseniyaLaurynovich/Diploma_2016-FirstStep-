@@ -1,4 +1,6 @@
-﻿namespace BusinesServices.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BusinesServices.Models
 {
     public class Test
     {
@@ -6,7 +8,10 @@
 
         public int TaskId { get; set; }
 
+        [Required]
         public string Name { get; set; }
+
+        public bool IsFiles { get; set; }
 
         public string InputArguments { get; set; }
 
@@ -16,6 +21,7 @@
 
         public byte[] OutputFile { get; set; }
 
+        [Required]
         public int Weight { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FirstStep_Storage.Contracts;
 using FirstStep_Storage.Models;
 using FirstStep_Storage.Models.Contracts;
@@ -12,14 +13,15 @@ namespace FirstStep_Storage.Repositories
     {
         public virtual T GetById(string id)
         {
+            T result;
             using (var db = new FirstStepDb())
             {
-                var result = db.GetTable<T>().FirstOrDefault(e => e.Id == id);
-                return result;
+                result = db.GetTable<T>().FirstOrDefault(e => e.Id == id);
             }
+            return result;
         }
 
-        public virtual string Save(T obj) 
+        public virtual string Save(T obj)
         {
             using (var dbConnection = new FirstStepDb())
             {
@@ -32,9 +34,9 @@ namespace FirstStep_Storage.Repositories
                 {
                     dbConnection.Update(obj);
                 }
-
-                return obj.Id;
             }
+
+            return obj.Id;
         }
 
         public virtual void Delete(T obj)
@@ -45,14 +47,16 @@ namespace FirstStep_Storage.Repositories
             }
         }
 
-        public virtual IQueryable<T> Items()
+        public virtual IList<T> Items()
         {
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
 
+            IList<T> items;
             using (var dbConnection = new FirstStepDb())
             {
-                return dbConnection.GetTable<T>();
+                items = dbConnection.GetTable<T>().ToList();
             }
+            return items;
         }
     }
 }

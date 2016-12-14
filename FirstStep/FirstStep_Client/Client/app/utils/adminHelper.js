@@ -144,3 +144,32 @@ export function unassignGroup(subjectId, groupId){
     data:{subjectId: subjectId, groupId: groupId}
   });
 }
+
+export function saveTest(taskId, test){
+  var token = loadAuthCookie().jwt;
+  return  axios({
+    method: 'post',
+    url: 'http://test_site.com/tests/save/' + taskId,
+    headers:{"Authorization": "Bearer " + token, "Content-Type": "multipart/form-data"},
+    data: test
+  });
+}
+
+export function saveGroup(group){
+  var token = loadAuthCookie().jwt;
+  return  axios({
+    method: 'post',
+    url: 'http://test_site.com/group/save/',
+    headers:{"Authorization": "Bearer " + token},
+    data: group
+  });
+}
+
+export function deleteGroup(groupId){
+  var token = loadAuthCookie().jwt;
+  return  axios({
+    method: 'delete',
+    url: 'http://test_site.com/group/delete/' + groupId,
+    headers:{"Authorization": "Bearer " + token}
+  });
+}

@@ -3,7 +3,7 @@ import { Table, ButtonGroup, Button } from 'react-bootstrap'
 
 export default function(props){
   return(
-  <Table striped bordered condensed hover>
+  <Table striped bordered condensed hover style={{"minHeight":"350px"}}>
    <thead>
      <tr>
       <th>#</th>

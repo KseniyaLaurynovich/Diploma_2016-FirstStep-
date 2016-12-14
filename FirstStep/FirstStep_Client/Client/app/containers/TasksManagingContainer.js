@@ -7,7 +7,9 @@ import * as adminHelper from '../utils/adminHelper'
 import ManagingTable from '../components/ManagingTable/ManagingTable'
 import Dialog from '../components/Dialog/Dialog'
 import DeleteForm from '../components/Forms/DeleteForm'
+import ManageTestFormContainer from './ManageTestFormContainer'
 import TaskFormContainer from './TaskFormContainer'
+import serializeForm from 'form-serialize'
 
 var TasksManagingContainer = React.createClass({
   contextTypes: {
@@ -28,16 +30,13 @@ var TasksManagingContainer = React.createClass({
                       }
                     });
         store.dispatch(actions.getTasksSuccess(tasks));
-    });
-    adminHelper.getAllUsers().then(function(response){
-      var teachers = response.data
-                      .filter((user) => user.Roles.some((role) => role.Name === "Teacher"))
-                      .map(function(user){ return{Key: user.Id, Value: `${user.FirstName} ${user.LastName} (${user.Email})`}})
-      store.dispatch(actions.getAllTeachesSuccess(teachers))
     })
     adminHelper.getAllSubjects().then(function(response){
       var subjects = JSON.parse(response.data.Data)
-                      .map(function(subject){ return{Key: subject.Id, Value: subject.Name, UserId: subject.User.Id}})
+                      .map(function(subject){ return{
+                        Key: subject.Id,
+                        Value: `${subject.Name} ${subject.User.FirstName} ${subject.User.LastName} (${subject.User.Email})`, 
+                        UserId: subject.User.Id}})
       store.dispatch(actions.getAllSubjectsSuccess(subjects))
     })
   },
@@ -58,6 +57,12 @@ var TasksManagingContainer = React.createClass({
   },
   hideDeleteTaskDialog: function(){
     store.dispatch(actions.setDeleteDialogVisibility(false, null))
+  },
+  displayAddTestDialog: function(task){
+    store.dispatch(actions.setAddTestDialogVisibility(true, task))
+  },
+  hideAddTestDialog: function(){
+    store.dispatch(actions.setAddTestDialogVisibility(false, null))
   },
   handleAdding: function(e){
     e.preventDefault();
@@ -81,6 +86,19 @@ var TasksManagingContainer = React.createClass({
       }
       store.dispatch(actions.addTaskSuccess(task))
     })
+  },
+  handleTestAdding: function(e){
+    //e.preventDefault();
+    //var taskId = this.props.currentTask.Id;
+
+    //let imageFormData = new FormData(e.target);
+
+     //imageFormData.append('InputFile', e.target.elements.InputFile.files[0]);
+
+    //adminHelper.saveTest(taskId, imageFormData)
+    //.then(function(response){
+      //console.log(response);
+    //})
   },
   handleEditing: function(e){
     e.preventDefault();
@@ -132,6 +150,7 @@ var TasksManagingContainer = React.createClass({
                   {Key:'UserName', Value:'User name'},
                   {Key:'SubjectName', Value:'Subject'}]}
                 actions={[
+                  {Title: "Manage tests", Action: this.displayAddTestDialog},
                   {Title: "Edit", Action: this.displayEditDialog},
                   {Title: "Delete", Action: this.displayDeleteDialog}
                 ]}
@@ -162,6 +181,13 @@ var TasksManagingContainer = React.createClass({
           {"Do you really want to delete this task ?"}
           </DeleteForm>
         </Dialog>
+        <Dialog
+          modalIsOpen={this.props.isTestAdding}
+          close={this.hideAddTestDialog}
+          header="Add test">
+          <ManageTestFormContainer
+          handleSubmit={this.handleTestAdding}/>
+        </Dialog>
       </div>
     );
   }
@@ -173,7 +199,8 @@ const mapStateToProps = store => {
         currentTask: store.tasksManaging.currentTask,
         isAdding: store.tasksManaging.isAdding,
         isEditing: store.tasksManaging.isEditing,
-        isDeleting: store.tasksManaging.isDeleting
+        isDeleting: store.tasksManaging.isDeleting,
+        isTestAdding: store.tasksManaging.isTestAdding
     };
 };
 

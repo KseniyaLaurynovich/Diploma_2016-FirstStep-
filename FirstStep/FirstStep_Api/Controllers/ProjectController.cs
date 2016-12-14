@@ -8,6 +8,7 @@ using System.Web.Http.Cors;
 namespace FirstStep_Api.Controllers
 {
     [RoutePrefix("project")]
+    [Authorize(Roles = "Student")]
     public class ProjectController : ApiController
     {
         private readonly IFileService _fileService;
@@ -17,15 +18,18 @@ namespace FirstStep_Api.Controllers
             _fileService = fileService;
         }
 
-        [Route("upload")]
+        [Route("upload/{userId}")]
         [HttpPost]
-        public HttpResponseMessage UploadProject(string userId)
+        public HttpResponseMessage UploadProject([FromUri]string userId)
         {
             var file = HttpContext.Current.Request.Files.Count > 0 ?
             HttpContext.Current.Request.Files[0] : null;
 
             string[] errors;
-            _fileService.LoadProjectForUser(userId, file.InputStream, file.FileName, out errors);
+            if (file != null)
+            {
+                _fileService.LoadProjectForUser(userId, file.InputStream, file.FileName, out errors);
+            }
 
             return Response.Create(Request, System.Net.HttpStatusCode.Created);
         }

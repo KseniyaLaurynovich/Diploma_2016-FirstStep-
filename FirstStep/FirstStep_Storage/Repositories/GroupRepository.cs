@@ -11,9 +11,10 @@ namespace FirstStep_Storage.Repositories
         public IList<Group> GetGroupsBySubject(string subjectId)
         {
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
+            IList<Group> result;
             using (var db = new FirstStepDb())
             {
-                var groups =
+                result =
                 (
                     from s in db.Subjects
                     where s.Id.Equals(subjectId)
@@ -21,9 +22,10 @@ namespace FirstStep_Storage.Repositories
                 )
                 .FirstOrDefault()
                 ?.ToList();
-
-                return groups;
             }
+
+
+            return result;
         }
     }
 }

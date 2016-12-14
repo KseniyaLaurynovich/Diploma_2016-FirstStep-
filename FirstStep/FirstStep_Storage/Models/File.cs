@@ -3,7 +3,7 @@ using LinqToDB.Mapping;
 
 namespace FirstStep_Storage.Models
 {
-    [Table(Name = "FileTable")]
+    [Table(Name = "Files")]
     public class File : IHasIdentity
     {
         [Column(Name = "path_locator")]

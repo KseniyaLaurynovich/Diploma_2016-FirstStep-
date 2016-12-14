@@ -7,6 +7,7 @@ import { usersReducer }  from './UsersReducer'
 import { subjectsReducer } from './SubjectsReducer'
 import { tasksManagingReducer } from './TasksManagingReducer'
 import { taskFormManagingReducer } from './TaskFormReducer'
+import { groupsManagingReducer } from './GroupsManagingReducer'
 import { reducer as reduxFormReducer } from 'redux-form';
 
 var reducers = combineReducers({
@@ -18,7 +19,8 @@ var reducers = combineReducers({
   usersManaging: usersReducer,
   subjectsManaging: subjectsReducer,
   tasksManaging: tasksManagingReducer,
-  taskForm: taskFormManagingReducer
+  taskForm: taskFormManagingReducer,
+  groupsManaging: groupsManagingReducer
 });
 
 export default reducers;

@@ -1,4 +1,5 @@
-﻿using FirstStep_Storage.Models.Contracts;
+﻿using System.Collections.Generic;
+using FirstStep_Storage.Models.Contracts;
 using System.Linq;
 
 namespace FirstStep_Storage.Contracts
@@ -12,6 +13,6 @@ namespace FirstStep_Storage.Contracts
 
         T GetById(string id);
 
-        IQueryable<T> Items();
+        IList<T> Items();
     }
 }

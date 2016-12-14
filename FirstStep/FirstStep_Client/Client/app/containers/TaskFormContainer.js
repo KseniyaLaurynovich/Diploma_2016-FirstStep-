@@ -13,9 +13,6 @@ const validate = values => {
   if (!values.Description || values.Description == '') {
     errors.Description = 'Description is required'
   }
-  if (!values.UserId || values.UserId == '') {
-    errors.UserId = 'User is required'
-  }
   if (!values.SubjectId || values.SubjectId == '') {
     errors.SubjectId = 'Subject is required'
   }
@@ -33,7 +30,6 @@ const taskAdminForm = React.createClass({
       pristine={this.props.pristine}
       handleCancel={this.props.handleCancel}
       submitting={this.props.submitting}
-      users={this.props.users}
       subjects={this.props.subjects}
       onUserChange={this.onUserChange}
     />
@@ -43,7 +39,6 @@ const taskAdminForm = React.createClass({
 
 const mapStateToProps = store => {
     return {
-        users: store.tasksManaging.users,
         subjects: store.taskForm.subjects,
         filtered: store.taskForm.filteredSubjects,
         initialValues: store.tasksManaging.currentTask

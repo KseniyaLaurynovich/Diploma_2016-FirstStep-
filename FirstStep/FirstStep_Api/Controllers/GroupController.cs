@@ -4,6 +4,7 @@ using FirstStep_Api.Models;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using BusinesServices.Models;
 
 namespace FirstStep_Api.Controllers
 {
@@ -20,11 +21,29 @@ namespace FirstStep_Api.Controllers
         [Route("get")]
         [Authorize(Roles = "Teacher, Admin")]
         [HttpGet]
-        public HttpResponseMessage GetAll()
+        public IHttpActionResult GetAll()
         {
             var groups = _groupService.GetAll();
 
-            return Response.Create(Request, HttpStatusCode.Accepted, groups);
+            return Ok(groups);
+        }
+
+        [Route("save")]
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public IHttpActionResult Save(Group group)
+        {
+            _groupService.Save(group);
+            return Ok(group);
+        }
+
+        [Route("delete/{groupId}")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete]
+        public IHttpActionResult Delete(string groupId)
+        {
+            _groupService.Delete(groupId);
+            return Ok(groupId);
         }
 
         [Route("assign")]
