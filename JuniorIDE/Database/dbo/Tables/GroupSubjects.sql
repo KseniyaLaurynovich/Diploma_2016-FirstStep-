@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[GroupSubjects] (
+	[Id]			UNIQUEIDENTIFIER	DEFAULT NEWID() PRIMARY KEY,
+    [GroupId]		UNIQUEIDENTIFIER	NOT NULL,
+    [SubjectId]		UNIQUEIDENTIFIER	NOT NULL,	
+    CONSTRAINT [GroupSubject_Group] FOREIGN KEY ([GroupId]) REFERENCES [dbo].[Groups] ([Id]) ON DELETE CASCADE,
+	CONSTRAINT [GroupSubject_Subject] FOREIGN KEY ([SubjectId]) REFERENCES [dbo].[Subjects] ([Id]) ON DELETE CASCADE
+);
+
