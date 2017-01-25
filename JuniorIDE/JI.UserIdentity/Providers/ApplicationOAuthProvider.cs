@@ -17,7 +17,6 @@ namespace JI.UserIdentity.Providers
             OAuthGrantResourceOwnerCredentialsContext context)
         {
             var userManager = context.OwinContext.Get<ApplicationUserManager>();
-            //var roleManager = context.OwinContext.GetUserManager<ApplicationRoleManager>();
 
             var user = await userManager.FindAsync(context.UserName, context.Password);
 
@@ -30,9 +29,9 @@ namespace JI.UserIdentity.Providers
             var oAuthIdentity = userManager.CreateIdentity(user, OAuthDefaults.AuthenticationType);
             var cookiesIdentity = userManager.CreateIdentity(user, OAuthDefaults.AuthenticationType);
 
-            //var roles = await userManager.GetRolesAsync(user.Id);
+            var roles = await userManager.GetRolesAsync(user.Id);
 
-            var properties = CreateProperties(user.UserName);
+            var properties = CreateProperties(user.UserName, roles);
             var ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -76,12 +75,12 @@ namespace JI.UserIdentity.Providers
 
         #region Helpers
 
-        private AuthenticationProperties CreateProperties(string userName)
+        private AuthenticationProperties CreateProperties(string userName, IList<string> roles)
         {
             var data = new Dictionary<string, string>
             {
                 { "userName", userName },
-                //{ "roles", string.Join(",", roles) }
+                { "roles", string.Join(",", roles) }
             };
             return new AuthenticationProperties(data);
         }

@@ -3,7 +3,7 @@ using LinqToDB.Mapping;
 
 namespace JI.DataStorageAccess.Models
 {
-    [Table(Name="Role")]
+    [Table(Name="Roles")]
     public class Role : IWithIdentifier
     {
         [Column(Name="Id"), PrimaryKey, Identity]

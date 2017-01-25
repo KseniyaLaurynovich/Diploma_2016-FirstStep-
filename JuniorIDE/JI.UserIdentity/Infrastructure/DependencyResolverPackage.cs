@@ -11,11 +11,18 @@ namespace JI.UserIdentity.Infrastructure
     {
         public void RegisterServices(Container container)
         {
+
+            container.Register(
+               typeof(IRoleStore<ApplicationRole, string>), typeof(ApplicationRoleStoreService), Lifestyle.Scoped);
+
             container.Register(
                 typeof(IUserStore<ApplicationUser>), typeof(ApplicationUserStoreService), Lifestyle.Scoped);
 
             container.Register(
                 typeof(UserManager<ApplicationUser>), typeof(ApplicationUserManager), Lifestyle.Scoped);
+
+            container.Register(
+                typeof(RoleManager<ApplicationRole>), typeof(ApplicationRoleManager), Lifestyle.Scoped);
         }
     }
 }

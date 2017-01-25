@@ -2,6 +2,7 @@
 using ExpressMapper;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
+using JI.UserIdentity.Managers;
 using JI.UserIdentity.Models;
 using Microsoft.AspNet.Identity;
 
@@ -20,7 +21,7 @@ namespace JI.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = UserManager.ChangePassword(
+            var result = UserManager.Value.ChangePassword(
                 User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
 
             return !result.Succeeded 
@@ -39,7 +40,7 @@ namespace JI.Api.Controllers
             }
 
             var user = Mapper.Map<RegisterModel, ApplicationUser>(model);
-            var result = UserManager.Create(user, model.Password);
+            var result = UserManager.Value.Create(user, model.Password);
 
             return !result.Succeeded 
                 ? GetErrorResult(result) 

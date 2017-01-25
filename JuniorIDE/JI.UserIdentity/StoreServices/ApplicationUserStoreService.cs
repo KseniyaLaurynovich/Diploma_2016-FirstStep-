@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ExpressMapper;
@@ -11,19 +12,24 @@ using Task = System.Threading.Tasks.Task;
 namespace JI.UserIdentity.StoreServices
 {
     internal class ApplicationUserStoreService 
-        : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, IUserEmailStore<ApplicationUser>
+        : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, 
+        IUserEmailStore<ApplicationUser>, IUserRoleStore<ApplicationUser>
     {
         private readonly IUsersRepository _userRepository;
+        private readonly IUserRolesRepository _userRolesRepository;
+        private readonly IRolesRepository _rolesRepository;
 
-        public ApplicationUserStoreService(IUsersRepository userRepository)
+        public ApplicationUserStoreService(
+            IUsersRepository userRepository, IUserRolesRepository userRolesRepository, IRolesRepository rolesRepository)
         {
             _userRepository = userRepository;
+            _userRolesRepository = userRolesRepository;
+            _rolesRepository = rolesRepository;
         }
 
         public Task CreateAsync(ApplicationUser user)
         {
-            var id = _userRepository.Save(Mapper.Map<ApplicationUser, User>(user));
-            return Task.FromResult(id);
+            return UpdateAsync(user);
         }
 
         public Task UpdateAsync(ApplicationUser user)
@@ -77,9 +83,6 @@ namespace JI.UserIdentity.StoreServices
             return Task.FromResult(user.PasswordHash != null);
         }
 
-        public void Dispose()
-        { }
-
         public Task SetEmailAsync(ApplicationUser user, string email)
         {
             user.Email = email;
@@ -122,6 +125,63 @@ namespace JI.UserIdentity.StoreServices
                     ? Mapper.Map<User, ApplicationUser>(user)
                     : default(ApplicationUser));
         }
-    }
 
+        public Task AddToRoleAsync(ApplicationUser user, string roleName)
+        {
+            var roleId = _rolesRepository.GetByName(roleName)?.Id;
+            if (roleId == null)
+            {
+                roleId = _rolesRepository.Save(new Role { Name = roleName });
+            }
+
+            var id = _userRolesRepository.Save(new UserRole
+            {
+                UserId = user.Id,
+                RoleId = roleId.ToString()
+            });
+
+            return Task.FromResult(id);
+        }
+
+        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
+        {
+            var roleId = _rolesRepository.GetByName(roleName)?.Id.ToString();
+
+            if (roleId == null)
+            {
+                return Task.FromResult((string)null);
+            }
+
+            var id = _userRolesRepository.Items()
+                        .FirstOrDefault(ur => ur.UserId.Equals(user.Id) && ur.RoleId.Equals(roleId))
+                        ?.Id;
+
+            if (id != null)
+            {
+                _userRolesRepository.Delete(id.Value);
+            }
+
+            return Task.FromResult(id);
+        }
+
+        public Task<IList<string>> GetRolesAsync(ApplicationUser user)
+        {
+            var roles =_userRolesRepository.Items()
+                .Where(ur => ur.UserId.Equals(user.Id))
+                .Select(ur => ur.Role.Name)
+                .ToList();
+
+            return Task.FromResult((IList<string>)roles);
+        }
+
+        public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
+        {
+            var isInRole = _userRolesRepository.Items()
+                .Any(ur => ur.UserId.Equals(user.Id) && ur.Role.Name.Equals(roleName));
+            return Task.FromResult(isInRole);
+        }
+
+        public void Dispose()
+        { }
+    }
 }

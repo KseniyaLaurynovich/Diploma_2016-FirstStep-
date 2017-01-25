@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Web;
 using System.Web.Http;
 using JI.UserIdentity.Managers;
 using Microsoft.AspNet.Identity;
@@ -8,20 +9,11 @@ namespace JI.Api.Controllers.Base
 {
     public class BaseController : ApiController
     {
-        private readonly ApplicationUserManager _userManager;
-        
-        //private ApplicationRoleManager _roleManager;
+        protected readonly Lazy<ApplicationUserManager> UserManager = 
+            new Lazy<ApplicationUserManager>(() => HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>());
 
-        protected ApplicationUserManager UserManager 
-            => _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-
-        //protected ApplicationRoleManager RoleManager
-        //{
-        //    get
-        //    {
-        //        return _roleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
-        //    }
-        //}
+        protected readonly Lazy<ApplicationRoleManager> RoleManager =
+            new Lazy<ApplicationRoleManager>(() => HttpContext.Current.GetOwinContext().GetUserManager<ApplicationRoleManager>());
 
         protected IHttpActionResult GetErrorResult(IdentityResult result)
         {

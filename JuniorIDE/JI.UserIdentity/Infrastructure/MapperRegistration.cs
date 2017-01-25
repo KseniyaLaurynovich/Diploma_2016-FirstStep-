@@ -22,6 +22,19 @@ namespace JI.UserIdentity.Infrastructure
                         user.Id = new Guid(appUser.Id);
                     }
                 });
+
+            Mapper.Register<Role, ApplicationRole>()
+                .Member(dest => dest.Id, src => src.Id.ToString());
+
+            Mapper.Register<ApplicationRole, Role>()
+                .Ignore(dest => dest.Id)
+                .After((appUser, user) =>
+                {
+                    if (appUser.Id != null)
+                    {
+                        user.Id = new Guid(appUser.Id);
+                    }
+                });
         }
     }
 }
