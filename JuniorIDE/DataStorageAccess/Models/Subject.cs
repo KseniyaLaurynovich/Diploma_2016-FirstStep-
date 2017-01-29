@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LinqToDB.Mapping;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     [Table(Name = "Subjects")]
     public class Subject : IWithIdentifier

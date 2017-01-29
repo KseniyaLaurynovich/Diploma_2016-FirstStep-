@@ -1,7 +1,8 @@
 ﻿using ExpressMapper;
 using JI.Api.Models;
 using JI.Common.Mapper.Contracts;
-using JI.UserIdentity.Models;
+using JI.DataStorageAccess.Identity.Models;
+using JI.Identity.Models;
 
 namespace JI.Api.Business.Configuration
 {

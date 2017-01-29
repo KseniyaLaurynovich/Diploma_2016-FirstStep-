@@ -1,9 +1,9 @@
-﻿using JI.DataStorageAccess.Contracts;
-using JI.DataStorageAccess.Linq2DbRepositories;
+﻿using JI.DataStorageAccess.Repositories.Contracts;
+using JI.DataStorageAccess.Repositories.Linq2DbRepositories;
 using SimpleInjector;
 using SimpleInjector.Packaging;
 
-namespace JI.DataStorageAccess.Infrastructure
+namespace JI.DataStorageAccess.Repositories.Infrastructure
 {
     public class DependencyResolverPackage : IPackage
     {

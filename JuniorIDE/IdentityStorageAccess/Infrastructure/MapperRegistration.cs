@@ -1,10 +1,10 @@
 ﻿using System;
 using ExpressMapper;
 using JI.Common.Mapper.Contracts;
-using JI.DataStorageAccess.Models;
-using JI.UserIdentity.Models;
+using JI.DataStorageAccess.Repositories.Models;
+using JI.Identity.Models;
 
-namespace JI.UserIdentity.Infrastructure
+namespace JI.DataStorageAccess.Identity.Infrastructure
 {
     public class MapperRegistration : IMapperRegistrationModule
     {

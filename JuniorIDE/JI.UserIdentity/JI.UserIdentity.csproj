@@ -84,28 +84,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\AppBuilderExtensions.cs" />
     <Compile Include="Managers\ApplicationRoleManager.cs" />
     <Compile Include="Managers\ApplicationUserManager.cs" />
-    <Compile Include="Infrastructure\DependencyResolverPackage.cs" />
-    <Compile Include="Models\ApplicationRole.cs" />
-    <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
-    <Compile Include="StoreServices\ApplicationRoleStoreService.cs" />
-    <Compile Include="StoreServices\ApplicationUserStoreService.cs" />
-    <Compile Include="Infrastructure\MapperRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataStorageAccess\JI.DataStorageAccess.csproj">
-      <Project>{ff57212d-d410-46e8-9026-4fd564187b2e}</Project>
-      <Name>JI.DataStorageAccess</Name>
+    <ProjectReference Include="..\IdentityStorageAccess\JI.DataStorageAccess.Identity.csproj">
+      <Project>{cd351683-d2b1-4820-864a-a9aa79cca425}</Project>
+      <Name>JI.DataStorageAccess.Identity</Name>
     </ProjectReference>
     <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Mapper.csproj">
       <Project>{a091cf6f-140d-4d30-aaa0-326592d0f5fd}</Project>
       <Name>JI.Common.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JI.IdentityModels\JI.Identity.Models.csproj">
+      <Project>{1d7fdc2e-a921-434b-b5c5-9db4ce4e21bd}</Project>
+      <Name>JI.Identity.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

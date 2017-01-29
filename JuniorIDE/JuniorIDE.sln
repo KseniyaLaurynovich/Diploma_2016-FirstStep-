@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "JI.DatabaseScripts", "Database\JI.DatabaseScripts.sqlproj", "{ECADE1D5-4CC1-4DB3-ABE3-4ED00E8E0D4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JI.DataStorageAccess", "DataStorageAccess\JI.DataStorageAccess.csproj", "{FF57212D-D410-46E8-9026-4FD564187B2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JI.DataStorageAccess.Repositories", "DataStorageAccess\JI.DataStorageAccess.Repositories.csproj", "{FF57212D-D410-46E8-9026-4FD564187B2E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Temp", "Temp", "{63B216BC-37B4-459B-A468-4408000CFD60}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JI.UserIdentity", "JI.UserIdentity\JI.UserIdentity.csproj", "{363D889B-FC33-42CF-8EE6-BC635907FA24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JI.Common.Mapper", "JI.Common.Mapper\JI.Common.Mapper.csproj", "{A091CF6F-140D-4D30-AAA0-326592D0F5FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JI.DataStorageAccess.Identity", "IdentityStorageAccess\JI.DataStorageAccess.Identity.csproj", "{CD351683-D2B1-4820-864A-A9AA79CCA425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JI.Identity.Models", "JI.IdentityModels\JI.Identity.Models.csproj", "{1D7FDC2E-A921-434B-B5C5-9DB4CE4E21BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +59,14 @@ Global
 		{A091CF6F-140D-4D30-AAA0-326592D0F5FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A091CF6F-140D-4D30-AAA0-326592D0F5FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A091CF6F-140D-4D30-AAA0-326592D0F5FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD351683-D2B1-4820-864A-A9AA79CCA425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD351683-D2B1-4820-864A-A9AA79CCA425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD351683-D2B1-4820-864A-A9AA79CCA425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD351683-D2B1-4820-864A-A9AA79CCA425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D7FDC2E-A921-434B-B5C5-9DB4CE4E21BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D7FDC2E-A921-434B-B5C5-9DB4CE4E21BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D7FDC2E-A921-434B-B5C5-9DB4CE4E21BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D7FDC2E-A921-434B-B5C5-9DB4CE4E21BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

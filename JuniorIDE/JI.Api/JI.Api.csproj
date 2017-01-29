@@ -173,16 +173,19 @@
     <Compile Include="Business\Configuration\MapperRegistration.cs" />
     <Compile Include="Business\Configuration\WebApiConfig.cs" />
     <Compile Include="Business\Helpers\ControllerHelper.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Base\BaseController.cs" />
-    <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\AccountApiController.cs" />
+    <Compile Include="Controllers\Base\BaseApiController.cs" />
+    <Compile Include="Controllers\RolesApiController.cs" />
+    <Compile Include="Controllers\UsersApiController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AssignedGroup.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\CreateRoleModel.cs" />
+    <Compile Include="Models\ForgotPasswordModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\RoleViewModel.cs" />
@@ -208,9 +211,17 @@
       <Project>{0ca7b780-a3c4-4174-832f-23ca9ec6b1a3}</Project>
       <Name>JI.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IdentityStorageAccess\JI.DataStorageAccess.Identity.csproj">
+      <Project>{cd351683-d2b1-4820-864a-a9aa79cca425}</Project>
+      <Name>JI.DataStorageAccess.Identity</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Mapper.csproj">
       <Project>{a091cf6f-140d-4d30-aaa0-326592d0f5fd}</Project>
       <Name>JI.Common.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JI.IdentityModels\JI.Identity.Models.csproj">
+      <Project>{1d7fdc2e-a921-434b-b5c5-9db4ce4e21bd}</Project>
+      <Name>JI.Identity.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\JI.UserIdentity\JI.UserIdentity.csproj">
       <Project>{363d889b-fc33-42cf-8ee6-bc635907fa24}</Project>

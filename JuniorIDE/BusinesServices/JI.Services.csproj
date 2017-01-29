@@ -83,9 +83,9 @@
       <Project>{c9660770-c226-42e9-bc4d-2b5c5b232bac}</Project>
       <Name>FirstStep_Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DataStorageAccess\JI.DataStorageAccess.csproj">
+    <ProjectReference Include="..\DataStorageAccess\JI.DataStorageAccess.Repositories.csproj">
       <Project>{ff57212d-d410-46e8-9026-4fd564187b2e}</Project>
-      <Name>JI.DataStorageAccess</Name>
+      <Name>JI.DataStorageAccess.Repositories</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

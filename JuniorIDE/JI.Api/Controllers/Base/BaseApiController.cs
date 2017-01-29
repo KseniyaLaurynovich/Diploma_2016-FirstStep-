@@ -7,7 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace JI.Api.Controllers.Base
 {
-    public class BaseController : ApiController
+    public class BaseApiController : ApiController
     {
         protected readonly Lazy<ApplicationUserManager> UserManager = 
             new Lazy<ApplicationUserManager>(() => HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>());

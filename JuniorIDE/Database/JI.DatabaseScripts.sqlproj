@@ -89,4 +89,7 @@
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeployment.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="JI.DatabaseScripts.refactorlog" />
+  </ItemGroup>
 </Project>

@@ -1,8 +1,7 @@
 ﻿using System;
-using JI.DataStorageAccess.Contracts;
 using LinqToDB.Mapping;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     [Table(Name = "Users")]
     public class User : IWithIdentifier
@@ -27,10 +26,13 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "Patronymic"), NotNull]
         public string Patronymic { get; set; }
 
-        [Column(Name="IsActive")]
-        public bool IsActive { get; set; }
+        [Column(Name= "IsEmailConfirmed")]
+        public bool IsEmailConfirmed { get; set; }
 
         [Column(Name = "PasswordHash")]
         public string PasswordHash { get; set; }
+
+        [Column(Name="SecurityStamp")]
+        public string SecurityStamp { get; set; }
     }
 }

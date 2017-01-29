@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 
-namespace JI.UserIdentity.Models
+namespace JI.Identity.Models
 {
     public class ApplicationUser : IUser
     {
@@ -16,8 +16,10 @@ namespace JI.UserIdentity.Models
 
         public string Patronymic { get; set; }
 
-        public bool IsActive { get; set; }
+        public bool IsEmailConfirmed { get; set; }
 
         public string PasswordHash { get; set; }
+
+        public string SecurityStamp { get; set; }
     }
 }

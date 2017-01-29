@@ -7,5 +7,6 @@
 	[FirstName]				[nvarchar](50)			NOT NULL,
 	[LastName]				[nvarchar](100)			NOT NULL,
 	[Patronymic]			[nvarchar](100)			NOT NULL,
-	[IsActive]				[bit]					DEFAULT(0) NOT NULL
+	[IsEmailConfirmed]				[bit]					DEFAULT(0) NOT NULL, 
+    [SecurityStamp] NVARCHAR(MAX) NULL
 )

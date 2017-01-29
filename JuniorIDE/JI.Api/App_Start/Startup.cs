@@ -3,10 +3,8 @@ using System.Linq;
 using System.Web.Http;
 using JI.Api;
 using JI.Common.Mapper.Contracts;
-using JI.UserIdentity.Managers;
-using JI.UserIdentity.Models;
+using JI.UserIdentity.Infrastructure;
 using JI.UserIdentity.Providers;
-using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
@@ -34,17 +32,17 @@ namespace JI.Api
             GlobalConfiguration.Configuration.DependencyResolver =
                 new SimpleInjectorWebApiDependencyResolver(container);
 
-            using (container.BeginExecutionContextScope())
-            {
-                var userStore = container.GetInstance<IUserStore<ApplicationUser>>();
-                app.CreatePerOwinContext(() => userStore);
+            //using (container.BeginExecutionContextScope())
+            //{
+            //    var userStore = container.GetInstance<IUserStore<ApplicationUser>>();
+            //    app.CreatePerOwinContext(() => userStore);
 
-                var roleStore = container.GetInstance<IRoleStore<ApplicationRole, string>>();
-                app.CreatePerOwinContext(() => roleStore);
+            //    var roleStore = container.GetInstance<IRoleStore<ApplicationRole, string>>();
+            //    app.CreatePerOwinContext(() => roleStore);
 
-                app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-                app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
-            }
+            //    app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            //    app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
+            //}
         }
 
         public void ConfigureAuth(IAppBuilder app)
@@ -57,7 +55,7 @@ namespace JI.Api
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true
             };
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseApplicationIdentity();
             app.UseOAuthBearerTokens(oAuthOptions);
         }
 

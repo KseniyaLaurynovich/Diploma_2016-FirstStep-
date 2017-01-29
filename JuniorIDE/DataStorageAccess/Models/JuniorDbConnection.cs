@@ -1,7 +1,7 @@
 ﻿using LinqToDB;
 using LinqToDB.Data;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     internal class JuniorDbConnection : DataConnection
     {

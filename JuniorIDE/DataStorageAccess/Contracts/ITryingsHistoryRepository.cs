@@ -1,6 +1,6 @@
-﻿using JI.DataStorageAccess.Models;
+﻿using JI.DataStorageAccess.Repositories.Models;
 
-namespace JI.DataStorageAccess.Contracts
+namespace JI.DataStorageAccess.Repositories.Contracts
 {
     public interface ITryingsHistoryRepository : IRepository<TryingHistory>
     {

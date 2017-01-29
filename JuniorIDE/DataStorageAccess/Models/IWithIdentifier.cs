@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     public interface IWithIdentifier
     {

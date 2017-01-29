@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using JI.DataStorageAccess.Contracts;
-using JI.DataStorageAccess.Models;
+using JI.DataStorageAccess.Repositories.Contracts;
+using JI.DataStorageAccess.Repositories.Models;
 using LinqToDB;
 
-namespace JI.DataStorageAccess.Linq2DbRepositories
+namespace JI.DataStorageAccess.Repositories.Linq2DbRepositories
 {
     public abstract class BaseRepository<T> : IRepository<T>
         where T : class, IWithIdentifier
@@ -45,13 +45,10 @@ namespace JI.DataStorageAccess.Linq2DbRepositories
             {
                 if (obj.Id == Guid.Empty)
                 {
-                    obj.Id = Guid.NewGuid();
-                    dbConnection.InsertWithIdentity(obj);
+                    return (Guid)dbConnection.InsertWithIdentity(obj);
                 }
-                else
-                {
-                    dbConnection.Update(obj);
-                }
+
+                dbConnection.Update(obj);
             }
             
             return obj.Id;

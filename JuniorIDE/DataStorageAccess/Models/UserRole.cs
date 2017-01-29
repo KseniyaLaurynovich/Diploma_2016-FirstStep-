@@ -1,7 +1,7 @@
 ﻿using System;
 using LinqToDB.Mapping;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     [Table(Name="UserRoles")]
     public class UserRole : IWithIdentifier
@@ -10,10 +10,10 @@ namespace JI.DataStorageAccess.Models
         public Guid Id { get; set; }
 
         [Column(Name="UserId"), NotNull]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Column(Name = "RoleId"), NotNull]
-        public string RoleId { get; set; }
+        public Guid RoleId { get; set; }
 
         [Association(ThisKey = "UserId", OtherKey = "Id")]
         public User User { get; set; }

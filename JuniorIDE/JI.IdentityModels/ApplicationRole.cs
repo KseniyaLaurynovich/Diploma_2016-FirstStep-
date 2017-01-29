@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 
-namespace JI.UserIdentity.Models
+namespace JI.Identity.Models
 {
     public class ApplicationRole : IRole<string>
     {

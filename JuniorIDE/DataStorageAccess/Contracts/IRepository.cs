@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using JI.DataStorageAccess.Models;
+using JI.DataStorageAccess.Repositories.Models;
 
-namespace JI.DataStorageAccess.Contracts
+namespace JI.DataStorageAccess.Repositories.Contracts
 {
     public interface IRepository<T>
         where T : class, IWithIdentifier

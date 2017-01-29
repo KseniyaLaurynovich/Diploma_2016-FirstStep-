@@ -1,8 +1,7 @@
 ﻿using System;
-using JI.DataStorageAccess.Contracts;
 using LinqToDB.Mapping;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     [Table(Name = "Projects")]
     public class Project : IWithIdentifier

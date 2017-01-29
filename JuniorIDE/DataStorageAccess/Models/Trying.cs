@@ -1,7 +1,7 @@
 ﻿using System;
 using LinqToDB.Mapping;
 
-namespace JI.DataStorageAccess.Models
+namespace JI.DataStorageAccess.Repositories.Models
 {
     [Table(Name = "Tryings")]
     public class Trying : IWithIdentifier
