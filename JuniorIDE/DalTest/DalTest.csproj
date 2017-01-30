@@ -49,12 +49,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataStorageAccess\JI.DataStorageAccess.Repositories.csproj">
-      <Project>{ff57212d-d410-46e8-9026-4fd564187b2e}</Project>
-      <Name>JI.DataStorageAccess.Repositories</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

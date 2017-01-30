@@ -14,7 +14,7 @@ namespace JI.Api
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:8080");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
             {

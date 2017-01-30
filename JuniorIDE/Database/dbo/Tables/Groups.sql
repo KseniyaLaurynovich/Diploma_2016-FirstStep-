@@ -1,5 +1,0 @@
-﻿CREATE TABLE [dbo].[Groups] (
-    [Id]		UNIQUEIDENTIFIER	DEFAULT NEWID() PRIMARY KEY,
-	[Name]		NVARCHAR (50)		NOT NULL
-);
-

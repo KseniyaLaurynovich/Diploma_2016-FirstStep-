@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[AssignRules] (
+    [Id]        UNIQUEIDENTIFIER	NOT NULL DEFAULT NEWID() PRIMARY KEY,
+    [TaskId]	UNIQUEIDENTIFIER    NOT NULL,
+    [GroupId]	UNIQUEIDENTIFIER	NOT NULL,
+    [Deadline]  DATETIME			NOT NULL,
+	[IsVisible]	BIT					DEFAULT 0,
+    CONSTRAINT [AssignRule_Group] FOREIGN KEY ([GroupId]) REFERENCES [dbo].[Groups] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [AssignRule_Task] FOREIGN KEY ([TaskId]) REFERENCES [dbo].[Tasks] ([Id]) ON DELETE CASCADE
+);
+

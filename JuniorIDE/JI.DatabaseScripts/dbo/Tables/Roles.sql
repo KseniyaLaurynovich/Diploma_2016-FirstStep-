@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Roles]
+(
+	[Id]		UNIQUEIDENTIFIER	DEFAULT NEWID() PRIMARY KEY,
+	[Name]		[nvarchar](256)		NOT NULL
+)
