@@ -6,7 +6,6 @@ import './Header.scss'
 export const Header = () => (
   <div>
     <LoadingBar />
-    <h1>Junior IDE</h1>
     <IndexLink to='/' activeClassName='route--active'>
       Home
     </IndexLink>
@@ -16,7 +15,11 @@ export const Header = () => (
     </Link>
     {' · '}
     <Link to='/login' activeClassName='route--active'>
-      Login
+      Log in
+    </Link>
+    {' · '}
+    <Link to='/registration' activeClassName='route--active'>
+      Sign up
     </Link>
   </div>
 )

@@ -1,6 +1,6 @@
-import { utils } from './helper'
+import requests from '../../../utils/requests'
 import { browserHistory } from 'react-router'
-import ReactDOM from 'react-dom'
+import { saveUserCredentials } from '../../../store/user'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -10,7 +10,6 @@ export const ISREMEMBER_CHANGED     = 'ISREMEMBER_CHANGED'
 export const LOGINSTATE_CHANGED     = 'LOGINSTATE_CHANGED'
 
 export const LOGIN_REQUEST_FAILED   = 'LOGIN_REQUEST_FAILED'
-export const LOGIN_REQUEST_SUCCESS  = 'LOGIN_REQUEST_SUCCESS'
 
 // ------------------------------------
 // Actions
@@ -32,7 +31,7 @@ export const handlePasswordChange = (event) => {
 export const handleIsRememberChange = (event) => {
   return {
     type    : ISREMEMBER_CHANGED,
-    payload : event.target.value
+    payload : event.target.value == "on" ? true : false
   }
 }
 
@@ -40,13 +39,6 @@ export const setLoginState = (loginState) => {
   return {
     type    : LOGINSTATE_CHANGED,
     payload : loginState
-  }
-}
-
-export const loginSuccess = (userData) => {
-  return {
-    type    : LOGIN_REQUEST_SUCCESS,
-    payload : userData
   }
 }
 
@@ -62,11 +54,10 @@ export function login(e){
 
   return (dispatch, getState) => {
 
-    dispatch(setLoginState("loading"))
-
+    dispatch(setLoginState('loading'))
     var data = getState().login;
 
-    utils.getToken({username: data.username, password: data.password})
+    requests.getToken({username: data.username, password: data.password})
     .then(function(response){
 
       const userData = {
@@ -75,18 +66,14 @@ export function login(e){
         access_token: response.data.access_token,
         expires: response.data['.expires']
       }
-      dispatch(loginSuccess(userData))
-      dispatch(setLoginState("success"))
+      dispatch(setLoginState('success'))
+      dispatch(saveUserCredentials(userData, data.isRemember))
+
       browserHistory.push('/')
 
     }, function(error){
-
-      var errorInfo = {
-        loginState: "error",
-        loginError: error.response.data.error_description
-      }
-      dispatch(loginFailed(errorInfo))
-      dispatch(setLoginState("error"))
+      dispatch(loginFailed(error.response.data.error_description))
+      dispatch(setLoginState('error'))
     })
   }
 }
@@ -99,14 +86,11 @@ export const actions = {
 }
 
 // ------------------------------------
-// Actions
+//  Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
   [LOGIN_REQUEST_FAILED]  : (state, action) => {
-      return Object.assign({}, state, action.payload)
-  },
-  [LOGIN_REQUEST_SUCCESS] : (state, action) => {
-      return Object.assign({}, state, action.payload)
+      return Object.assign({}, state, { loginError: action.payload })
   },
   [USERNAME_CHANGED]      : (state, action) => {
     return Object.assign({}, state, { username: action.payload })
@@ -129,15 +113,11 @@ const initialState = {
   username      : null,
   password      : null,
   isRemember    : false,
-  roles         : null,
-  access_token  : null,
-  expires       : null,
   loginState    : null,
   loginError    : null
 }
 
 export default function loginReducer (state = initialState, action){
   const handler = ACTION_HANDLERS[action.type]
-
   return handler ? handler(state, action) : state
 }

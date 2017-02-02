@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux'
 
 import locationReducer from './location'
+import userReducer from './user'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
-    location: locationReducer,
-    loadingBar: loadingBarReducer,
+    location    : locationReducer,
+    loadingBar  : loadingBarReducer,
+    user        : userReducer,
     ...asyncReducers
   })
 }

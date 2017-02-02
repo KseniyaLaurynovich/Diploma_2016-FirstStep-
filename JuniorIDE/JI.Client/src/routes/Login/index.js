@@ -11,10 +11,8 @@ export default (store) => ({
       const reducer = require('./modules/login').default
 
       injectReducer(store, { key: 'login', reducer })
-
       cb(null, Login)
 
     }, 'login')
-    
   }
 })

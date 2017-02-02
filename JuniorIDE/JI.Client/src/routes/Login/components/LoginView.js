@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import { Form, FormGroup, Col, FormControl, Checkbox, Button, ControlLabel, HelpBlock } from 'react-bootstrap'
-
-const validationState = ['success','warning','error',null]
+import { validationState } from '../../../utils/constants'
+import './LoginView.scss'
 
 export const Login = (props) => (
-    <Form horizontal onSubmit={props.submit}>
-      {props.loginState in validationState}
-     <FormGroup controlId="formHorizontalEmail"
-                validationState={props.loginState in validationState ? props.loginState : null}>
+    <Form onSubmit={props.submit} className='loginForm'>
+      <h2 className='header'>Junior IDE</h2>
+     <FormGroup controlId="formHorizontalUsername"
+                validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
        <Col componentClass={ControlLabel} sm={2}>
          Username
        </Col>
@@ -18,7 +18,7 @@ export const Login = (props) => (
      </FormGroup>
 
      <FormGroup controlId="formHorizontalPassword"
-                validationState={props.loginState in validationState ? props.loginState : null}>
+                validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
        <Col componentClass={ControlLabel} sm={2}>
          Password
        </Col>
@@ -26,14 +26,15 @@ export const Login = (props) => (
          <FormControl type="password" required placeholder="Password" onChange={props.onPasswordChange}/>
        </Col>
      </FormGroup>
-     <FormGroup>
+
+     <FormGroup controlId="formHorizontalRemember">
        <Col smOffset={2} sm={10}>
          <Checkbox onChange={props.onIsRememberChange}>Remember me</Checkbox>
        </Col>
      </FormGroup>
 
 
-     <FormGroup validationState={props.loginState}>
+     <FormGroup validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
         <Col smOffset={2} sm={10}>
           <HelpBlock>{props.loginState == 'error' ? props.loginError : ''}</HelpBlock>
         </Col>
