@@ -18,13 +18,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   registrationState     :  state.registration.registrationState,
   registrationError     :  state.registration.registrationError,
-  usernameError         :  state.registration.usernameError,
-  passwordError         :  state.registration.passwordError,
-  consfirmPasswordError :  state.registration.consfirmPasswordError,
-  firstNameError        :  state.registration.firstNameError,
-  lastNameError         :  state.registration.lastNameError,
-  patronymicError       :  state.registration.patronymicError,
-  emailError            :  state.registration.emailError
+  confirmPasswordError  :  state.registration.confirmPasswordError
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Registration)

@@ -6,7 +6,7 @@ import Login from '../components/LoginView'
 
 const mapDispatchToProps = {
   submit              : actions.login,
-  onUsernameChange    : actions.handleUsernameChange,
+  onLoginChange       : actions.handleLoginChange,
   onPasswordChange    : actions.handlePasswordChange,
   onIsRememberChange  : actions.handleIsRememberChange
 }

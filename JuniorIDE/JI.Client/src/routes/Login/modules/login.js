@@ -4,19 +4,18 @@ import { saveUserCredentials } from '../../../store/user'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const USERNAME_CHANGED       = 'USERNAME_CHANGED'
+export const LOGIN_CHANGED          = 'LOGIN_CHANGED'
 export const PASSWORD_CHANGED       = 'PASSWORD_CHANGED'
 export const ISREMEMBER_CHANGED     = 'ISREMEMBER_CHANGED'
 export const LOGINSTATE_CHANGED     = 'LOGINSTATE_CHANGED'
 
 export const LOGIN_REQUEST_FAILED   = 'LOGIN_REQUEST_FAILED'
-
 // ------------------------------------
 // Actions
 // ------------------------------------
-export const handleUsernameChange = (event) => {
+export const handleLoginChange = (event) => {
   return {
-    type    : USERNAME_CHANGED,
+    type    : LOGIN_CHANGED,
     payload : event.target.value
   }
 }
@@ -57,7 +56,7 @@ export function login(e){
     dispatch(setLoginState('loading'))
     var data = getState().login;
 
-    requests.getToken({username: data.username, password: data.password})
+    requests.getToken({username: data.login, password: data.password})
     .then(function(response){
 
       const userData = {
@@ -82,7 +81,7 @@ export const actions = {
   login,
   handleIsRememberChange,
   handlePasswordChange,
-  handleUsernameChange
+  handleLoginChange
 }
 
 // ------------------------------------
@@ -92,8 +91,8 @@ const ACTION_HANDLERS = {
   [LOGIN_REQUEST_FAILED]  : (state, action) => {
       return Object.assign({}, state, { loginError: action.payload })
   },
-  [USERNAME_CHANGED]      : (state, action) => {
-    return Object.assign({}, state, { username: action.payload })
+  [LOGIN_CHANGED]         : (state, action) => {
+    return Object.assign({}, state, { login: action.payload })
   },
   [PASSWORD_CHANGED]      : (state, action) => {
     return Object.assign({}, state, { password: action.payload })
@@ -110,7 +109,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  username      : null,
+  login         : null,
   password      : null,
   isRemember    : false,
   loginState    : null,

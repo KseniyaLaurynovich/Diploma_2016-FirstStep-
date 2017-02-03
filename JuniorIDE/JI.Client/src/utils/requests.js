@@ -13,8 +13,18 @@ export function getToken(userData){
   });
 }
 
+export function registerUser(registrationData){
+  return axios({
+    method: 'post',
+    url: BASE_URL + '/account/register',
+    headers:{"Content-Type": "application/json"},
+    data: JSON.stringify(registrationData)
+  });
+}
+
 const requests = {
-  getToken
+  getToken,
+  registerUser
 }
 
 export default requests

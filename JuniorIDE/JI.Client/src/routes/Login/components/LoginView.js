@@ -7,13 +7,13 @@ import './LoginView.scss'
 export const Login = (props) => (
     <Form onSubmit={props.submit} className='loginForm'>
       <h2 className='header'>Junior IDE</h2>
-     <FormGroup controlId="formHorizontalUsername"
+     <FormGroup controlId="formHorizontalLogin"
                 validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
        <Col componentClass={ControlLabel} sm={2}>
-         Username
+         Login
        </Col>
        <Col sm={10}>
-         <FormControl type="text" required placeholder="Username" onChange={props.onUsernameChange}/>
+         <FormControl type="text" required placeholder="Login" onChange={props.onLoginChange}/>
        </Col>
      </FormGroup>
 
@@ -32,7 +32,6 @@ export const Login = (props) => (
          <Checkbox onChange={props.onIsRememberChange}>Remember me</Checkbox>
        </Col>
      </FormGroup>
-
 
      <FormGroup validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
         <Col smOffset={2} sm={10}>

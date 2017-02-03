@@ -5,8 +5,8 @@ import { validationState } from '../../../utils/constants'
 
 export const Registration = (props) => (
     <Form horizontal onSubmit={props.submit}>
-     <FormGroup controlId="formHorizontalUsername"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+     <h2 className='header'>Junior IDE</h2>
+     <FormGroup controlId="formHorizontalUsername">
        <Col componentClass={ControlLabel} sm={2}>
          Username
        </Col>
@@ -16,8 +16,7 @@ export const Registration = (props) => (
        </Col>
      </FormGroup>
 
-     <FormGroup controlId="formHorizontalEmail"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+     <FormGroup controlId="formHorizontalEmail">
        <Col componentClass={ControlLabel} sm={2}>
          Email
        </Col>
@@ -27,8 +26,7 @@ export const Registration = (props) => (
        </Col>
      </FormGroup>
 
-     <FormGroup controlId="formHorizontalPassword"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+     <FormGroup controlId="formHorizontalPassword">
        <Col componentClass={ControlLabel} sm={2}>
          Password
        </Col>
@@ -39,7 +37,7 @@ export const Registration = (props) => (
      </FormGroup>
 
      <FormGroup controlId="formHorizontalConfirmPassword"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+                validationState={props.confirmPasswordError != null ? 'error' : null}>
        <Col componentClass={ControlLabel} sm={2}>
          Confirm password
        </Col>
@@ -49,8 +47,9 @@ export const Registration = (props) => (
        </Col>
      </FormGroup>
 
-     <FormGroup controlId="formHorizontalFirstName"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+     <hr/>
+
+     <FormGroup controlId="formHorizontalFirstName">
        <Col componentClass={ControlLabel} sm={2}>
          First name
        </Col>
@@ -60,8 +59,7 @@ export const Registration = (props) => (
        </Col>
      </FormGroup>
 
-     <FormGroup controlId="formHorizontalLastName"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+     <FormGroup controlId="formHorizontalLastName">
        <Col componentClass={ControlLabel} sm={2}>
          Last name
        </Col>
@@ -71,8 +69,7 @@ export const Registration = (props) => (
        </Col>
      </FormGroup>
 
-     <FormGroup controlId="formHorizontalPatronymic"
-                validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
+     <FormGroup controlId="formHorizontalPatronymic">
        <Col componentClass={ControlLabel} sm={2}>
          Patronymic
        </Col>
@@ -84,7 +81,7 @@ export const Registration = (props) => (
 
      <FormGroup validationState={validationState.indexOf(props.registrationState) != -1 ? props.registrationState : null}>
         <Col smOffset={2} sm={10}>
-          <HelpBlock>{props.registrationState == 'error' ? props.loginError : ''}</HelpBlock>
+          <HelpBlock>{props.registrationError}</HelpBlock>
         </Col>
      </FormGroup>
 
