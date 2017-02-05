@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import './Header.scss'
 import LogoImage from '../../assets/Logo.png'
 
-export const Header = () => (
+export const Header = (props) => (
   <Navbar inverse fixedBottom collapseOnSelect>
   <Navbar.Header>
     <Navbar.Brand>
@@ -27,7 +27,9 @@ export const Header = () => (
       <LinkContainer to="/counter">
        <NavItem eventKey={3}>Counter</NavItem>
       </LinkContainer>
+
     </Nav>
+    {props.children}
   </Navbar.Collapse>
 </Navbar>
 )
