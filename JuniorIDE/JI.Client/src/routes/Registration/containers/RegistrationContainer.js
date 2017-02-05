@@ -16,7 +16,7 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  registrationState     :  state.registration.registrationState,
+  validationState       :  state.registration.validationState,
   registrationError     :  state.registration.registrationError,
   confirmPasswordError  :  state.registration.confirmPasswordError
 })

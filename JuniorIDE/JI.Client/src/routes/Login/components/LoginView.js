@@ -1,53 +1,49 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { Link } from 'react-router'
 import { Form, FormGroup, Col, FormControl, Checkbox, Button, ControlLabel, HelpBlock } from 'react-bootstrap'
-import { validationState } from '../../../utils/constants'
 import './LoginView.scss'
+import LogoImage from '../../../assets/Logo.png'
 
 export const Login = (props) => (
-    <Form onSubmit={props.submit} className='loginForm'>
-      <h2 className='header'>Junior IDE</h2>
+  <div className='loginPage'>
+    <Form className='loginForm' onSubmit={props.submit}>
+     <img className='logo' src={LogoImage} />
      <FormGroup controlId="formHorizontalLogin"
-                validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
-       <Col componentClass={ControlLabel} sm={2}>
-         Login
-       </Col>
-       <Col sm={10}>
-         <FormControl type="text" required placeholder="Login" onChange={props.onLoginChange}/>
-       </Col>
+                validationState={ props.validationState }>
+       <FormControl type="text" required placeholder="Login" onChange={props.onLoginChange}/>
      </FormGroup>
 
      <FormGroup controlId="formHorizontalPassword"
-                validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
-       <Col componentClass={ControlLabel} sm={2}>
-         Password
-       </Col>
-       <Col sm={10}>
-         <FormControl type="password" required placeholder="Password" onChange={props.onPasswordChange}/>
-       </Col>
+                validationState={ props.validationState }>
+       <FormControl type="password" required placeholder="Password" onChange={props.onPasswordChange}/>
      </FormGroup>
 
      <FormGroup controlId="formHorizontalRemember">
-       <Col smOffset={2} sm={10}>
-         <Checkbox onChange={props.onIsRememberChange}>Remember me</Checkbox>
-       </Col>
+       <Checkbox onChange={props.onIsRememberChange}>Remember me</Checkbox>
      </FormGroup>
 
-     <FormGroup validationState={validationState.indexOf(props.loginState) != -1 ? props.loginState : null}>
-        <Col smOffset={2} sm={10}>
-          <HelpBlock>{props.loginState == 'error' ? props.loginError : ''}</HelpBlock>
-        </Col>
+     <FormGroup validationState={ props.validationState }>
+        <HelpBlock>{ props.loginError }</HelpBlock>
      </FormGroup>
 
      <FormGroup>
-       <Col smOffset={2} sm={10}>
-         <Button type="submit" disabled={props.isLoading}>
-           {props.loginState == 'loading' ? 'Loading...' : 'Sign in'}
-         </Button>
-       </Col>
+       <Button className='btn-submit' type="submit" disabled={ props.isLoading }>
+         {props.isLoading ? 'Loading...' : 'Sign in'}
+       </Button>
      </FormGroup>
-
+      <p className="message">{'Not registered? '}
+        <Link to='/registration' activeClassName='route--active'>
+          Create an account
+        </Link>
+      </p>
+      <p className='message'>
+        <Link to='/forgotpasword' activeClassName='route--active'>
+          Forgot password?
+        </Link>
+      </p>
    </Form>
+ </div>
  )
 
  Login.propTypes = {

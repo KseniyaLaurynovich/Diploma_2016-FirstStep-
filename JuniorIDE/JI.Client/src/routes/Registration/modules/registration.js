@@ -1,22 +1,23 @@
 import requests from '../../../utils/requests'
 import { browserHistory } from 'react-router'
+import { validationStates } from '../../../utils/constants'
+import helpers from '../../../utils/helpers'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const USERNAME_CHANGED         = 'USERNAME_CHANGED'
-export const PASSWORD_CHANGED         = 'PASSWORD_CHANGED'
-export const CONFIRM_PASSWORD_CHANGED = 'CONFIRM_PASSWORD_CHANGED'
-export const FIRST_NAME_CHANGED       = 'FIRST_NAME_CHANGED'
-export const LAST_NAME_CHANGED        = 'LAST_NAME_CHANGED'
-export const PATRONYMIC_CHANGED       = 'PATRONYMIC_CHANGED'
-export const EMAIL_CHANGED            = 'EMAIL_CHANGED'
-
-export const SET_REGISTRATION_STATE     = 'SET_REGISTRATION_STATE'
-export const SET_REGISTRATION_ERROR     = 'SET_REGISTRATION_ERROR'
-export const SET_CONFIRM_PASSWORD_ERROR = 'SET_CONFIRM_PASSWORD_ERROR'
-export const RESET_ERRORS               = 'RESET_ERRORS'
-
-export const REGISTRATION_FAILED      = 'REGISTRATION_FAILED'
+export const USERNAME_CHANGED                         = 'USERNAME_CHANGED'
+export const PASSWORD_CHANGED                         = 'PASSWORD_CHANGED'
+export const CONFIRM_PASSWORD_CHANGED                 = 'CONFIRM_PASSWORD_CHANGED'
+export const FIRST_NAME_CHANGED                       = 'FIRST_NAME_CHANGED'
+export const LAST_NAME_CHANGED                        = 'LAST_NAME_CHANGED'
+export const PATRONYMIC_CHANGED                       = 'PATRONYMIC_CHANGED'
+export const EMAIL_CHANGED                            = 'EMAIL_CHANGED'
+export const REGISTRATION_VALIDATIONSTATE_CHANGED     = 'REGISTRATION_VALIDATIONSTATE_CHANGED'
+export const SET_REGISTRATION_ERROR                   = 'SET_REGISTRATION_ERROR'
+export const SET_CONFIRM_PASSWORD_ERROR               = 'SET_CONFIRM_PASSWORD_ERROR'
+export const SET_ISLOADING                            = 'SET_ISLOADING'
+export const RESET_ERRORS                             = 'RESET_ERRORS'
+export const REGISTRATION_FAILED                      = 'REGISTRATION_FAILED'
 
 // ------------------------------------
 // Actions
@@ -84,9 +85,16 @@ export const setRegistrationError = (error) => {
   }
 }
 
-export const setRegistrationState = (state) => {
+export const setValidationState = (state) => {
   return {
-    type    : SET_REGISTRATION_STATE,
+    type    : REGISTRATION_VALIDATIONSTATE_CHANGED,
+    payload : state
+  }
+}
+
+export const setIsLoading = (state) => {
+  return {
+    type    : SET_ISLOADING,
     payload : state
   }
 }
@@ -102,7 +110,7 @@ export function registration(e){
 
   return (dispatch, getState) => {
     dispatch(resetErrors())
-    dispatch(setRegistrationState('loading'))
+    dispatch(setIsLoading(true))
 
     var data = getState().registration;
     var dataUser = {
@@ -118,17 +126,17 @@ export function registration(e){
     if(validateRegistrationModel(dispatch, dataUser)){
 
       requests.registerUser(dataUser).then(function(response){
-      dispatch(setRegistrationState('success'))
+      dispatch(setValidationState(validationStates.success))
+      dispatch(setIsLoading(false))
+
       browserHistory.push('/login')
 
       }, function(error){
-
-        var errorMessage = ""
-        for (var property in error.response.data.ModelState) {
-          errorMessage += error.response.data.ModelState[property].join('\n')
-        }
-        dispatch(setRegistrationState('error'))
+        var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
+        
+        dispatch(setValidationState(validationStates.error))
         dispatch(setRegistrationError(errorMessage))
+        dispatch(setIsLoading(false))
       })
     }
   }
@@ -160,38 +168,41 @@ export const actions = {
 //  Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-[USERNAME_CHANGED]            : (state, action) => {
+[USERNAME_CHANGED]                            : (state, action) => {
     return Object.assign({}, state, { username: action.payload })
   },
-  [PASSWORD_CHANGED]          : (state, action) => {
+[PASSWORD_CHANGED]                            : (state, action) => {
     return Object.assign({}, state, { password: action.payload })
   },
-  [CONFIRM_PASSWORD_CHANGED]  : (state, action) => {
+[CONFIRM_PASSWORD_CHANGED]                    : (state, action) => {
     return Object.assign({}, state, { confirmPassword: action.payload })
   },
-  [EMAIL_CHANGED]             : (state, action) => {
+[EMAIL_CHANGED]                               : (state, action) => {
     return Object.assign({}, state, { email: action.payload })
   },
-  [FIRST_NAME_CHANGED]        : (state, action) => {
+[FIRST_NAME_CHANGED]                          : (state, action) => {
     return Object.assign({}, state, { firstname: action.payload })
   },
-  [LAST_NAME_CHANGED]         : (state, action) => {
+[LAST_NAME_CHANGED]                           : (state, action) => {
     return Object.assign({}, state, { lastname: action.payload })
   },
-  [PATRONYMIC_CHANGED]        : (state, action) => {
+[PATRONYMIC_CHANGED]                           : (state, action) => {
     return Object.assign({}, state, { patronymic: action.payload })
   },
-  [SET_CONFIRM_PASSWORD_ERROR] : (state, action) => {
+[SET_CONFIRM_PASSWORD_ERROR]                   : (state, action) => {
     return Object.assign({}, state, { confirmPasswordError: action.payload })
   },
-  [RESET_ERRORS]                : (state, action) => {
+[RESET_ERRORS]                                 : (state, action) => {
     return Object.assign({}, state, { confirmPasswordError: null})
   },
-  [SET_REGISTRATION_ERROR]      : (state, action) => {
+[SET_REGISTRATION_ERROR]                       : (state, action) => {
     return Object.assign({}, state, { registrationError: action.payload})
   },
-  [SET_REGISTRATION_STATE]      : (state, action) => {
-    return Object.assign({}, state, { registrationState: action.payload})
+[REGISTRATION_VALIDATIONSTATE_CHANGED]         : (state, action) => {
+    return Object.assign({}, state, { validationState: action.payload})
+  },
+[SET_ISLOADING]                                 : (state, action) => {
+    return Object.assign({}, state, { isLoading: action.payload})
   }
 }
 
@@ -208,7 +219,8 @@ const initialState = {
   confirmPassword     : null,
   confirmPasswordError: null,
   registrationError   : null,
-  registrationState   : null
+  validationState     : null,
+  isLoading           : false
 }
 
 export default function registrationReducer (state = initialState, action){

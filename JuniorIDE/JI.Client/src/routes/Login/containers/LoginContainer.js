@@ -12,8 +12,9 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  loginState :  state.login.loginState,
-  loginError :  state.login.loginError
+  validationState  :  state.login.validationState,
+  loginError       :  state.login.loginError,
+  isLoading        :  state.login.isLoading
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

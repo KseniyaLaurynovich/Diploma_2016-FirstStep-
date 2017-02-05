@@ -22,9 +22,18 @@ export function registerUser(registrationData){
   });
 }
 
+export function fetchUserInfo(token){
+  return axios({
+    method: 'get',
+    url: BASE_URL + '/account/info',
+    headers:{"Authorization": "Bearer " + token}
+  });
+}
+
 const requests = {
   getToken,
-  registerUser
+  registerUser,
+  fetchUserInfo
 }
 
 export default requests

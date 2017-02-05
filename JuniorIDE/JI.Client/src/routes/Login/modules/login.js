@@ -1,15 +1,16 @@
 import requests from '../../../utils/requests'
+import { validationStates } from '../../../utils/constants'
 import { browserHistory } from 'react-router'
 import { saveUserCredentials } from '../../../store/user'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const LOGIN_CHANGED          = 'LOGIN_CHANGED'
-export const PASSWORD_CHANGED       = 'PASSWORD_CHANGED'
-export const ISREMEMBER_CHANGED     = 'ISREMEMBER_CHANGED'
-export const LOGINSTATE_CHANGED     = 'LOGINSTATE_CHANGED'
-
-export const LOGIN_REQUEST_FAILED   = 'LOGIN_REQUEST_FAILED'
+export const LOGIN_CHANGED                    = 'LOGIN_CHANGED'
+export const PASSWORD_CHANGED                 = 'PASSWORD_CHANGED'
+export const ISREMEMBER_CHANGED               = 'ISREMEMBER_CHANGED'
+export const LOGIN_VALIDATIONSTATE_CHANGED    = 'LOGIN_VALIDATIONSTATE_CHANGED'
+export const SET_ISLOADING                    = 'SET_ISLOADING'
+export const LOGIN_REQUEST_FAILED             = 'LOGIN_REQUEST_FAILED'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -34,10 +35,17 @@ export const handleIsRememberChange = (event) => {
   }
 }
 
-export const setLoginState = (loginState) => {
+export const setValidationState = (state) => {
   return {
-    type    : LOGINSTATE_CHANGED,
-    payload : loginState
+    type    : LOGIN_VALIDATIONSTATE_CHANGED,
+    payload : state
+  }
+}
+
+export const setIsLoading = (isLoading) => {
+  return {
+    type    : SET_ISLOADING,
+    payload : isLoading
   }
 }
 
@@ -53,7 +61,7 @@ export function login(e){
 
   return (dispatch, getState) => {
 
-    dispatch(setLoginState('loading'))
+    dispatch(setIsLoading(true))
     var data = getState().login;
 
     requests.getToken({username: data.login, password: data.password})
@@ -65,14 +73,16 @@ export function login(e){
         access_token: response.data.access_token,
         expires: response.data['.expires']
       }
-      dispatch(setLoginState('success'))
+      dispatch(setValidationState(validationStates.success))
       dispatch(saveUserCredentials(userData, data.isRemember))
+      dispatch(setIsLoading(false))
 
       browserHistory.push('/')
 
     }, function(error){
       dispatch(loginFailed(error.response.data.error_description))
-      dispatch(setLoginState('error'))
+      dispatch(setValidationState(validationStates.error))
+      dispatch(setIsLoading(false))
     })
   }
 }
@@ -88,32 +98,36 @@ export const actions = {
 //  Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [LOGIN_REQUEST_FAILED]  : (state, action) => {
+  [LOGIN_REQUEST_FAILED]            : (state, action) => {
       return Object.assign({}, state, { loginError: action.payload })
   },
-  [LOGIN_CHANGED]         : (state, action) => {
+  [LOGIN_CHANGED]                   : (state, action) => {
     return Object.assign({}, state, { login: action.payload })
   },
-  [PASSWORD_CHANGED]      : (state, action) => {
+  [PASSWORD_CHANGED]                : (state, action) => {
     return Object.assign({}, state, { password: action.payload })
   },
-  [ISREMEMBER_CHANGED]    : (state, action) => {
+  [ISREMEMBER_CHANGED]              : (state, action) => {
     return Object.assign({}, state, { isRemember: action.payload })
   },
-  [LOGINSTATE_CHANGED]        : (state, action) => {
-    return Object.assign({}, state, { loginState: action.payload })
+  [LOGIN_VALIDATIONSTATE_CHANGED]   : (state, action) => {
+    return Object.assign({}, state, { validationState: action.payload })
   },
+  [SET_ISLOADING]                   : (state, action) => {
+    return Object.assign({}, state, { isLoading: action.payload })
+  }
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
 const initialState = {
-  login         : null,
-  password      : null,
-  isRemember    : false,
-  loginState    : null,
-  loginError    : null
+  login              : null,
+  password           : null,
+  isRemember         : false,
+  validationState    : null,
+  loginError         : null,
+  isLoading          : false
 }
 
 export default function loginReducer (state = initialState, action){

@@ -1,1 +1,4 @@
-export const validationState = ['success','warning','error',null]
+export const validationStates = {
+  error : 'error',
+  success : 'success'
+}
