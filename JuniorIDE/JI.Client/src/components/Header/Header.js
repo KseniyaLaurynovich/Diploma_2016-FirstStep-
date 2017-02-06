@@ -1,35 +1,49 @@
 import React from 'react'
-import LoadingBar from 'react-redux-loading-bar'
 import { IndexLink, Link } from 'react-router'
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import './Header.scss'
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
+
 import LogoImage from '../../assets/Logo.png'
+import './Header.scss'
+
+const renderAccount = (props) =>(
+  <Nav pullRight>
+      <NavDropdown eventKey={4} title={props.name}  id="basic-nav-dropdown">
+       <MenuItem eventKey={4.1} onSelect={props.changePassword}>Change password</MenuItem>
+       <MenuItem divider />
+       <MenuItem eventKey={4.3} onSelect={props.logoutUser}>Logout</MenuItem>
+      </NavDropdown>
+    </Nav>
+)
+
+const renderNavItem = (item, index) => (
+  <LinkContainer to={item.to} key={index}>
+   <NavItem eventKey={index}>{item.label}</NavItem>
+  </LinkContainer>
+)
 
 export const Header = (props) => (
   <Navbar inverse fixedBottom collapseOnSelect>
+
   <Navbar.Header>
     <Navbar.Brand>
       <img src={LogoImage}/>
     </Navbar.Brand>
     <Navbar.Toggle />
   </Navbar.Header>
+
   <Navbar.Collapse>
     <Nav>
-      <LinkContainer to="/login">
-       <NavItem eventKey={1}>Sign in</NavItem>
-      </LinkContainer>
-
-      <LinkContainer to="/registration">
-       <NavItem eventKey={2}>Sign up</NavItem>
-      </LinkContainer>
-
-      <LinkContainer to="/counter">
-       <NavItem eventKey={3}>Counter</NavItem>
-      </LinkContainer>
-
+      {
+        props.navItems.map(renderNavItem)
+      }
     </Nav>
-    {props.children}
+    {
+      props.name
+        ? renderAccount(props)
+        : ''
+    }
+
   </Navbar.Collapse>
 </Navbar>
 )

@@ -1,9 +1,11 @@
 import requests from '../utils/requests'
+import { browserHistory } from 'react-router'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const SET_CREDENTIALS = 'SET_CREDENTIALS'
-export const SET_USER_INFO = 'SET_USER_INFO'
+export const SET_CREDENTIALS  = 'SET_CREDENTIALS'
+export const SET_USER_INFO    = 'SET_USER_INFO'
+export const LOGOUT           = 'LOGOUT'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -18,12 +20,20 @@ export const setUserCredentials = (credentials, isAuthenticated) => {
 export const setUserInfo = (userInfo) => {
   return {
     type: SET_USER_INFO,
-    payload: userInfo
+    payload: {userInfo: userInfo}
+  }
+}
+
+export const logout = () => {
+  return {
+    type: LOGOUT
   }
 }
 
 export const actions = {
-  setUserCredentials
+  setUserCredentials,
+  setUserInfo,
+  logout
 }
 
 // ------------------------------------
@@ -45,8 +55,8 @@ export function saveUserCredentials(credentials, isRemember){
 
 export function fetchUserInfo(){
   return (dispatch, getState) => {
-    var token = getState().user.access_token
-    if(access_token != null){
+    var token = getState().user.credentials.access_token
+    if(token != null){
       requests.fetchUserInfo(token).then(function(response){
         dispatch(setUserInfo(response.data))
       })
@@ -54,6 +64,13 @@ export function fetchUserInfo(){
   }
 }
 
+export function logoutUser(){
+  return (dispatch, getState) => {
+    localStorage.removeItem('user')
+    dispatch(logout())
+    browserHistory.push('/login')
+  }
+}
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
@@ -63,7 +80,10 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, action.payload)
   },
   [SET_USER_INFO]   : (state, action) => {
-    return Object.assign({}, state, { userInfo : action.payload })
+    return Object.assign({}, state, action.payload)
+  },
+  [LOGOUT]          : (state, action) => {
+    return Object.assign({}, state, {credentials : null, userInfo : null, isAuthenticated : false})
   }
 }
 

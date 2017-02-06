@@ -9,7 +9,7 @@ export const LOGIN_CHANGED                    = 'LOGIN_CHANGED'
 export const PASSWORD_CHANGED                 = 'PASSWORD_CHANGED'
 export const ISREMEMBER_CHANGED               = 'ISREMEMBER_CHANGED'
 export const LOGIN_VALIDATIONSTATE_CHANGED    = 'LOGIN_VALIDATIONSTATE_CHANGED'
-export const SET_ISLOADING                    = 'SET_ISLOADING'
+export const SET_IS_LOGIN_LOADING             = 'SET_IS_LOGIN_LOADING'
 export const LOGIN_REQUEST_FAILED             = 'LOGIN_REQUEST_FAILED'
 // ------------------------------------
 // Actions
@@ -44,7 +44,7 @@ export const setValidationState = (state) => {
 
 export const setIsLoading = (isLoading) => {
   return {
-    type    : SET_ISLOADING,
+    type    : SET_IS_LOGIN_LOADING,
     payload : isLoading
   }
 }
@@ -56,8 +56,10 @@ export const loginFailed = (errorInfo) => {
   }
 }
 
-export function login(e){
-  e.preventDefault();
+export function login(event){
+  event.preventDefault();
+
+//todo reset errors
 
   return (dispatch, getState) => {
 
@@ -113,7 +115,7 @@ const ACTION_HANDLERS = {
   [LOGIN_VALIDATIONSTATE_CHANGED]   : (state, action) => {
     return Object.assign({}, state, { validationState: action.payload })
   },
-  [SET_ISLOADING]                   : (state, action) => {
+  [SET_IS_LOGIN_LOADING]                   : (state, action) => {
     return Object.assign({}, state, { isLoading: action.payload })
   }
 }

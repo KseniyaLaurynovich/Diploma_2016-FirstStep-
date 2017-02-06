@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Link } from 'react-router'
-import { Form, FormGroup, Col, FormControl, Checkbox, Button, ControlLabel, HelpBlock } from 'react-bootstrap'
+
+  import { Form, FormGroup, Col, FormControl, Checkbox, Button, ControlLabel, HelpBlock } from 'react-bootstrap'
+
 import './LoginView.scss'
 import LogoImage from '../../../assets/Logo.png'
 
@@ -39,7 +41,7 @@ export const Login = (props) => (
       </p>
       <p className='message'>
         <Link to='/forgotpasword' activeClassName='route--active'>
-          Forgot password?
+          {'Forgot password?'}
         </Link>
       </p>
    </Form>

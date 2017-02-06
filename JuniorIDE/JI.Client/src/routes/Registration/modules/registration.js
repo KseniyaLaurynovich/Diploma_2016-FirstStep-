@@ -15,7 +15,7 @@ export const EMAIL_CHANGED                            = 'EMAIL_CHANGED'
 export const REGISTRATION_VALIDATIONSTATE_CHANGED     = 'REGISTRATION_VALIDATIONSTATE_CHANGED'
 export const SET_REGISTRATION_ERROR                   = 'SET_REGISTRATION_ERROR'
 export const SET_CONFIRM_PASSWORD_ERROR               = 'SET_CONFIRM_PASSWORD_ERROR'
-export const SET_ISLOADING                            = 'SET_ISLOADING'
+export const SET_IS_REGISTRATION_LOADING              = 'SET_IS_REGISTRATION_LOADING'
 export const RESET_ERRORS                             = 'RESET_ERRORS'
 export const REGISTRATION_FAILED                      = 'REGISTRATION_FAILED'
 
@@ -94,7 +94,7 @@ export const setValidationState = (state) => {
 
 export const setIsLoading = (state) => {
   return {
-    type    : SET_ISLOADING,
+    type    : SET_IS_REGISTRATION_LOADING,
     payload : state
   }
 }
@@ -123,7 +123,7 @@ export function registration(e){
       confirmPassword : data.confirmPassword
     }
 
-    if(validateRegistrationModel(dispatch, dataUser)){
+    if(validateModel(dispatch, dataUser)){
 
       requests.registerUser(dataUser).then(function(response){
       dispatch(setValidationState(validationStates.success))
@@ -133,7 +133,7 @@ export function registration(e){
 
       }, function(error){
         var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
-        
+
         dispatch(setValidationState(validationStates.error))
         dispatch(setRegistrationError(errorMessage))
         dispatch(setIsLoading(false))
@@ -142,10 +142,10 @@ export function registration(e){
   }
 }
 
-function validateRegistrationModel(dispatch, registrationModel){
+function validateModel(dispatch, model){
   var isValid = true;
 
-  if(registrationModel.password != registrationModel.confirmPassword){
+  if(model.password != model.confirmPassword){
     dispatch(setConfirmPasswordError("Confirm password doesn't equals password"))
     isValid = false
   }
@@ -201,7 +201,7 @@ const ACTION_HANDLERS = {
 [REGISTRATION_VALIDATIONSTATE_CHANGED]         : (state, action) => {
     return Object.assign({}, state, { validationState: action.payload})
   },
-[SET_ISLOADING]                                 : (state, action) => {
+[SET_IS_REGISTRATION_LOADING]                                 : (state, action) => {
     return Object.assign({}, state, { isLoading: action.payload})
   }
 }
