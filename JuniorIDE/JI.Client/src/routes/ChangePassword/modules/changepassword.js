@@ -7,7 +7,7 @@ import helpers from '../../../utils/helpers'
 export const OLD_PASSWORD_CHANGED           = 'OLD_PASSWORD_CHANGED'
 export const NEW_PASSWORD_CHANGED           = 'NEW_PASSWORD_CHANGED'
 export const CONFIRM_NEW_PASSWORD_CHANGED   = 'CONFIRM_NEW_PASSWORD_CHANGED'
-export const RESET_ERRORS                   = 'RESET_ERRORS'
+export const RESET_CHANGE_PASSWORD_ERRORS   = 'RESET_CHANGE_PASSWORD_ERRORS'
 export const SET_IS_CHANGE_PASSWORD_LOADING = 'SET_IS_CHANGE_PASSWORD_LOADING'
 export const SET_IS_CHANGE_PASSWORD_ERROR   = 'SET_IS_CHANGE_PASSWORD_ERROR'
 export const CONFIRM_NEW_PASSWORD_ERROR     = 'CONFIRM_NEW_PASSWORD_ERROR'
@@ -49,7 +49,7 @@ export const onOldPasswordChange = (event) => {
 
 export const resetErrors = () => {
   return {
-    type  : RESET_ERRORS
+    type  : RESET_CHANGE_PASSWORD_ERRORS
   }
 }
 
@@ -146,7 +146,7 @@ const ACTION_HANDLERS = {
   [CONFIRM_NEW_PASSWORD_CHANGED]    : (state, action) => {
     return Object.assign({}, state, { confirmNewPassword: action.payload })
   },
-  [RESET_ERRORS]                     : (state, action) => {
+  [RESET_CHANGE_PASSWORD_ERRORS]                     : (state, action) => {
     return Object.assign({}, state, { confirmNewPasswordError: null, changePasswordError: null, validationState: null })
   },
   [SET_IS_CHANGE_PASSWORD_LOADING]   : (state, action) => {

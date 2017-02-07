@@ -6,15 +6,20 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 import LogoImage from '../../assets/Logo.png'
 import './Header.scss'
 
-const renderAccount = (props) =>(
+const renderAccount = (props) => (
   <Nav pullRight>
-      <NavDropdown eventKey={4} title={props.name}  id="basic-nav-dropdown">
+      <NavDropdown eventKey={4} title={props.userInfo != null ? getUserFullName(props.userInfo) : ''}  id='basic-nav-dropdown'>
        <MenuItem eventKey={4.1} onSelect={props.changePassword}>Change password</MenuItem>
        <MenuItem divider />
        <MenuItem eventKey={4.3} onSelect={props.logoutUser}>Logout</MenuItem>
       </NavDropdown>
     </Nav>
 )
+
+
+const getUserFullName= (userInfo) => {
+  return userInfo.FirstName + ' ' + userInfo.LastName
+}
 
 const renderNavItem = (item, index) => (
   <LinkContainer to={item.to} key={index}>
@@ -39,7 +44,7 @@ export const Header = (props) => (
       }
     </Nav>
     {
-      props.name
+      props.isAuthenticated
         ? renderAccount(props)
         : ''
     }

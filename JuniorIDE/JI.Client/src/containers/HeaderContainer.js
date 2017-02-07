@@ -4,36 +4,45 @@ import { Nav, NavItem } from 'react-bootstrap'
 import { fetchUserInfo, logoutUser } from '../store/user'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
+import requests from '../utils/requests'
 
-class HeaderContainer  extends Component {
-  navItems = {
+const HeaderContainer = React.createClass({
+  navItems : {
     '' : [
       {to: '/login', label:'Sign in'},
       {to: '/registration', label:'Sign up'}
     ],
     'Student' : [
       {to: '/counter', label:'Counter'}
+    ],
+    'Administrator' : [
+      {to: '/usersgrid', label:'Users'}
     ]
-  }
+  },
   getNavItems(){
     if(!this.props.isAuthenticated){
       return this.navItems['']
     }
     return this.navItems[this.props.credentials.roles]
-  }
+  },
   changePassword(){
     browserHistory.push('/changepassword')
-  }
+  },
+  getInitialState(){
+    this.props.getUserInfo()
+    return {}
+  },
   render(){
     return(
       <Header
-        navItems={this.getNavItems()}
-        name="undefined"
-        logoutUser={this.props.logoutUser}
-        changePassword={this.changePassword}/>
+        isAuthenticated = {this.props.isAuthenticated}
+        userInfo        = {this.props.userInfo}
+        navItems        = {this.getNavItems()}
+        logoutUser      = {this.props.logoutUser}
+        changePassword  = {this.changePassword}/>
     )
   }
-}
+})
 
 const mapDispatchToProps = {
   getUserInfo: fetchUserInfo,

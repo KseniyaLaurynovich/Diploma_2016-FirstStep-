@@ -11,6 +11,7 @@ export const ISREMEMBER_CHANGED               = 'ISREMEMBER_CHANGED'
 export const LOGIN_VALIDATIONSTATE_CHANGED    = 'LOGIN_VALIDATIONSTATE_CHANGED'
 export const SET_IS_LOGIN_LOADING             = 'SET_IS_LOGIN_LOADING'
 export const LOGIN_REQUEST_FAILED             = 'LOGIN_REQUEST_FAILED'
+export const RESET_LOGIN_ERRORS               = 'RESET_LOGIN_ERRORS'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -56,13 +57,18 @@ export const loginFailed = (errorInfo) => {
   }
 }
 
+export const resetErrors = () => {
+  return {
+    type    : RESET_LOGIN_ERRORS
+  }
+}
+
 export function login(event){
   event.preventDefault();
 
-//todo reset errors
-
   return (dispatch, getState) => {
 
+    dispatch(resetErrors())
     dispatch(setIsLoading(true))
     var data = getState().login;
 
@@ -115,8 +121,11 @@ const ACTION_HANDLERS = {
   [LOGIN_VALIDATIONSTATE_CHANGED]   : (state, action) => {
     return Object.assign({}, state, { validationState: action.payload })
   },
-  [SET_IS_LOGIN_LOADING]                   : (state, action) => {
+  [SET_IS_LOGIN_LOADING]            : (state, action) => {
     return Object.assign({}, state, { isLoading: action.payload })
+  },
+  [RESET_LOGIN_ERRORS]              : (state, action) => {
+    return Object.assign({}, state, { validationState: null, loginError: null, isLoading: false })
   }
 }
 

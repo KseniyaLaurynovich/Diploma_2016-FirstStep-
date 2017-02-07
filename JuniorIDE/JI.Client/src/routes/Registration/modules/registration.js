@@ -16,7 +16,7 @@ export const REGISTRATION_VALIDATIONSTATE_CHANGED     = 'REGISTRATION_VALIDATION
 export const SET_REGISTRATION_ERROR                   = 'SET_REGISTRATION_ERROR'
 export const SET_CONFIRM_PASSWORD_ERROR               = 'SET_CONFIRM_PASSWORD_ERROR'
 export const SET_IS_REGISTRATION_LOADING              = 'SET_IS_REGISTRATION_LOADING'
-export const RESET_ERRORS                             = 'RESET_ERRORS'
+export const RESET_REGISTRATION_ERRORS                             = 'RESET_REGISTRATION_ERRORS'
 export const REGISTRATION_FAILED                      = 'REGISTRATION_FAILED'
 
 // ------------------------------------
@@ -101,7 +101,7 @@ export const setIsLoading = (state) => {
 
 export const resetErrors = () => {
   return {
-    type  : RESET_ERRORS
+    type  : RESET_REGISTRATION_ERRORS
   }
 }
 
@@ -192,7 +192,7 @@ const ACTION_HANDLERS = {
 [SET_CONFIRM_PASSWORD_ERROR]                   : (state, action) => {
     return Object.assign({}, state, { confirmPasswordError: action.payload })
   },
-[RESET_ERRORS]                                 : (state, action) => {
+[RESET_REGISTRATION_ERRORS]                                 : (state, action) => {
     return Object.assign({}, state, { confirmPasswordError: null})
   },
 [SET_REGISTRATION_ERROR]                       : (state, action) => {

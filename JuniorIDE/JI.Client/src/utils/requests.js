@@ -39,11 +39,20 @@ export function changePassword(token, data){
   });
 }
 
+export function fetchUsers(token){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/users/all',
+    headers : {"Authorization": "Bearer " + token }
+  });
+}
+
 const requests = {
   getToken,
   registerUser,
   fetchUserInfo,
-  changePassword
+  changePassword,
+  fetchUsers
 }
 
 export default requests
