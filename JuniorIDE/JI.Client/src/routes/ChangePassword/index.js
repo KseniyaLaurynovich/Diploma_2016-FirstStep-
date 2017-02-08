@@ -1,4 +1,5 @@
 import { injectReducer } from '../../store/reducers'
+import requireAuthorization from '../requireAuthorization'
 
 export default (store) => ({
   path: 'changepassword',
@@ -7,7 +8,8 @@ export default (store) => ({
 
     require.ensure([], (require) => {
 
-      const ChangePassword = require('./containers/ChangePasswordContainer').default
+      const ChangePassword = requireAuthorization(
+        require('./containers/ChangePasswordContainer').default)
       const reducer = require('./modules/changepassword').default
 
       injectReducer(store, { key: 'changepassword', reducer })

@@ -18,7 +18,7 @@ const renderAccount = (props) => (
 
 
 const getUserFullName= (userInfo) => {
-  return userInfo.FirstName + ' ' + userInfo.LastName
+  return userInfo.firstName + ' ' + userInfo.lastName
 }
 
 const renderNavItem = (item, index) => (

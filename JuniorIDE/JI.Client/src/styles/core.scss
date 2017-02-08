@@ -35,3 +35,32 @@ body {
   color:  #fff;
   text-decoration: none;
 }
+
+.container--layout{
+  margin-bottom: 50px;
+}
+
+.filter-container{
+  margin: 10px auto !important;
+  width:100%;
+}
+
+.griddle-container{
+  border: none !important;
+}
+
+.panel--user{
+  margin-bottom: 5px !important;
+}
+
+.modal-dialog{
+  margin: 0px !important;
+  float: right;
+}
+
+.modal-content{
+  border-top-left-radius: 6px !important;
+  border-bottom-left-radius: 6px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}

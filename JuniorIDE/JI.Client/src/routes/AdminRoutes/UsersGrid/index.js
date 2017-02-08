@@ -1,4 +1,5 @@
 import { injectReducer } from '../../../store/reducers'
+import requireAuthorization from '../../requireAuthorization'
 
 export default (store) => ({
   path: 'usersgrid',
@@ -7,7 +8,8 @@ export default (store) => ({
 
     require.ensure([], (require) => {
 
-      const UsersGrid = require('./containers/UsersGridContainer').default
+      const UsersGrid = requireAuthorization(
+        require('./containers/UsersGridContainer').default, ['Administrator'])
       const reducer = require('./modules/usersgrid').default
 
       injectReducer(store, { key: 'usersGrid', reducer })
