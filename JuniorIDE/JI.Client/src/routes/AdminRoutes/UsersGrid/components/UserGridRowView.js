@@ -21,7 +21,7 @@ var UserGridRowView = React.createClass({
            </Col>
            <Col xs={1} md={3}>
              <ButtonToolbar>
-               <Button onClick={this.props.globalData.openEditModal}>Edit</Button>
+               <Button onClick={() => this.props.globalData.openEditModal(this.props.data.id)}>Edit</Button>
                <Button>Delete</Button>
              </ButtonToolbar>
            </Col>

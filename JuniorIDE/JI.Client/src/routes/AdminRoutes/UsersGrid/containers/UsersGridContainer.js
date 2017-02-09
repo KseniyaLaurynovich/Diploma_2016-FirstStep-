@@ -9,26 +9,31 @@ const UsersGridContainer = React.createClass({
   getInitialState(){
     this.props.getUsers()
     return {
-      showEditModal: false
+      showEditModal : false,
+      currentUser   : null
     }
   },
-  setEditModaShowing(show){
-    this.setState(Object.assign({}, this.state, { showEditModal: show }))
+  setEditModalShowing(userId, show){
+    var user = this.props.users.find((element) => {
+      return element.id === userId
+    });
+    this.setState(Object.assign({}, this.state, { showEditModal: show, currentUser: user }))
   },
   render() {
     return  (
-      <div>
+      <div className='usersGridPage'>
       <Griddle
         results={this.props.users}
         showFilter={true}
         useCustomRowComponent={true}
         customRowComponent={UserGridRowView}
         enableInfiniteScroll={true}
-        globalData={{openEditModal: () => this.setEditModaShowing(true)}}/>
+        globalData={{openEditModal: (userId) => this.setEditModalShowing(userId, true)}}/>
 
       <UserEditFormView
+        user={this.state.currentUser}
         showModal={this.state.showEditModal}
-        close={() => this.setEditModaShowing(false)}/>
+        close={() => this.setEditModalShowing(false)}/>
     </div>);
   }
 })
