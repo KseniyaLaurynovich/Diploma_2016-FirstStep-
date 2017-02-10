@@ -58,7 +58,6 @@ export function fetchUserInfo(){
     var token = getState().user.credentials.access_token
     if(token != null){
       requests.fetchUserInfo(token).then(function(response){
-        console.log(response.data)
         dispatch(setUserInfo(response.data))
       })
     }

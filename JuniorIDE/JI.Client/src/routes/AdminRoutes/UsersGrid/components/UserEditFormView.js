@@ -1,6 +1,13 @@
 import React from 'react'
 import { Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col } from 'react-bootstrap'
 
+function filteredRoles(props){
+  return props.roles
+  .filter((role) => {
+    return props.user && props.user.roles.indexOf(role.name) == -1
+  })
+}
+
 const UserEditFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>
      <Modal.Header>
@@ -8,7 +15,7 @@ const UserEditFormView = (props) => (
      </Modal.Header>
 
      <Modal.Body>
-       <h3>Profile</h3>
+       <h4>Profile</h4>
 
        <FormGroup controlId="firstName">
          <FormControl type="text" required placeholder='First name'
@@ -30,13 +37,14 @@ const UserEditFormView = (props) => (
 
        <hr/>
 
-       <h3>Roles</h3>
+       <h4>Roles</h4>
        <Row>
          {
-           props.user && props.user.roles.map((role) => (
-             <Col xs={8} md={4} key='role'>
+           props.user && props.user.roles.map((role, index) => (
+             <Col xs={8} md={4} key={index}>
                <h4>{role}</h4>
-               <span className="form-control-feedback glyphicon glyphicon-remove">
+               <span className="form-control-feedback glyphicon glyphicon-remove"
+                  onClick={() => alert("fdsfad")}>
                </span>
              </Col>
            ))
@@ -44,9 +52,17 @@ const UserEditFormView = (props) => (
        </Row>
        <Row>
          <Col xs={8} md={4}>
-           <DropdownButton title="Dropdown" id="bg-nested-dropdown">
-             <MenuItem eventKey="1">Dropdown link</MenuItem>
-             <MenuItem eventKey="2">Dropdown link</MenuItem>
+           <DropdownButton
+             disabled={!props.user || filteredRoles(props).length == 0}
+             title="Add role"
+             id="bg-nested-dropdown">
+             {
+               props.roles && filteredRoles(props).map((role, index) => (
+                 <MenuItem onClick={() => props.addRole(role)} key={index}>
+                   { role.name }
+                 </MenuItem>
+               ))
+             }
            </DropdownButton>
          </Col>
        </Row>

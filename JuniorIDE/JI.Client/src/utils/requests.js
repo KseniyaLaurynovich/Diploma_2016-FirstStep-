@@ -47,12 +47,21 @@ export function fetchUsers(token){
   });
 }
 
+export function fetchRoles(token){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/roles/all',
+    headers : {"Authorization": "Bearer " + token }
+  });
+}
+
 const requests = {
   getToken,
   registerUser,
   fetchUserInfo,
   changePassword,
-  fetchUsers
+  fetchUsers,
+  fetchRoles
 }
 
 export default requests

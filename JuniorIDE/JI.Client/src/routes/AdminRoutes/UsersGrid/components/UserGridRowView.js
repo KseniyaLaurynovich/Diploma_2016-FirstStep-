@@ -16,7 +16,7 @@ var UserGridRowView = React.createClass({
              </p>
            </Col>
            <Col xs={9} md={5}>
-             <p>Roles:</p>
+             <p>Roles: {this.props.data.roles.join(', ')}</p>
              <p>Groups:</p>
            </Col>
            <Col xs={1} md={3}>
