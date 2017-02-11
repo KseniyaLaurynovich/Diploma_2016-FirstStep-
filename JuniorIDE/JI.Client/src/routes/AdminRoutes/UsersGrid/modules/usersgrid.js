@@ -44,6 +44,19 @@ export function fetchUsers(){
     })
   }
 }
+
+export function editUser(currentUser, editedUser){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    requests.editUser(token, Object.assign(currentUser, editedUser)).then(function(response){
+      console.log(response)
+    },function(error){
+      //handle error
+      console.log(error)
+    })
+  }
+}
+
 // ------------------------------------
 //  Action Handlers
 // ------------------------------------

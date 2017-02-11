@@ -55,13 +55,23 @@ export function fetchRoles(token){
   });
 }
 
+export function editUser(token, user){
+  return axios({
+    method  : 'put',
+    url     : BASE_URL + '/users/edit',
+    headers : {"Authorization": "Bearer " + token, "Content-Type": "application/json" },
+    data    : JSON.stringify(user)
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
   fetchUserInfo,
   changePassword,
   fetchUsers,
-  fetchRoles
+  fetchRoles,
+  editUser
 }
 
 export default requests

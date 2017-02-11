@@ -1,9 +1,10 @@
 import React from 'react'
 import Griddle  from 'griddle-react'
 import { connect } from 'react-redux'
-import { fetchUsers, fetchRoles  } from '../modules/usersgrid'
+import { fetchUsers, fetchRoles, editUser  } from '../modules/usersgrid'
 import UserGridRowView from '../components/UserGridRowView'
-import UserEditFormView from '../components/UserEditFormView'
+import UserEditForm from './UserEditForm'
+import _ from 'lodash'
 
 const UsersGridContainer = React.createClass({
   getInitialState(){
@@ -22,22 +23,7 @@ const UsersGridContainer = React.createClass({
       });
     }
 
-    this.setState(Object.assign({}, this.state, { showEditModal: show, currentUser: user }))
-  },
-  addRoleToCurrentUser(role){
-    var user = Object.assign({}, this.state.currentUser);
-    if(user){
-      user.roles.push(role.name);
-    }
-    this.setState(Object.assign({}, this.state, { currentUser: user }))
-  },
-  removeRoleFromCurrentUser(role){
-    var user = Object.assign({}, this.state.currentUser);
-    if(user){
-      var roleIndex = user.roles.indexOf(role.name);
-      user.roles.splice(roleIndex, 1)
-    }
-    this.setState(Object.assign({}, this.state, { currentUser: user }))
+    this.setState({ showEditModal: show, currentUser: _.cloneDeep(user) })
   },
   render() {
     return  (
@@ -50,20 +36,23 @@ const UsersGridContainer = React.createClass({
         enableInfiniteScroll={true}
         globalData={{openEditModal: (userId) => this.setEditModalShowing(userId, true)}}/>
 
-      <UserEditFormView
-        user={this.state.currentUser}
-        roles={this.props.roles}
-        addRole={this.addRoleToCurrentUser}
-        removeRole={this.removeRoleFromCurrentUser}
-        showModal={this.state.showEditModal}
-        close={() => this.setEditModalShowing(null, false)}/>
+      <UserEditForm
+        user                = {this.state.currentUser}
+        showEditModal       = {this.state.showEditModal}
+
+        roles               = {this.props.roles}
+        saveEditedUser      = {this.props.editUser}
+
+        setEditModalShowing = {this.setEditModalShowing}
+        />
     </div>);
   }
 })
 
 const mapDispatchToProps = {
   getUsers  : fetchUsers,
-  getRoles  : fetchRoles
+  getRoles  : fetchRoles,
+  editUser  : editUser
 }
 
 const mapStateToProps = (state) => ({

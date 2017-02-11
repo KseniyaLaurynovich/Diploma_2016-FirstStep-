@@ -7,7 +7,7 @@ var UserGridRowView = React.createClass({
       <Panel className='panel--user'>
         <h3>{this.props.data.firstName} {this.props.data.lastName} {this.props.data.patronymic}</h3>
           <Row>
-           <Col xs={8} md={4}>
+           <Col xs={12} md={4}>
              <p>
                Id: {this.props.data.id}
              </p>
@@ -19,8 +19,8 @@ var UserGridRowView = React.createClass({
              <p>Roles: {this.props.data.roles.join(', ')}</p>
              <p>Groups:</p>
            </Col>
-           <Col xs={1} md={3}>
-             <ButtonToolbar>
+           <Col xs={3} md={3}>
+             <ButtonToolbar className='pull-right'>
                <Button onClick={() => this.props.globalData.openEditModal(this.props.data.id)}>Edit</Button>
                <Button>Delete</Button>
              </ButtonToolbar>
