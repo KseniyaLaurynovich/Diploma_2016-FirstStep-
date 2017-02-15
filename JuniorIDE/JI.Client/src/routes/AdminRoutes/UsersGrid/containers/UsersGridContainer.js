@@ -1,9 +1,9 @@
 import React from 'react'
 import Griddle  from 'griddle-react'
 import { connect } from 'react-redux'
-import actions from '../modules/usersgrid'
+import { actions } from '../modules/usersgrid'
 import UserGridRowView from '../components/UserGridRowView'
-import UserEditForm from './UserEditForm'
+import UserEditFormContainer from './UserEditFormContainer'
 
 
 const UsersGridContainer = React.createClass({
@@ -12,7 +12,6 @@ const UsersGridContainer = React.createClass({
     this.props.getRoles()
     return {}
   },
-
   render() {
     return  (
       <div className='usersGridPage'>
@@ -22,23 +21,23 @@ const UsersGridContainer = React.createClass({
           showFilter={true}
           useCustomRowComponent={true}
           enableInfiniteScroll={true}
-          globalData={{openEditModal: (userId) => this.setEditModalShowing(userId, true)}}/>
+          globalData={{openEditModal: this.props.openEditModal}}/>
 
-        <UserEditForm
+        <UserEditFormContainer
           user                = {this.state.currentUser}
           showEditModal       = {this.state.showEditModal}
           roles               = {this.props.roles}
           saveEditedUser      = {this.props.editUser}
-          setEditModalShowing = {this.setEditModalShowing}
           />
     </div>);
   }
 })
 
 const mapDispatchToProps = {
-  getUsers  : actions.fetchUsers,
-  getRoles  : actions.fetchRoles,
-  editUser  : actions.editUser
+  getUsers      : actions.fetchUsers,
+  getRoles      : actions.fetchRoles,
+  editUser      : actions.editUser,
+  openEditModal : actions.openEditModal
 }
 
 const mapStateToProps = (state) => ({

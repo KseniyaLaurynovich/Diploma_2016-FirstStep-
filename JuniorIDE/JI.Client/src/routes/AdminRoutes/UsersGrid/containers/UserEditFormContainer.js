@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import actions from '../modules/usersgrid'
+import { actions } from '../modules/usersgrid'
 import UserEditFormView from '../components/UserEditFormView'
 
 const mapStateToProps = (state) => ({
-  userId          : state.usersGrid.currentUser,
+  user            : state.usersGrid.currentUser,
   roles           : state.usersGrid.roles,
   showModal       : state.usersGrid.showEditModal
 })
@@ -15,7 +15,7 @@ const mapDispatchToProps = {
   handleFirstNameChange   : actions.onFirstNameChange,
   handleLastNameChange    : actions.handleLastNameChange,
   handlePatronymicChange  : actions.onPatronymicChange,
-  handleRolesChanges      : actions.onRolesChanges,
+  handleRolesChanges      : actions.onRolesChange,
   handleEmailChange       : actions.onEmailChange
 }
 

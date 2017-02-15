@@ -1,5 +1,5 @@
 import requests from '../../../../utils/requests'
-import helpers from '../../../utils/helpers'
+import helpers from '../../../../utils/helpers'
 import _ from 'lodash'
 // ------------------------------------
 // Constants
@@ -47,10 +47,10 @@ export const onEmailChange = (event) => {
   }
 }
 
-export const onRolesChange = (event) => {
+export const onRolesChange = (roles) => {
   return {
     type    : EDITING_ROLES_CHANGED,
-    payload : event.target.value
+    payload : roles
   }
 }
 
@@ -125,15 +125,15 @@ export function fetchUsers(){
   }
 }
 
-export function saveEditedUser(currentUser, editedUser){
+export function saveEditedUser(event){
+  event.preventDefault()
   return (dispatch, getState) => {
     dispatch(resetErrors())
     dispatch(setSaveEditUserLoading(true))
 
+    var user = getState().usersGrid.currentUser
     var token = getState().user.credentials.access_token
-    requests.editUser(token, Object.assign(currentUser, editedUser)).then(function(response){
-      console.log(response)
-
+    requests.editUser(token, user).then(function(response){
       dispatch(saveEditUserSuccess())
       dispatch(setSaveEditUserLoading(false))
     },function(error){
@@ -145,7 +145,7 @@ export function saveEditedUser(currentUser, editedUser){
   }
 }
 
-export function openEditModal(userId, show){
+export function openEditModal(userId){
     return (dispatch, getState) => {
       var users = getState().usersGrid.users
       var user = null
@@ -193,33 +193,35 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, action.payload )
   },
   [EDITING_FIRST_NAME_CHANGED]  : (state, action) => {
-    return Object.assign({}, state, { currentUser:
-      Object.assign({}, state.currentUser, { firstName: action.payload }
-      } )
+    return Object.assign({}, state, { currentUser: Object.assign({}, state.currentUser, { firstName: action.payload })})
   },
-  [EDITING_LAST_NAME_CHANGED]  : (state, action) => {
+  [EDITING_LAST_NAME_CHANGED]   : (state, action) => {
     return Object.assign({}, state, { currentUser:
-      Object.assign({}, state.currentUser, { lastName: action.payload }
-      } )
+      Object.assign({}, state.currentUser, { lastName: action.payload })})
   },
   [EDITING_PATRONYMIC_CHANGED]  : (state, action) => {
     return Object.assign({}, state, { currentUser:
-      Object.assign({}, state.currentUser, { patronymic: action.payload }
-      } )
+      Object.assign({}, state.currentUser, { patronymic: action.payload })})
   },
-  [EDITING_EMAIL_CHANGED]  : (state, action) => {
+  [EDITING_EMAIL_CHANGED]       : (state, action) => {
     return Object.assign({}, state, { currentUser:
-      Object.assign({}, state.currentUser, { email: action.payload }
-      } )
+      Object.assign({}, state.currentUser, { email: action.payload })})
   },
-  [EDITING_ROLES_CHANGED]  : (state, action) => {
-    return Object.assign({}, state, { currentUser:
-      Object.assign({}, state.currentUser, { roles: action.payload }
-      } )
+  [EDITING_ROLES_CHANGED]       : (state, action) => {
+    return Object.assign({}, state, { currentUser: Object.assign({}, state.currentUser, { roles: action.payload })})
   },
-  [SAVE_EDITED_USER_SUCCESS] : (state, action) => {
+  [SAVE_EDITED_USER_SUCCESS]    : (state, action) => {
     return Object.assign({}, state, action.payload )
   },
+  [SAVE_EDITED_USER_FAILED]     : (state, action) => {
+    return Object.assign({}, state, { saveUserError : action.payload } )
+  },
+  [SAVE_EDITED_USER_IS_LOADING] : (state, action) => {
+    return Object.assign({}, state, { saveUserLoading : action.payload } )
+  },
+  [EDIT_USER_RESET_ERRORS]      : (state, action) => {
+    return Object.assign({}, state, { saveUserError : null } )
+  }
 }
 // ------------------------------------
 // Reducer
