@@ -1,4 +1,8 @@
-﻿using JI.DataStorageAccess.Identity.Linq2DbStores;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using JI.DataStorageAccess.Identity.Contracts;
+using JI.DataStorageAccess.Identity.Linq2DbStores;
 using JI.DataStorageAccess.Identity.Models;
 using JI.Identity.Models;
 using Microsoft.AspNet.Identity;
@@ -11,7 +15,32 @@ namespace JI.UserIdentity.Managers
     {
         protected ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
-        {}
+        {
+        }
+
+        public IdentityResult UpdateWithRoles(ApplicationUser user, string[] addedRoles, string[] removedRoles)
+        {
+            var userValidation = UserValidator.ValidateAsync(user).Result;
+
+            if (userValidation != IdentityResult.Success)
+            {
+                return userValidation;
+            }
+
+            try
+            {
+                (Store as IUpdateUserStore<ApplicationUser>)
+                   ?.UpdateWithRolesAsync(user, addedRoles, removedRoles)
+                   .GetAwaiter()
+                   .GetResult();
+                return IdentityResult.Success;
+            }
+            catch (Exception)
+            {
+                //todo add logging
+                return IdentityResult.Failed("Server error");
+            }
+        }
 
         public static ApplicationUserManager Create(
             IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)

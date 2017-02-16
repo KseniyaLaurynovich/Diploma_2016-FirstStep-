@@ -1,7 +1,7 @@
 import requests from '../../../utils/requests'
 import { validationStates } from '../../../utils/constants'
 import { browserHistory } from 'react-router'
-import { saveUserCredentials } from '../../../store/user'
+import { saveUserCredentials, fetchUserInfo } from '../../../store/user'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -84,7 +84,7 @@ export function login(event){
       dispatch(setValidationState(validationStates.success))
       dispatch(saveUserCredentials(userData, data.isRemember))
       dispatch(setIsLoading(false))
-
+      dispatch(fetchUserInfo())
       browserHistory.push('/')
 
     }, function(error){

@@ -5,12 +5,16 @@ import { fetchUserInfo, logoutUser } from '../store/user'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import requests from '../utils/requests'
+import _ from 'lodash'
 
 const HeaderContainer = React.createClass({
-  navItems : {
-    '' : [
+  navItemsSwitcher : {
+    null : [
       {to: '/login', label:'Sign in'},
       {to: '/registration', label:'Sign up'}
+    ],
+    '' : [
+
     ],
     'Student' : [
       {to: '/counter', label:'Counter'}
@@ -21,9 +25,15 @@ const HeaderContainer = React.createClass({
   },
   getNavItems(){
     if(!this.props.isAuthenticated){
-      return this.navItems['']
+      return this.navItems[null]
     }
-    return this.navItems[this.props.credentials.roles]
+
+    var navItems = []
+    var switcher = this.navItemsSwitcher
+    _.forEach(this.props.credentials.roles.split(','), function(role) {
+      navItems = navItems.concat(switcher[role])
+    })
+    return navItems
   },
   changePassword(){
     browserHistory.push('/changepassword')

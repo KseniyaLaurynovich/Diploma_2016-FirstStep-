@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col, Form } from 'react-bootstrap'
+import { Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col, Form, Glyphicon, HelpBlock } from 'react-bootstrap'
 
 function filteredRoles(props){
   return props.roles
@@ -28,7 +28,9 @@ function removeRole(props, role){
 const UserEditFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>
      <Modal.Header>
-       <Modal.Title>Edit user</Modal.Title>
+       <Modal.Title className='modal-title'>Edit user</Modal.Title>
+       <Button bsStyle='danger' className='pull-right'> Delete this user
+       </Button>
      </Modal.Header>
 
    <Form onSubmit={props.submit}>
@@ -61,12 +63,13 @@ const UserEditFormView = (props) => (
          <hr/>
 
          <h4>Roles</h4>
-         <Row>
+         <Row className='margin-bottom-10-px'>
            {
              props.user && props.user.roles.map((role, index) => (
-               <Col xs={12} md={4} key={index}>
-                 <h4>{role}</h4>
-                 <Button onClick={() => removeRole(props, role)}>Remove</Button>
+               <Col xs={12} md={12} key={index}>
+                   <h4 className='modal-title margin-right-10-px'>{role}</h4>
+                   <Glyphicon className='like-button' glyph='remove'
+                     onClick={() => removeRole(props, role)}/>
                </Col>
              ))
            }
@@ -90,6 +93,15 @@ const UserEditFormView = (props) => (
        </Modal.Body>
 
        <Modal.Footer>
+          <FormGroup validationState='error' className='pull-left'>
+             <HelpBlock>
+               {
+                  props.saveUserError != null
+                    ? props.saveUserError
+                    : ''
+                }
+              </HelpBlock>
+          </FormGroup>
          <Button onClick={props.close}>Close</Button>
          <Button type="submit" bsStyle="success">Save changes</Button>
        </Modal.Footer>

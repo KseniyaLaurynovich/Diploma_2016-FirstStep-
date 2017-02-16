@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Task = System.Threading.Tasks.Task;
 using System.Transactions;
 using ExpressMapper.Extensions;
+using JI.DataStorageAccess.Identity.Contracts;
 using JI.DataStorageAccess.Repositories.Models;
 using JI.Identity.Models;
 
@@ -17,8 +18,39 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
     public class ApplicationUserStore 
         : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, 
         IUserEmailStore<ApplicationUser>, IUserRoleStore<ApplicationUser>,
-        IUserSecurityStampStore<ApplicationUser>, IQueryableUserStore<ApplicationUser>
+        IUserSecurityStampStore<ApplicationUser>, IQueryableUserStore<ApplicationUser>,
+        IUpdateUserStore<ApplicationUser>
     {
+        private IdentityDbConnection _dbConnection;
+
+        private IdentityDbConnection DbConnection
+            => _dbConnection ?? (_dbConnection = new IdentityDbConnection());
+
+        #region IUpdateUserStore
+
+        public Task UpdateWithRolesAsync(ApplicationUser user, string[] addedRoles, string[] removedRoles)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                UpdateAsync(user);
+
+                foreach (var role in addedRoles)
+                {
+                    AddToRoleAsync(user, role);
+                }
+
+                foreach (var role in removedRoles)
+                {
+                    RemoveFromRoleAsync(user, role);
+                }
+
+                transaction.Complete();
+            }
+            return Task.FromResult(0);
+        }
+
+        #endregion
+
         #region IUserStore
 
         public Task CreateAsync(ApplicationUser user)
@@ -30,14 +62,11 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
         {
             var dbUser = Mapper.Map<ApplicationUser, User>(user);
 
-            using (var dbConnection = new IdentityDbConnection())
+            if (dbUser.Id == Guid.Empty)
             {
-                if (dbUser.Id == Guid.Empty)
-                {
-                    return Task.FromResult((Guid)dbConnection.InsertWithIdentity(dbUser));
-                }
-                dbConnection.Update(dbUser);
+                return Task.FromResult(DbConnection.InsertWithIdentity(dbUser));
             }
+            DbConnection.Update(dbUser);
 
             return Task.FromResult(user.Id);
         }
@@ -45,35 +74,23 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
         public Task DeleteAsync(ApplicationUser user)
         {
             var dbUser = Mapper.Map<ApplicationUser, User>(user);
-
-            using (var db = new IdentityDbConnection())
-            {
-                db.Delete(dbUser);
-            }
+            DbConnection.Delete(dbUser);
 
             return Task.FromResult(user.Id);
         }
 
         public Task<ApplicationUser> FindByIdAsync(string userId)
         {
-            User user;
-
-            using (var db = new IdentityDbConnection())
-            {
-                user = db.Users.FirstOrDefault(e => e.Id == new Guid(userId));
-            }
+            var user = DbConnection.Users
+                .FirstOrDefault(e => e.Id == new Guid(userId));
 
             return Task.FromResult(Mapper.Map<User, ApplicationUser>(user));
         }
 
         public Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            User user;
-
-            using (var db = new IdentityDbConnection())
-            {
-                user = db.Users.FirstOrDefault(e => e.UserName.Equals(userName));
-            }
+            var user = DbConnection.Users
+                .FirstOrDefault(e => e.UserName.Equals(userName));
 
             return Task.FromResult(
                 user != null
@@ -143,12 +160,8 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
 
         public Task<ApplicationUser> FindByEmailAsync(string email)
         {
-            User user;
-
-            using (var db = new IdentityDbConnection())
-            {
-                user = db.Users.FirstOrDefault(e => e.Email.Equals(email));
-            }
+            var user = DbConnection.Users
+                .FirstOrDefault(e => e.Email.Equals(email));
 
             return Task.FromResult(
                 user != null
@@ -161,28 +174,19 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
         #region IUserRoleStore
         public Task AddToRoleAsync(ApplicationUser user, string roleName)
         {
-            string id;
-            using (var transaction = new TransactionScope())
+            string id = null;
+
+            var roleId = DbConnection.Roles
+                .FirstOrDefault(r => r.Name.Equals(roleName))
+                ?.Id;
+
+            if (roleId != null)
             {
-                using (var dbConnection = new IdentityDbConnection())
+                id = ((Guid)DbConnection.InsertWithIdentity(new UserRole()
                 {
-                    var roleId = dbConnection.Roles
-                        .FirstOrDefault(r => r.Name.Equals(roleName))
-                        ?.Id;
-
-                    if (roleId == null)
-                    {
-                        roleId = (Guid)dbConnection
-                            .InsertWithIdentity(new ApplicationRole() { Name = roleName });
-                    }
-
-                    id = (string)dbConnection.InsertWithIdentity(new UserRole()
-                    {
-                        UserId = new Guid(user.Id),
-                        RoleId = roleId.Value
-                    });
-                }
-                transaction.Complete();
+                    UserId = new Guid(user.Id),
+                    RoleId = roleId.Value
+                })).ToString();
             }
 
             return Task.FromResult(id);
@@ -190,30 +194,22 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
 
         public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
         {
-            using (var transaction = new TransactionScope())
+            var roleId = DbConnection.Roles
+                .FirstOrDefault(r => r.Name.Equals(roleName))
+                ?.Id;
+
+            if (roleId == null)
             {
-                using (var dbConnection = new IdentityDbConnection())
-                {
-                    var roleId = dbConnection.Roles
-                        .FirstOrDefault(r => r.Name.Equals(roleName))
-                        ?.Id;
+                return Task.FromResult((string)null);
+            }
 
-                    if (roleId == null)
-                    {
-                        return Task.FromResult((string)null);
-                    }
+            var userRole = DbConnection.UserRoles
+                .FirstOrDefault(ur => 
+                    ur.UserId.Equals(new Guid(user.Id)) && ur.RoleId.Equals(roleId.Value));
 
-                    var userRole = dbConnection.UserRoles
-                       .FirstOrDefault(ur => 
-                            ur.UserId.Equals(new Guid(user.Id)) && ur.RoleId.Equals(roleId.Value));
-
-                    if (userRole != null)
-                    {
-                        dbConnection.Delete(userRole);
-                    }
-
-                    transaction.Complete();
-                }
+            if (userRole != null)
+            {
+                DbConnection.Delete(userRole);
             }
 
             return Task.FromResult(0);
@@ -221,31 +217,21 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
 
         public Task<IList<string>> GetRolesAsync(ApplicationUser user)
         {
-            IList<string> roles;
-
-            using (var dbConnection = new IdentityDbConnection())
-            {
-                roles = dbConnection.UserRoles
+            var roles = DbConnection.UserRoles
                     .LoadWith(ur => ur.User)
                     .LoadWith(ur => ur.Role)
                     .Where(ur => ur.UserId.Equals(new Guid(user.Id)))
                     .Select(ur => ur.Role.Name)
                     .ToList();
-            }
 
-            return Task.FromResult(roles);
+            return Task.FromResult((IList<string>)roles);
         }
 
         public Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
         {
-            bool isInRole;
-
-            using (var dbConnection = new IdentityDbConnection())
-            {
-                isInRole = dbConnection.UserRoles
+            var isInRole = DbConnection.UserRoles
                     .LoadWith(ur => ur.Role)
                     .Any(ur => ur.UserId.Equals(new Guid(user.Id)) && ur.Role.Name.Equals(roleName));
-            }
 
             return Task.FromResult(isInRole);
         }
@@ -273,20 +259,14 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
 
         #region IQueryableUserStore
 
-        public IQueryable<ApplicationUser> Users
-        {
-            get
-            {
-                using (var dbConnection = new IdentityDbConnection())
-                {
-                    return dbConnection.Users
-                        .Select(u => u.Map<User, ApplicationUser>());
-                }
-            }
-        }
+        public IQueryable<ApplicationUser> Users => DbConnection.Users
+            .Select(u => u.Map<User, ApplicationUser>());
 
         #endregion
+
         public void Dispose()
-        { }
+        {
+            _dbConnection?.Dispose();   
+        }
     }
 }

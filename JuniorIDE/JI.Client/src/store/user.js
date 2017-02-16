@@ -55,11 +55,14 @@ export function saveUserCredentials(credentials, isRemember){
 
 export function fetchUserInfo(){
   return (dispatch, getState) => {
-    var token = getState().user.credentials.access_token
-    if(token != null){
-      requests.fetchUserInfo(token).then(function(response){
-        dispatch(setUserInfo(response.data))
-      })
+    var state = getState()
+    if(state.user.isAuthenticated){
+      var token = state.user.credentials.access_token
+      if(token != null){
+        requests.fetchUserInfo(token).then(function(response){
+          dispatch(setUserInfo(response.data))
+        })
+      }
     }
   }
 }

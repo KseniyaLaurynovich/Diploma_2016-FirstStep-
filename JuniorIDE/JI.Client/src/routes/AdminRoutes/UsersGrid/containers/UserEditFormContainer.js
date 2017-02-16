@@ -6,7 +6,8 @@ import UserEditFormView from '../components/UserEditFormView'
 const mapStateToProps = (state) => ({
   user            : state.usersGrid.currentUser,
   roles           : state.usersGrid.roles,
-  showModal       : state.usersGrid.showEditModal
+  showModal       : state.usersGrid.showEditModal,
+  saveUserError   : state.usersGrid.saveUserError
 })
 
 const mapDispatchToProps = {

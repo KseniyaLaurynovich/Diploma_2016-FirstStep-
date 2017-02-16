@@ -1,12 +1,15 @@
 ﻿using System.Linq;
 using System.Web.Http;
+using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
+using JI.Api.Models;
+using JI.Identity.Models;
 using Microsoft.AspNet.Identity;
 
 namespace JI.Api.Controllers
 {
     [RoutePrefix("roles")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Administrator")]
     public class RolesApiController : BaseApiController
     {
         [HttpGet]
@@ -17,7 +20,7 @@ namespace JI.Api.Controllers
 
             if (role != null)
             {
-                return Ok(role);
+                return Ok(role.Map<ApplicationRole, RoleModel>());
             }
 
             return NotFound();
@@ -27,15 +30,9 @@ namespace JI.Api.Controllers
         [Route("all")]
         public IHttpActionResult GetAllRoles()
         {
-            var roles = RoleManager.Value.Roles.ToList();
-            return Ok(roles);
-        }
-
-        [HttpGet]
-        [Route("all/{id}")]
-        public IHttpActionResult GetRolesForUser(string id)
-        {
-            var roles = UserManager.Value.GetRoles(id).ToList();
+            var roles = RoleManager.Value.Roles
+                .Select(r => r.Map<ApplicationRole, RoleModel>())
+                .ToList();
             return Ok(roles);
         }
     }

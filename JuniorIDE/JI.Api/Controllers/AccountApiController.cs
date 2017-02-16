@@ -47,6 +47,27 @@ namespace JI.Api.Controllers
         }
 
         [HttpGet]
+        [Route("info")]
+        public IHttpActionResult FetchAccountInfo()
+        {
+            var username = User?.Identity?.Name;
+
+            if (string.IsNullOrEmpty(username))
+            {
+                return BadRequest();
+            }
+
+            var user = UserManager.Value.FindByName(username);
+
+            if (user != null)
+            {
+                return Ok(Mapper.Map<ApplicationUser, AccountInfoModel>(user));
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         [Route("confirmemail")]
         public IHttpActionResult ConfirmEmail(string userId, string code)

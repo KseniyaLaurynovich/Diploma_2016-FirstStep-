@@ -1,5 +1,5 @@
 import React from 'react'
-import { Panel, Row, Col, Button, ButtonToolbar, ButtonGroup } from 'react-bootstrap'
+import { Panel, Row, Col, Button, ButtonToolbar, ButtonGroup, Glyphicon } from 'react-bootstrap'
 
 var UserGridRowView = React.createClass({
   render: function(){
@@ -19,11 +19,9 @@ var UserGridRowView = React.createClass({
              <p>Roles: {this.props.data.roles.join(', ')}</p>
              <p>Groups:</p>
            </Col>
-           <Col xs={3} md={3}>
-             <ButtonToolbar className='pull-right'>
-               <Button onClick={() => this.props.globalData.openEditModal(this.props.data.id)}>Edit</Button>
-               <Button>Delete</Button>
-             </ButtonToolbar>
+           <Col xs={3} md={3} className='pull-right'>
+             <Glyphicon className='like-button' glyph="pencil"
+               onClick={() => this.props.globalData.openEditModal(this.props.data.id)}/>
            </Col>
          </Row>
       </Panel>

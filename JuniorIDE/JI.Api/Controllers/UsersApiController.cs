@@ -2,6 +2,7 @@
 using System.Web.Http;
 using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
+using JI.Api.Models;
 using JI.Api.ViewModels;
 using JI.Identity.Models;
 using Microsoft.AspNet.Identity;
@@ -9,7 +10,7 @@ using Microsoft.AspNet.Identity;
 namespace JI.Api.Controllers
 {
     [RoutePrefix("users")]
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles="Administrator")]
     public class UsersApiController : BaseApiController
     {
         [HttpGet]
@@ -18,20 +19,37 @@ namespace JI.Api.Controllers
         {
             var users = UserManager.Value
                 .Users
-                .Select(u => u.Map<ApplicationUser, UserViewModel>())
+                .Select(u => u.Map<ApplicationUser, UserModel>())
                 .ToList();
+
+            foreach (var user in users)
+            {
+                var roles = UserManager.Value
+                .GetRoles(user.Id);
+
+                user.Roles = roles;
+            }
 
             return Ok(users);
         }
 
         [HttpPut]
         [Route("edit")]
-        public IHttpActionResult EditUser(UserViewModel model)
+        public IHttpActionResult EditUser(UserModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var user = UserManager.Value.FindById(model.Id);
             user = model.Map(user);
 
-            var result = UserManager.Value.Update(user);
+            var roles = UserManager.Value.GetRoles(user.Id);
+            var addedRoles = model.Roles.Where(r => !roles.Contains(r)).ToArray();
+            var removedRoles = roles.Where(r => !model.Roles.Contains(r)).ToArray();
+
+            var result = UserManager.Value.UpdateWithRoles(user, addedRoles, removedRoles);
 
             return !result.Succeeded
                 ? GetErrorResult(result) 

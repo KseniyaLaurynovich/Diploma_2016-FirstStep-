@@ -40,7 +40,7 @@ export const Header = (props) => (
   <Navbar.Collapse>
     <Nav>
       {
-        props.navItems.map(renderNavItem)
+        props.navItems && props.navItems.map(renderNavItem)
       }
     </Nav>
     {

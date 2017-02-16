@@ -136,6 +136,7 @@ export function saveEditedUser(event){
     requests.editUser(token, user).then(function(response){
       dispatch(saveEditUserSuccess())
       dispatch(setSaveEditUserLoading(false))
+      dispatch(setEditModalShowing(null, false))
     },function(error){
       var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
 
@@ -211,7 +212,16 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, { currentUser: Object.assign({}, state.currentUser, { roles: action.payload })})
   },
   [SAVE_EDITED_USER_SUCCESS]    : (state, action) => {
-    return Object.assign({}, state, action.payload )
+    var userId = state.currentUser.id
+    var users = _.cloneDeep(state.users)
+    var user = users.find((u) => {
+      return u.id === userId
+    });
+
+    var userIndex = users.indexOf(user)
+    users[userIndex] = _.cloneDeep(state.currentUser)
+
+    return Object.assign({}, state, { users: users } )
   },
   [SAVE_EDITED_USER_FAILED]     : (state, action) => {
     return Object.assign({}, state, { saveUserError : action.payload } )
@@ -220,7 +230,7 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, { saveUserLoading : action.payload } )
   },
   [EDIT_USER_RESET_ERRORS]      : (state, action) => {
-    return Object.assign({}, state, { saveUserError : null } )
+    return Object.assign({}, state, { saveUserError : null  } )
   }
 }
 // ------------------------------------
@@ -232,8 +242,7 @@ const initialState = {
   currentUser             : null,
   showEditModal           : false,
   saveUserLoading         : false,
-  saveUserError           : null,
-  editUserValidationState : null
+  saveUserError           : null
 }
 
 export default function usersGridReducer (state = initialState, action){

@@ -10,6 +10,10 @@ namespace JI.Api.Business.Configuration
         public void Register()
         {
             Mapper.Register<RegisterModel, ApplicationUser>();
+            Mapper.Register<AccountInfoModel, ApplicationUser>();
+            Mapper.Register<UserModel, ApplicationUser>();
+
+            Mapper.Register<RoleModel, ApplicationRole>();
         }
     }
 }
