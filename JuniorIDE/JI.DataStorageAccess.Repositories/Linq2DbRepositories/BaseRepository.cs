@@ -9,49 +9,45 @@ namespace JI.DataStorageAccess.Repositories.Linq2DbRepositories
     public abstract class BaseRepository<T> : IRepository<T>
         where T : class, IWithIdentifier
     {
+        private JuniorDbConnection _dbConnection;
+
+        protected JuniorDbConnection DbConnection
+            => _dbConnection ?? (_dbConnection = new JuniorDbConnection());
+
         public virtual void Delete(Guid id)
         {
             var item = GetById(id);
             if (item != null)
             {
-                using (var db = new JuniorDbConnection())
-                {
-                    db.Delete(item);
-                }
+                DbConnection.Delete(item);
             }
         }
 
         public virtual T GetById(Guid id)
         {
-            T result;
-            using (var db = new JuniorDbConnection())
-            {
-                result = db.GetTable<T>().FirstOrDefault(e => e.Id == id);
-            }
-            return result;
+            return DbConnection.GetTable<T>().FirstOrDefault(e => e.Id == id);
         }
 
         public virtual IQueryable<T> Items()
         {
-            using (var dbConnection = new JuniorDbConnection())
-            {
-                return dbConnection.GetTable<T>();
-            }
+            return DbConnection.GetTable<T>();
         }
 
         public virtual Guid Save(T obj)
         {
-            using (var dbConnection = new JuniorDbConnection())
+            if (obj.Id == Guid.Empty)
             {
-                if (obj.Id == Guid.Empty)
-                {
-                    return (Guid)dbConnection.InsertWithIdentity(obj);
-                }
-
-                dbConnection.Update(obj);
+                return (Guid)DbConnection.InsertWithIdentity(obj);
             }
+
+            DbConnection.Update(obj);
             
             return obj.Id;
+        }
+
+        public void Dispose()
+        {
+            _dbConnection.Dispose();
         }
     }
 }

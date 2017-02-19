@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace JI.Api.Models
 {
@@ -18,5 +20,14 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "patronymic")]
         public string Patronymic { get; set; }
+
+        [JsonProperty(PropertyName = "registrationDate")]
+        public DateTime RegistrationDate { get; set; }
+
+        [JsonProperty(PropertyName = "isActivated")]
+        public bool IsActivated { get; set; }
+
+        [JsonProperty(PropertyName = "roles")]
+        public IList<string> Roles { get; set; }
     }
 }

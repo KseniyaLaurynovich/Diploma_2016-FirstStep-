@@ -74,7 +74,7 @@ namespace JI.Api.Controllers
         {
             if (userId == null || code == null)
             {
-                return GetErrorResult(null);
+                return GetErrorResult((IdentityResult)null);
             }
             var result = UserManager.Value.ConfirmEmail(userId, code);
 
@@ -96,7 +96,7 @@ namespace JI.Api.Controllers
             var user = UserManager.Value.FindByEmail(model.Email);
             if (user == null || !UserManager.Value.IsEmailConfirmed(user.Id))
             {
-                return GetErrorResult(null);
+                return GetErrorResult((IdentityResult)null);
             }
 
             var code = UserManager.Value.GeneratePasswordResetToken(user.Id);

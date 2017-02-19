@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using JI.Services.Business;
 using JI.Services.Models;
 
 namespace JI.Services.Contracts
 {
-    public interface ISubjectService
+    public interface ISubjectService : IDisposable
     {
-        IList<Subject> GetByUser(string userId);
-        void Save(Subject subject);
-        void Delete(string id);
+        IList<Subject> FindByUserId(string userId);
+        ServiceResult Save(Subject subject);
+        ServiceResult Delete(string id);
         IList<Subject> GetAll();
-        Subject GetById(string subjectId);
+        Subject FindById(string subjectId);
     }
 }

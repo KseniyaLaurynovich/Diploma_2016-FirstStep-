@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col, Form, Glyphicon, HelpBlock } from 'react-bootstrap'
+import { Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col, Form, Glyphicon, HelpBlock, Checkbox } from 'react-bootstrap'
 
 function filteredRoles(props){
   return props.roles
@@ -29,8 +29,21 @@ const UserEditFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>
      <Modal.Header>
        <Modal.Title className='modal-title'>Edit user</Modal.Title>
-       <Button bsStyle='danger' className='pull-right'> Delete this user
-       </Button>
+       <Row>
+         <Col md={6}>
+           <Checkbox onChange={props.handleDeleteConfirmation}>I undestand that user can not be restored.</Checkbox>
+         </Col>
+         <Col md={6}>
+           <Button onClick={props.handleDelete}
+             disabled={!props.deleteConfirmed || props.saveUserLoading || props.deleteUserLoading} bsStyle='danger' className='pull-right'>
+             {
+               props.deleteUserLoading
+               ? 'Deleting...'
+               : 'Delete this user'
+             }
+           </Button>
+         </Col>
+       </Row>
      </Modal.Header>
 
    <Form onSubmit={props.submit}>
@@ -68,7 +81,7 @@ const UserEditFormView = (props) => (
              props.user && props.user.roles.map((role, index) => (
                <Col xs={12} md={12} key={index}>
                    <h4 className='modal-title margin-right-10-px'>{role}</h4>
-                   <Glyphicon className='like-button' glyph='remove'
+                   <Glyphicon className='glypicon--button' glyph='remove'
                      onClick={() => removeRole(props, role)}/>
                </Col>
              ))
@@ -103,7 +116,13 @@ const UserEditFormView = (props) => (
               </HelpBlock>
           </FormGroup>
          <Button onClick={props.close}>Close</Button>
-         <Button type="submit" bsStyle="success">Save changes</Button>
+       <Button disabled={props.saveUserLoading || props.deleteUserLoading}  type="submit" bsStyle="success">
+           {
+             props.saveUserLoading
+             ? 'Saving...'
+             : 'Save changes'
+           }
+       </Button>
        </Modal.Footer>
      </Form>
    </Modal>

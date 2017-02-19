@@ -3,7 +3,7 @@ using LinqToDB.Data;
 
 namespace JI.DataStorageAccess.Repositories.Models
 {
-    internal class JuniorDbConnection : DataConnection
+    public class JuniorDbConnection : DataConnection
     {
         public JuniorDbConnection() : base("JuniorDbConnectionString")
         {}

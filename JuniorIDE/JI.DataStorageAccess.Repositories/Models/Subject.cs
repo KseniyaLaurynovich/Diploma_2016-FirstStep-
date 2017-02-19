@@ -11,7 +11,7 @@ namespace JI.DataStorageAccess.Repositories.Models
         public Guid Id { get; set; }
 
         [Column(Name = "UserId"), NotNull]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [Column(Name = "Name"), NotNull]
         public string Name { get; set; }

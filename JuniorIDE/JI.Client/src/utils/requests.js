@@ -64,6 +64,14 @@ export function editUser(token, user){
   })
 }
 
+export function deleteUser(token, userId){
+  return axios({
+    method  : 'delete',
+    url     : BASE_URL + '/users/delete/' + userId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -71,7 +79,8 @@ const requests = {
   changePassword,
   fetchUsers,
   fetchRoles,
-  editUser
+  editUser,
+  deleteUser
 }
 
 export default requests

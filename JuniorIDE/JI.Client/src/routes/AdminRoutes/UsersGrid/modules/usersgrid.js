@@ -16,6 +16,9 @@ export const SAVE_EDITED_USER_SUCCESS       = 'SAVE_EDITED_USER_SUCCESS'
 export const SAVE_EDITED_USER_FAILED        = 'SAVE_EDITED_USER_FAILED'
 export const SAVE_EDITED_USER_IS_LOADING    = 'SAVE_EDITED_USER_IS_LOADING'
 export const EDIT_USER_RESET_ERRORS         = 'EDIT_USER_RESET_ERRORS'
+export const SET_DELETE_USER_CONFIRMED      = 'SET_DELETE_USER_CONFIRMED'
+export const DELETE_USER_IS_LOADING         = 'DELETE_USER_IS_LOADING'
+export const DELETE_USER_SUCCESS            = 'DELETE_USER_SUCCESS'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -71,13 +74,20 @@ export const fetchRolesSuccess = (roles) => {
 export const setEditModalShowing = (show, user) => {
   return {
     type    : SET_USER_EDIT_MODAL_SHOWING,
-    payload : { showEditModal: show, currentUser: user }
+    payload : { showEditModal: show, currentUser: user, deleteConfirmed: false }
   }
 }
 
 export const setSaveEditUserLoading = (isLoading) => {
   return {
     type    : SAVE_EDITED_USER_IS_LOADING,
+    payload : isLoading
+  }
+}
+
+export const setDeleteUserLoading = (isLoading) => {
+  return {
+    type    : DELETE_USER_IS_LOADING,
     payload : isLoading
   }
 }
@@ -98,6 +108,19 @@ export const saveEditUserSuccess = () => {
 export const resetErrors = () => {
   return {
     type    : EDIT_USER_RESET_ERRORS
+  }
+}
+
+export const onDeleteConfirmation = (event) => {
+  return {
+    type    : SET_DELETE_USER_CONFIRMED,
+    payload : event.target.checked
+  }
+}
+
+export const deleteUserSuccess = () => {
+  return {
+    type    : DELETE_USER_SUCCESS
   }
 }
 
@@ -146,6 +169,25 @@ export function saveEditedUser(event){
   }
 }
 
+export function onDeleteUser(event){
+  event.preventDefault()
+  return (dispatch, getState) => {
+    dispatch(setDeleteUserLoading(true))
+
+    var userId = getState().usersGrid.currentUser.id
+    var token = getState().user.credentials.access_token
+    requests.deleteUser(token, userId).then(function(response){
+      dispatch(deleteUserSuccess())
+      dispatch(setDeleteUserLoading(false))
+      dispatch(setEditModalShowing(null, false))
+    },function(error){
+      var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
+
+      //todo handle error
+    })
+  }
+}
+
 export function openEditModal(userId){
     return (dispatch, getState) => {
       var users = getState().usersGrid.users
@@ -177,7 +219,9 @@ export const actions = {
   onLastNameChange,
   onPatronymicChange,
   onEmailChange,
-  onRolesChange
+  onRolesChange,
+  onDeleteConfirmation,
+  onDeleteUser
 }
 
 // ------------------------------------
@@ -223,6 +267,18 @@ const ACTION_HANDLERS = {
 
     return Object.assign({}, state, { users: users } )
   },
+  [DELETE_USER_SUCCESS]  : (state, action) => {
+    var userId = state.currentUser.id
+    var users = _.cloneDeep(state.users)
+    var user = users.find((u) => {
+      return u.id === userId
+    });
+
+    var userIndex = users.indexOf(user)
+    users.splice(userIndex, 1)
+
+    return Object.assign({}, state, { users: users } )
+  },
   [SAVE_EDITED_USER_FAILED]     : (state, action) => {
     return Object.assign({}, state, { saveUserError : action.payload } )
   },
@@ -231,7 +287,13 @@ const ACTION_HANDLERS = {
   },
   [EDIT_USER_RESET_ERRORS]      : (state, action) => {
     return Object.assign({}, state, { saveUserError : null  } )
-  }
+  },
+  [SET_DELETE_USER_CONFIRMED]   : (state, action) => {
+    return Object.assign({}, state, { deleteConfirmed : action.payload  } )
+  },
+  [DELETE_USER_IS_LOADING]      : (state, action) => {
+    return Object.assign({}, state, { deleteUserLoading : action.payload  } )
+  },
 }
 // ------------------------------------
 // Reducer
@@ -242,7 +304,9 @@ const initialState = {
   currentUser             : null,
   showEditModal           : false,
   saveUserLoading         : false,
-  saveUserError           : null
+  deleteUserLoading       : false,
+  saveUserError           : null,
+  deleteConfirmed         : false
 }
 
 export default function usersGridReducer (state = initialState, action){

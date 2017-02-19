@@ -1,75 +1,93 @@
-﻿using BusinesServices.Models;
-using BusinesServices.Contracts;
-using ExpressMapper;
+﻿using System;
 using System.Collections.Generic;
+using ExpressMapper;
+using JI.DataStorageAccess.Repositories.Contracts;
+using JI.Services.Business;
+using JI.Services.Contracts;
+using JI.Services.Models;
 using System.Linq;
-using DataStorageAccess.Contracts;
 using ExpressMapper.Extensions;
 
-namespace BusinesServices.Services
+namespace JI.Services.Services
 {
     public class SubjectService : ISubjectService
     {
-        private readonly ISubjectRepository _subjectRepository;
-        private readonly IGroupRepository _groupRepository;
+        private readonly ISubjectsRespository _subjectRepository;
 
-        public SubjectService(ISubjectRepository subjectRepository, 
-            IGroupRepository groupRepository)
+        public SubjectService(ISubjectsRespository subjectRepository)
         {
             _subjectRepository = subjectRepository;
-            _groupRepository = groupRepository;
         }
 
-        public IList<Subject> GetByUser(string userId)
+        public ServiceResult Save(Subject subject)
         {
-            var subjects = _subjectRepository.GetByUser(userId)
-                .Select(Mapper.Map<DataStorageAccess.Models.Subject, Subject>)
-                .ToList();
-
-            foreach(var subject in subjects)
+            var validationResult = ValidateSubject(subject);
+            if (validationResult.Succeeded)
             {
-                subject.AssignGroups = _groupRepository
-                    .GetGroupsBySubject(subject.Id)
-                    .Select(Mapper.Map<DataStorageAccess.Models.Group, Group>)
-                    .ToList();
+                var storageSubject = Mapper.Map<Subject, DataStorageAccess.Repositories.Models.Subject>(subject);
+                try
+                {
+                    var id = _subjectRepository.Save(storageSubject);
+                    return ServiceResult.Success;
+                }
+                catch (Exception ex)
+                {
+                    //todo add logging
+                    return new ServiceResult("Error occured while processing request.");
+                }
+                
             }
 
-            return subjects;
+            return validationResult;
         }
 
-        public void Save(Subject subject)
+        public ServiceResult Delete(string id)
         {
-            var storageSubject = Mapper.Map<Subject, DataStorageAccess.Models.Subject>(subject);
-            var id = _subjectRepository.Save(storageSubject);
-
-            subject.Id = id;
-        }
-
-        public void Delete(string id)
-        {
-            var deletingSubject = _subjectRepository.GetById(id);
-            _subjectRepository.Delete(deletingSubject);
+            try
+            {
+                _subjectRepository.Delete(new Guid(id));
+            }
+            catch (Exception ex)
+            {
+                //todo add logging
+                return new ServiceResult("Error occured while processing request.");
+            }
+            return ServiceResult.Success;
         }
 
         public IList<Subject> GetAll()
         {
-            var subjects = _subjectRepository.Items()
-                .Select(Mapper.Map<DataStorageAccess.Models.Subject, Subject>)
+            return _subjectRepository.Items()
+                .Select(Mapper.Map<DataStorageAccess.Repositories.Models.Subject, Subject>)
                 .ToList();
-            foreach (var subject in subjects)
-            {
-                subject.AssignGroups = _groupRepository
-                    .GetGroupsBySubject(subject.Id)
-                    .Select(Mapper.Map<DataStorageAccess.Models.Group, Group>)
-                    .ToList();
-            }
-
-            return subjects;
         }
 
-        public Subject GetById(string subjectId)
+        public Subject FindById(string subjectId)
         {
-            return _subjectRepository.GetById(subjectId).Map<DataStorageAccess.Models.Subject, Subject>();
+            return _subjectRepository.GetById(new Guid(subjectId))
+                .Map<DataStorageAccess.Repositories.Models.Subject, Subject>();
+        }
+
+        public IList<Subject> FindByUserId(string userId)
+        {
+            return _subjectRepository.GetByUser(new Guid(userId))
+                .Select(Mapper.Map<DataStorageAccess.Repositories.Models.Subject, Subject>)
+                .ToList();
+        }
+
+        public void Dispose()
+        {
+            _subjectRepository.Dispose();
+        }
+
+        private ServiceResult ValidateSubject(Subject subject)
+        {
+            if (_subjectRepository.Items().Any(s => s.Name.Equals(subject.Name) && s.UserId.Equals(subject.UserId)))
+            {
+                return new ServiceResult($"Subject with name {subject.Name} already exists.");
+            }
+
+            return ServiceResult.Success;
         }
     }
 }

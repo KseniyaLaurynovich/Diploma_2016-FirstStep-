@@ -2,6 +2,7 @@
 using JI.Api.Models;
 using JI.Common.Mapper.Contracts;
 using JI.Identity.Models;
+using JI.Services.Models;
 
 namespace JI.Api.Business.Configuration
 {
@@ -14,6 +15,8 @@ namespace JI.Api.Business.Configuration
             Mapper.Register<UserModel, ApplicationUser>();
 
             Mapper.Register<RoleModel, ApplicationRole>();
+
+            Mapper.Register<SubjectModel, Subject>();
         }
     }
 }

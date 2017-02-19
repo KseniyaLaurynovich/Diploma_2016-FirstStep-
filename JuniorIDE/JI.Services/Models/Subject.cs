@@ -9,7 +9,6 @@ namespace JI.Services.Models
 
         public string UserId { get; set; }
 
-        [Required]
         public string Name { get; set; }
 
         public IList<Task> Tasks { get; set; }

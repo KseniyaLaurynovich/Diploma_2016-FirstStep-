@@ -6,8 +6,6 @@ namespace JI.DataStorageAccess.Repositories.Models
     [Table(Name = "Users")]
     public class User : IWithIdentifier
     {
-        public User() { }
-
         [Column(Name = "Id"), PrimaryKey, Identity]
         public Guid Id { get; set; }
 
@@ -34,5 +32,11 @@ namespace JI.DataStorageAccess.Repositories.Models
 
         [Column(Name="SecurityStamp")]
         public string SecurityStamp { get; set; }
+
+        [Column(Name = "RegistrationDate")]
+        public DateTime RegistrationDate { get; set; }
+
+        [Column(Name = "IsActivated")]
+        public bool IsActivated { get; set; }
     }
 }

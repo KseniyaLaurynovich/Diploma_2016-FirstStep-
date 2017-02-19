@@ -16,12 +16,13 @@ const UsersGridContainer = React.createClass({
     return  (
       <div className='usersGridPage'>
         <Griddle
-          results={this.props.users}
-          customRowComponent={UserGridRowView}
-          showFilter={true}
-          useCustomRowComponent={true}
-          enableInfiniteScroll={true}
-          globalData={{openEditModal: this.props.openEditModal}}/>
+          results               = {this.props.users}
+          customRowComponent    = {UserGridRowView}
+          showFilter            = {true}
+          useCustomRowComponent = {true}
+          enableInfiniteScroll  = {true}
+          globalData            = {{openEditModal: this.props.openEditModal}}
+          />
 
         <UserEditFormContainer
           user                = {this.state.currentUser}

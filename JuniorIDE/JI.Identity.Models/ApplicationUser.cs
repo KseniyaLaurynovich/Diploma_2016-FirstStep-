@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using Microsoft.AspNet.Identity;
 
 namespace JI.Identity.Models
 {
@@ -21,5 +22,9 @@ namespace JI.Identity.Models
         public string PasswordHash { get; set; }
 
         public string SecurityStamp { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
+
+        public bool IsActivated { get; set; }
     }
 }
