@@ -1,4 +1,6 @@
-﻿using SimpleInjector;
+﻿using JI.Services.Contracts;
+using JI.Services.Services;
+using SimpleInjector;
 using SimpleInjector.Packaging;
 
 namespace JI.Services.Infrastructure
@@ -7,7 +9,7 @@ namespace JI.Services.Infrastructure
     {
         public void RegisterServices(Container container)
         {
-            //container.Register<ISubjectService, SubjectService>(Lifestyle.Scoped);
+            container.Register<ISubjectService, SubjectService>(Lifestyle.Scoped);
             //container.Register<ITaskService, TaskService>(Lifestyle.Scoped);
             //container.Register<IFileService, FileService>(Lifestyle.Scoped);
             //container.Register<IGroupService, GroupService>(Lifestyle.Scoped);

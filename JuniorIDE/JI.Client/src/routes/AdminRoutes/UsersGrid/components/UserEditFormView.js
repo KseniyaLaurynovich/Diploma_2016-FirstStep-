@@ -30,10 +30,10 @@ const UserEditFormView = (props) => (
      <Modal.Header>
        <Modal.Title className='modal-title'>Edit user</Modal.Title>
        <Row>
-         <Col md={6}>
+         <Col md={6} sm={6} xs={6}>
            <Checkbox onChange={props.handleDeleteConfirmation}>I undestand that user can not be restored.</Checkbox>
          </Col>
-         <Col md={6}>
+         <Col md={6} sm={6} xs={6}>
            <Button onClick={props.handleDelete}
              disabled={!props.deleteConfirmed || props.saveUserLoading || props.deleteUserLoading} bsStyle='danger' className='pull-right'>
              {
@@ -76,17 +76,20 @@ const UserEditFormView = (props) => (
          <hr/>
 
          <h4>Roles</h4>
-         <Row className='margin-bottom-10-px'>
-           {
-             props.user && props.user.roles.map((role, index) => (
-               <Col xs={12} md={12} key={index}>
-                   <h4 className='modal-title margin-right-10-px'>{role}</h4>
-                   <Glyphicon className='glypicon--button' glyph='remove'
-                     onClick={() => removeRole(props, role)}/>
+         {
+           props.user && props.user.roles.map((role, index) => (
+             <Row key={index}>
+               <Col md={3} sm={6} xs={6}>
+                 <p className='modal-title margin-right-10-px'>{role}</p>
                </Col>
-             ))
-           }
-         </Row>
+
+               <Col md={3} sm={6} xs={6}>
+                 <Glyphicon className='glypicon--button glypicon-sm' glyph='remove'
+                   onClick={() => removeRole(props, role)}/>
+               </Col>
+             </Row>
+           ))
+         }
          <Row>
            <Col xs={8} md={4}>
              <DropdownButton
@@ -115,8 +118,8 @@ const UserEditFormView = (props) => (
                 }
               </HelpBlock>
           </FormGroup>
-         <Button onClick={props.close}>Close</Button>
-       <Button disabled={props.saveUserLoading || props.deleteUserLoading}  type="submit" bsStyle="success">
+       <Button onClick={props.close}>Close</Button>
+       <Button disabled={props.saveUserLoading || props.deleteUserLoading} type="submit" bsStyle="success">
            {
              props.saveUserLoading
              ? 'Saving...'

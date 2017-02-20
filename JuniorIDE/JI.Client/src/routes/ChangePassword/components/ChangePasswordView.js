@@ -31,7 +31,7 @@ export const ChangePasswordView = (props) => (
      </FormGroup>
 
      <FormGroup>
-       <Button className='btn-submit' type="submit" disabled={ props.isLoading }>
+       <Button className='success full-width' type="submit" disabled={ props.isLoading }>
          {props.isLoading ? 'Loading...' : 'Save'}
        </Button>
      </FormGroup>

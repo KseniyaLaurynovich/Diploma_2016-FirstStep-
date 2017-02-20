@@ -6,7 +6,7 @@
   background-color: #FFF;
   margin-right: 2em;
   @include respond-to(handhelds) { width: 100% !important;}
-  @include respond-to(medium-screens) { width: 50% !important; }
+  @include respond-to(medium-screens) { width: 46% !important; }
   @include respond-to(wide-screens) { width: 30% !important; }
 }
 

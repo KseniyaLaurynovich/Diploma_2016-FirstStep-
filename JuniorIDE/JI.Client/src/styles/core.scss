@@ -43,11 +43,14 @@ body {
 
 .glypicon--button:hover{
   color: $green1;
-  border: $green;
-  border-width: 2px;
-  border-style: solid;
-  border-radius: 6px;
-  padding: 9px;
+  border-color: $green;
+}
+
+.glypicon-sm{
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 1px 5px;
+  margin-bottom: 3px;
 }
 
 .title{
@@ -77,6 +80,28 @@ body {
   border-color: $red;
   color: $red;
   background-color: $gray;
+}
+
+.btn-danger:active {
+  border-color: $red;
+  color: $red;
+  background-color: $gray;
+}
+
+.btn-success:hover {
+  border-color: $green;
+  color: $green1;
+  background-color: $gray;
+}
+
+.btn-danger:active {
+  border-color: $green;
+  color: $green1;
+  background-color: $gray;
+}
+
+.full-width{
+  width: 100%;
 }
 
 //links

@@ -9,32 +9,32 @@ var UserGridRowView = React.createClass({
       <Panel className='panel--user panel-inline flex-1'
         footer={helpers.dateTimeToString(new Date(this.props.data.registrationDate))}>
         <Row>
-           <Col md={10} xs={10}>
+           <Col md={10} xs={12} sm={10}>
              <p className='title'>{this.props.data.firstName} {this.props.data.lastName} {this.props.data.patronymic}</p>
            </Col>
 
-           <Col md={2} xs={2}>
-               <Glyphicon className='glypicon--button' glyph="pencil"
+           <Col md={2} xs={12} sm={2}>
+               <Glyphicon className='glypicon--button pull-right' glyph="pencil"
                  onClick={() => this.props.globalData.openEditModal(this.props.data.id)}/>
            </Col>
 
-           <Col md={12} xs={12}>
+           <Col md={12} xs={12} sm={12}>
              <p>
                Id: {this.props.data.id}
              </p>
            </Col>
 
-           <Col md={12} xs={12}>
+           <Col md={12} xs={12} sm={12}>
              <p>
                Email: {this.props.data.email}
              </p>
            </Col>
 
-           <Col md={12} xs={12}>
+           <Col md={12} xs={12} sm={12}>
              <p>Roles: {this.props.data.roles.join(', ')}</p>
            </Col>
 
-           <Col md={12} xs={12}>
+           <Col md={12} xs={12} sm={12}>
              <p>Groups:</p>
            </Col>
          </Row>

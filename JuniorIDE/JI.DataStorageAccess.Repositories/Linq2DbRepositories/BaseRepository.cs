@@ -47,7 +47,7 @@ namespace JI.DataStorageAccess.Repositories.Linq2DbRepositories
 
         public void Dispose()
         {
-            _dbConnection.Dispose();
+            _dbConnection?.Dispose();
         }
     }
 }

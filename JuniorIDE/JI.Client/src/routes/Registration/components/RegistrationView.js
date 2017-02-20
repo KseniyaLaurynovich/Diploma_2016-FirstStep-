@@ -52,7 +52,7 @@ export const Registration = (props) => (
      </FormGroup>
 
      <FormGroup>
-         <Button className='btn-submit' type="submit" disabled={props.isLoading}>
+         <Button className='success full-width' type="submit" disabled={props.isLoading}>
            {props.isLoading ? 'Loading...' : 'Sign up'}
          </Button>
      </FormGroup>

@@ -30,7 +30,7 @@ export const Login = (props) => (
      </FormGroup>
 
      <FormGroup>
-       <Button className='btn-submit' type="submit" disabled={ props.isLoading }>
+       <Button className='success full-width' type="submit" disabled={ props.isLoading }>
          {props.isLoading ? 'Loading...' : 'Sign in'}
        </Button>
      </FormGroup>

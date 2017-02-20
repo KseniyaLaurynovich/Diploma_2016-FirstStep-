@@ -71,5 +71,20 @@ namespace JI.Api.Controllers.Base
 
             return null;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (UserManager.IsValueCreated)
+            {
+                UserManager.Value.Dispose();
+            }
+
+            if (RoleManager.IsValueCreated)
+            {
+                RoleManager.Value.Dispose();
+            }
+        }
     }
 }
