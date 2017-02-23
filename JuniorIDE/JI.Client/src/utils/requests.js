@@ -72,6 +72,14 @@ export function deleteUser(token, userId){
   })
 }
 
+export function fetchSubjectsForTeacher(token){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/subjects/getByUser',
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -80,7 +88,8 @@ const requests = {
   fetchUsers,
   fetchRoles,
   editUser,
-  deleteUser
+  deleteUser,
+  fetchSubjectsForTeacher
 }
 
 export default requests

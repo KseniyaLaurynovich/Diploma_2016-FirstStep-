@@ -64,6 +64,7 @@ namespace JI.DataStorageAccess.Identity.Linq2DbStores
 
             if (dbUser.Id == Guid.Empty)
             {
+                dbUser.RegistrationDate = DateTime.Now;
                 return Task.FromResult(DbConnection.InsertWithIdentity(dbUser));
             }
             DbConnection.Update(dbUser);

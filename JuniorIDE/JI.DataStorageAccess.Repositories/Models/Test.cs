@@ -10,7 +10,7 @@ namespace JI.DataStorageAccess.Repositories.Models
         public Guid Id { get; set; }
 
         [Column(Name = "TaskId"), NotNull]
-        public string TaskId { get; set; }
+        public Guid TaskId { get; set; }
 
         [Column(Name = "Name"), NotNull]
         public string Name { get; set; }

@@ -20,7 +20,7 @@ namespace JI.DataStorageAccess.Repositories.Models
         public string AdditionalInfo { get; set; }
 
         [Column(Name = "SubjectId"), NotNull]
-        public string SubjectId { get; set; }
+        public Guid SubjectId { get; set; }
 
         [Column(Name = "CreationDate"), NotNull]
         public DateTime CreationDate { get; set; }

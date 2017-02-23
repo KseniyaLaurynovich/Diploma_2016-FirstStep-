@@ -24,8 +24,9 @@ namespace JI.DataStorageAccess.Repositories.Linq2DbRepositories
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
 
             return DbConnection.Subjects
-                .LoadWith(s => s.Tasks)
-                .LoadWith(s => s.SubjectGroups)
+                //todo fix errors
+                //.LoadWith(s => s.Tasks)
+                //.LoadWith(s => s.SubjectGroups)
                 .Where(s => s.UserId.Equals(userId))
                 .AsQueryable();
         }

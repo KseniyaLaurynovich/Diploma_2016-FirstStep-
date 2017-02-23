@@ -55,5 +55,15 @@ namespace JI.Api.Controllers
                 ? GetErrorResult(result)
                 : Ok();
         }
+
+        protected new void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (!disposing)
+            {
+                _subjectService?.Dispose();
+            }
+        }
     }
 }

@@ -16,6 +16,9 @@ const HeaderContainer = React.createClass({
     '' : [
 
     ],
+    'Teacher' : [
+      {to: 'subjects', label:'Subjects'}
+    ],
     'Student' : [
       {to: '/counter', label:'Counter'}
     ],
@@ -25,7 +28,7 @@ const HeaderContainer = React.createClass({
   },
   getNavItems(){
     if(!this.props.isAuthenticated){
-      return this.navItems[null]
+      return this.navItemsSwitcher[null]
     }
 
     var navItems = []

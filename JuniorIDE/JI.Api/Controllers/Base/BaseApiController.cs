@@ -76,14 +76,17 @@ namespace JI.Api.Controllers.Base
         {
             base.Dispose(disposing);
 
-            if (UserManager.IsValueCreated)
+            if (!disposing)
             {
-                UserManager.Value.Dispose();
-            }
+                if (UserManager.IsValueCreated)
+                {
+                    UserManager.Value.Dispose();
+                }
 
-            if (RoleManager.IsValueCreated)
-            {
-                RoleManager.Value.Dispose();
+                if (RoleManager.IsValueCreated)
+                {
+                    RoleManager.Value.Dispose();
+                }
             }
         }
     }

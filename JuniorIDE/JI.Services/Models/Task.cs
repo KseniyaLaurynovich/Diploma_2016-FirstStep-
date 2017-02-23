@@ -6,7 +6,7 @@ namespace JI.Services.Models
 {
     public class Task
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public string Name { get; set; }
@@ -17,7 +17,7 @@ namespace JI.Services.Models
         public string AdditionalInfo { get; set; }
 
         [Required]
-        public string SubjectId { get; set; }
+        public Guid SubjectId { get; set; }
 
         public DateTime CreationDate { get; set; }
 

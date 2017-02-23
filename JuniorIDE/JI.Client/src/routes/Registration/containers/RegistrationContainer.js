@@ -9,7 +9,7 @@ const mapDispatchToProps = {
   onUsernameChange          : actions.handleUsernameChange,
   onPasswordChange          : actions.handlePasswordChange,
   onConfirmPasswordChange   : actions.handleConfirmPasswordChange,
-  onEmailChange             :  actions.handleEmailChange,
+  onEmailChange             : actions.handleEmailChange,
   onFirstNameChange         : actions.handleFirstNameChange,
   onLastNameChange          : actions.handleLastNameChange,
   onPatronymicChange        : actions.handlePatronymicChange

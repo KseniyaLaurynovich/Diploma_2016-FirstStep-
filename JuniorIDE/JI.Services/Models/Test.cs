@@ -1,12 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace JI.Services.Models
 {
     public class Test
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        public int TaskId { get; set; }
+        public Guid TaskId { get; set; }
 
         [Required]
         public string Name { get; set; }
