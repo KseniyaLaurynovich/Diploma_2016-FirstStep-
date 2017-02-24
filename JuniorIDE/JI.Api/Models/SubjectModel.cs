@@ -8,7 +8,6 @@ namespace JI.Api.Models
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 
-        [Required]
         [JsonProperty(PropertyName = "userId")]
         public string UserId { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using ExpressMapper;
+﻿using System;
+using ExpressMapper;
 using JI.Api.Models;
 using JI.Common.Mapper.Contracts;
 using JI.Identity.Models;
@@ -16,7 +17,24 @@ namespace JI.Api.Business.Configuration
 
             Mapper.Register<RoleModel, ApplicationRole>();
 
-            Mapper.Register<SubjectModel, Subject>();
+            Mapper.Register<Subject, SubjectModel>()
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.UserId, src => src.UserId.ToString());
+            Mapper.Register<SubjectModel, Subject>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.UserId)
+                .After((subjectModel, subject) =>
+                {
+                    subject.Id = 
+                        subjectModel.Id != null 
+                        ? new Guid(subjectModel.Id) 
+                        : Guid.Empty;
+
+                    subject.UserId = 
+                        subjectModel.UserId != null 
+                        ? new Guid(subjectModel.UserId) 
+                        : Guid.Empty;
+                });
         }
     }
 }

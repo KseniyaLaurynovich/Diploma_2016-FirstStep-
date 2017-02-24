@@ -80,6 +80,23 @@ export function fetchSubjectsForTeacher(token){
   })
 }
 
+export function saveSubject(token, subject){
+  return axios({
+    method  : 'post',
+    url     : BASE_URL + '/subjects/save',
+    headers : {"Authorization": "Bearer " + token, "Content-Type": "application/json" },
+    data    : JSON.stringify(subject)
+  })
+}
+
+export function deleteSubject(token, subjectId){
+  return axios({
+    method  : 'delete',
+    url     : BASE_URL + '/subjects/delete/' + subjectId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -89,7 +106,9 @@ const requests = {
   fetchRoles,
   editUser,
   deleteUser,
-  fetchSubjectsForTeacher
+  fetchSubjectsForTeacher,
+  saveSubject,
+  deleteSubject
 }
 
 export default requests

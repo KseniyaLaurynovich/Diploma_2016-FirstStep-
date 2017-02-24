@@ -31,6 +31,10 @@ body {
 
 //common
 
+.glypicon--pointer{
+  cursor: pointer !important;
+}
+
 .glypicon--button{
   cursor: pointer !important;
   background-color: $gray;

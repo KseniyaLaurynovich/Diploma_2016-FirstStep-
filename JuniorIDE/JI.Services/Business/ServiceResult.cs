@@ -1,37 +1,75 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace JI.Services.Business
 {
-    public class ServiceResult
+    public class ServiceResult<T> 
+        where T : class
     {
-        private static readonly ServiceResult _success = new ServiceResult(true);
+        public T Result { get; protected set; }
 
-        public bool Succeeded { get; private set; }
+        public bool Succeeded { get; protected set; }
 
-        public IEnumerable<string> Errors { get; private set; }
+        public IEnumerable<string> Errors { get; protected set; }
 
-        public static ServiceResult Success => _success;
-
-        public ServiceResult(params string[] errors)
-          : this((IEnumerable<string>) errors)
+        public static ServiceResult<T> Success(T result)
         {
+            return new ServiceResult<T>(result, true);
         }
 
-        public ServiceResult(IEnumerable<string> errors)
+        public static ServiceResult<T> Failed(params string[] errors)
+        {
+            return new ServiceResult<T>(errors);
+        }
+
+        protected ServiceResult(T result, bool success)
+        {
+            Result = result;
+            Succeeded = success;
+        }
+
+        protected ServiceResult(IEnumerable<string> errors)
         {
             Succeeded = false;
             Errors = errors;
         }
+    }
 
-        protected ServiceResult(bool success)
+    public class ServiceResult
+    {
+        public bool Succeeded { get; protected set; }
+
+        public IEnumerable<string> Errors { get; protected set; }
+
+        public static ServiceResult Success()
         {
-            Succeeded = success;
-            Errors = new string[0];
+            return new ServiceResult { Succeeded = true };
         }
 
         public static ServiceResult Failed(params string[] errors)
         {
             return new ServiceResult(errors);
+        }
+
+        public ServiceResult<T> Convert<T>()
+            where T : class
+        {
+            if (this.Succeeded)
+            {
+                return ServiceResult<T>.Success(null);
+            }
+            return ServiceResult<T>.Failed(this.Errors.ToArray());
+        }
+
+        protected ServiceResult(params string[] errors)
+          : this((IEnumerable<string>) errors)
+        {
+        }
+
+        protected ServiceResult(IEnumerable<string> errors)
+        {
+            Succeeded = false;
+            Errors = errors;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
 using JI.Services.Business;
@@ -44,26 +45,13 @@ namespace JI.Api.Controllers.Base
             return null;
         }
 
-        protected IHttpActionResult GetErrorResult(ServiceResult result)
+        protected IHttpActionResult GetErrorResult(IEnumerable<string> errors)
         {
-            if (result == null)
+            if (errors != null)
             {
-                return InternalServerError();
-            }
-
-            if (!result.Succeeded)
-            {
-                if (result.Errors != null)
+                foreach (var error in errors)
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
-                }
-
-                if (ModelState.IsValid)
-                {
-                    return BadRequest();
+                    ModelState.AddModelError("", error);
                 }
 
                 return BadRequest(ModelState);

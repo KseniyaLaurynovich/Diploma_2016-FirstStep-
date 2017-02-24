@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Linq;
+using System.Web.Http;
 using ExpressMapper;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
@@ -26,13 +27,13 @@ namespace JI.Api.Controllers
             var currentUserId = User.Identity.GetUserId();
             var subjects = _subjectService.FindByUserId(currentUserId);
 
-            return Ok(subjects);
+            return Ok(subjects.Select(Mapper.Map<Subject, SubjectModel>));
         }
 
-        [Route("add")]
+        [Route("save")]
         [Authorize(Roles = "Teacher")]
-        [HttpGet]
-        public IHttpActionResult AddSubject(SubjectModel subject)
+        [HttpPost]
+        public IHttpActionResult SaveSubject(SubjectModel subject)
         {
             var currentUserId = User.Identity.GetUserId();
             subject.UserId = currentUserId;
@@ -40,19 +41,19 @@ namespace JI.Api.Controllers
             var result = _subjectService.Save(Mapper.Map<SubjectModel, Subject>(subject));
 
             return !result.Succeeded
-                ? GetErrorResult(result)
-                : Ok();
+                ? GetErrorResult(result.Errors)
+                : Ok(Mapper.Map<Subject, SubjectModel>(result.Result));
         }
 
         [Route("delete/{subjectId}")]
-        [Authorize(Roles = "Teacher,Admin")]
+        [Authorize(Roles = "Teacher")]
         [HttpDelete]
         public IHttpActionResult DeleteSubject(string subjectId)
         {
             var result = _subjectService.Delete(subjectId);
 
             return !result.Succeeded
-                ? GetErrorResult(result)
+                ? GetErrorResult(result.Errors)
                 : Ok();
         }
 

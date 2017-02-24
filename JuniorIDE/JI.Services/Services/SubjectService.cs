@@ -19,7 +19,7 @@ namespace JI.Services.Services
             _subjectRepository = subjectRepository;
         }
 
-        public ServiceResult Save(Subject subject)
+        public ServiceResult<Subject> Save(Subject subject)
         {
             var validationResult = ValidateSubject(subject);
             if (validationResult.Succeeded)
@@ -27,18 +27,19 @@ namespace JI.Services.Services
                 var storageSubject = Mapper.Map<Subject, DataStorageAccess.Repositories.Models.Subject>(subject);
                 try
                 {
-                    var id = _subjectRepository.Save(storageSubject);
-                    return ServiceResult.Success;
+                    subject.Id = _subjectRepository.Save(storageSubject);
+
+                    return ServiceResult<Subject>.Success(subject);
                 }
                 catch (Exception ex)
                 {
                     //todo add logging
-                    return new ServiceResult("Error occured while processing request.");
+                    return ServiceResult<Subject>.Failed("Error occured while processing request.");
                 }
                 
             }
 
-            return validationResult;
+            return validationResult.Convert<Subject>();
         }
 
         public ServiceResult Delete(string id)
@@ -50,9 +51,9 @@ namespace JI.Services.Services
             catch (Exception ex)
             {
                 //todo add logging
-                return new ServiceResult("Error occured while processing request.");
+                return ServiceResult.Failed("Error occured while processing request.");
             }
-            return ServiceResult.Success;
+            return ServiceResult.Success();
         }
 
         public IList<Subject> GetAll()
@@ -82,12 +83,15 @@ namespace JI.Services.Services
 
         private ServiceResult ValidateSubject(Subject subject)
         {
-            if (_subjectRepository.Items().Any(s => s.Name.Equals(subject.Name) && s.UserId.Equals(subject.UserId)))
+            if (_subjectRepository.Items().Any(s => 
+                            s.Name.Equals(subject.Name) 
+                            && s.UserId.Equals(subject.UserId)
+                            && !s.Id.Equals(subject.Id)))
             {
-                return new ServiceResult($"Subject with name {subject.Name} already exists.");
+                return ServiceResult.Failed($"Subject with name {subject.Name} already exists.");
             }
 
-            return ServiceResult.Success;
+            return ServiceResult.Success();
         }
     }
 }
