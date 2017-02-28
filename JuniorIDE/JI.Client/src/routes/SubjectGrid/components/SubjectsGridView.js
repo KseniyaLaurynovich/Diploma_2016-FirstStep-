@@ -4,28 +4,29 @@ import './SubjectsGridView.scss'
 
 export const SubjectsGridView = (props) => (
   <div className='container'>
-    <Row>
-      <Col md={4} sm={6} xs={12}>
-          <div className='subject-grid-item glypicon--pointer'>
-            <Glyphicon className="glypicon--bg" glyph='plus'
-              onClick={() => props.openEditModal()}/>
-            <p className='p--bg'>Add subject</p>
-          </div>
+    <Row className='subject-grid-item'>
+      <Col md={8} sm={8} xs={8}>
+        <h3>Add subject</h3>
       </Col>
+      <Col md={4} sm={4} xs={4}>
+        <Glyphicon glyph='plus glypicon--bg pull-right glypicon--pointer'
+          onClick={() => props.openEditModal()}/>
+      </Col>
+    </Row>
       {
           props.subjects.map((subject, index) => (
-
-          <Col md={4} sm={6} xs={12} key={index}>
-            <div className='subject-grid-item glypicon--pointer' id={subject.id}>
-              <Glyphicon className="glypicon--bg" glyph='briefcase'
+          <Row className='subject-grid-item'>
+            <Col md={8} sm={8} xs={8}>
+              <h3>{subject.name}</h3>
+            </Col>
+            <Col md={4} sm={4} xs={4}>
+              <Glyphicon glyph='edit glypicon--bg pull-right glypicon--pointer'
                 onClick={() => props.openEditModal(subject.id)}/>
-              <p className='p--bg'>{subject.name}</p>
-            </div>
-          </Col>
-
+            </Col>
+          </Row>
         ))
       }
-    </Row>
+
     {
       props.children
     }
