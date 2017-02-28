@@ -78,12 +78,17 @@
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\SubjectService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FirstStep_Common\FirstStep_Common.csproj">
       <Project>{c9660770-c226-42e9-bc4d-2b5c5b232bac}</Project>
       <Name>FirstStep_Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Mapper.csproj">
+      <Project>{A091CF6F-140D-4D30-AAA0-326592D0F5FD}</Project>
+      <Name>JI.Common.Mapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\JI.DataStorageAccess.Repositories\JI.DataStorageAccess.Repositories.csproj">
       <Project>{ff57212d-d410-46e8-9026-4fd564187b2e}</Project>

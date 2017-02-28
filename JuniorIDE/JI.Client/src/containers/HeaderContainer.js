@@ -23,7 +23,8 @@ const HeaderContainer = React.createClass({
       {to: '/counter', label:'Counter'}
     ],
     'Administrator' : [
-      {to: '/usersgrid', label:'Users'}
+      {to: '/usersgrid', label:'Users'},
+      {to: '/groupsgrid', label:'Groups'}
     ]
   },
   getNavItems(){

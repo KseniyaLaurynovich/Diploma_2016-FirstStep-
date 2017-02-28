@@ -1,23 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { actions } from '../modules/subjectsgrid'
-import SubjectEditFormView from '../components/SubjectEditFormView'
+import GroupEditFormView from '../components/GroupEditFormView'
 
 const mapStateToProps = (state) => ({
-  subject               : state.subjectsgrid.currentSubject,
-  showModal             : state.subjectsgrid.showEditModal,
-  saveSubjectError      : state.subjectsgrid.saveSubjectError,
-  saveSubjectLoading    : state.subjectsgrid.saveSubjectLoading,
-  deleteConfirmed       : state.subjectsgrid.deleteConfirmed,
-  deleteSubjectLoading  : state.subjectsgrid.deleteSubjectLoading
+  group                 : state.groupsGrid.currentGroup,
+  showModal             : state.groupsGrid.showEditModal,
+  saveGroupError        : state.groupsGrid.saveGroupError,
+  saveGroupLoading      : state.groupsGrid.saveGroupLoading,
+  deleteConfirmed       : state.groupsGrid.deleteConfirmed,
+  deleteGroupLoading    : state.groupsGrid.deleteGroupLoading
 })
 
 const mapDispatchToProps = {
   close                     : () => actions.setEditModalShowing(false, null),
-  submit                    : actions.saveEditedSubject,
-  handleSubjectNameChange   : actions.onSubjectNameChange,
-  handleDelete              : actions.onDeleteSubject,
+  submit                    : actions.saveEditedGroup,
+  handleGroupNameChange     : actions.onGroupNameChange,
+  handleDelete              : actions.onDeleteGroup,
   handleDeleteConfirmation  : actions.onDeleteConfirmation
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubjectEditFormView)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupEditFormView)

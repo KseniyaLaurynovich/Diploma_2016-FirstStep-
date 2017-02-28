@@ -97,6 +97,14 @@ export function deleteSubject(token, subjectId){
   })
 }
 
+export function fetchGroups(token){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/groups/all',
+    headers : {"Authorization": "Bearer " + token }
+  });
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -108,7 +116,8 @@ const requests = {
   deleteUser,
   fetchSubjectsForTeacher,
   saveSubject,
-  deleteSubject
+  deleteSubject,
+  fetchGroups
 }
 
 export default requests

@@ -1,74 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
-using BusinesServices.Contracts;
 using System.Linq;
-using DataStorageAccess.Contracts;
-using DataStorageAccess.Models;
 using ExpressMapper;
-using Group = BusinesServices.Models.Group;
+using ExpressMapper.Extensions;
+using JI.DataStorageAccess.Repositories.Contracts;
+using JI.Services.Business;
+using JI.Services.Contracts;
+using JI.Services.Models;
 
-namespace BusinesServices.Services
+namespace JI.Services.Services
 {
     internal class GroupService : IGroupService
     {
-        private readonly IGroupRepository _groupRepository;
+        private readonly IGroupsRepository _groupRepository;
 
-        private readonly ISubjectGroupRepository _subjectGroupRepository;
-
-        public GroupService(IGroupRepository groupRepository, ISubjectGroupRepository subjectGroupRepository)
+        public GroupService(IGroupsRepository groupsRepository)
         {
-            _groupRepository = groupRepository;
-            _subjectGroupRepository = subjectGroupRepository;
+            _groupRepository = groupsRepository;
         }
 
-        public void Delete(string id)
+        public ServiceResult<Group> Save(Group group)
         {
-            var group = _groupRepository.GetById(id);
-
-            if (group != null)
+            var validationResult = ValidateGroup(group);
+            if (validationResult.Succeeded)
             {
-                _groupRepository.Delete(group);
+                var storageGroup = Mapper.Map<Group, DataStorageAccess.Repositories.Models.Group>(group);
+                try
+                {
+                    group.Id = _groupRepository.Save(storageGroup);
+
+                    return ServiceResult<Group>.Success(group);
+                }
+                catch (Exception ex)
+                {
+                    //todo add logging
+                    return ServiceResult<Group>.Failed("Error occured while processing request.");
+                }
+
             }
+
+            return validationResult.Convert<Group>();
+        }
+
+        public ServiceResult Delete(string id)
+        {
+            try
+            {
+                _groupRepository.Delete(new Guid(id));
+            }
+            catch (Exception ex)
+            {
+                //todo add logging
+                return ServiceResult.Failed("Error occured while processing request.");
+            }
+            return ServiceResult.Success();
         }
 
         public IList<Group> GetAll()
         {
-            return _groupRepository
-                .Items()
-                .Select(g => Mapper.Map< DataStorageAccess.Models.Group, Group>(g))
+            return
+                _groupRepository.Items()
+                .Select(Mapper.Map<DataStorageAccess.Repositories.Models.Group, Group>)
                 .ToList();
         }
 
-        public Group GetById(string id)
+        public Group FindById(string groupId)
         {
-            return Mapper.Map<DataStorageAccess.Models.Group, Group>
-                (_groupRepository.GetById(id));
+            return _groupRepository.Items()
+                .FirstOrDefault(g => g.Id.Equals(new Guid(groupId)))
+                ?.Map<DataStorageAccess.Repositories.Models.Group, Group>();
         }
 
-        public void Save(Group group)
+        public void Dispose()
         {
-            group.Id = _groupRepository.Save(
-                Mapper.Map<Group, DataStorageAccess.Models.Group>(group));
+            _groupRepository.Dispose();
         }
 
-        public void AssignToGroup(string groupId, string subjectId)
+        private ServiceResult ValidateGroup(Group group)
         {
-            _subjectGroupRepository.Save(new SubjectGroup()
+            if (_groupRepository.Items()
+                .Any(g => g.Name.Equals(group.Name, StringComparison.OrdinalIgnoreCase)
+                          && !g.Id.Equals(group.Id)))
             {
-                SubjectId = subjectId,
-                GroupId = groupId
-            });
-        }
-
-        public void UnassignFromGroup(string groupId, string subjectId)
-        {
-            var subjectGroup = _subjectGroupRepository.Items()
-                .FirstOrDefault(sg => sg.GroupId == groupId && sg.SubjectId == subjectId);
-
-            if (subjectGroup != null)
-            {
-                _subjectGroupRepository.Delete(subjectGroup);
+                return ServiceResult.Failed($"Group with name {group.Name} already exists");
             }
+
+            return ServiceResult.Success();
         }
     }
 }

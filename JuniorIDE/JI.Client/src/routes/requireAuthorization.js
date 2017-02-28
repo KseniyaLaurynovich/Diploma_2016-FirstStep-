@@ -23,7 +23,7 @@ export default function requireAuthorization(Component, allowedRoles) {
     }
 
     const mapStateToProps = (state) => ({
-        roles: state.user.credentials.roles,
+        roles: state.user.credentials ? state.user.credentials.roles : [],
         isAuthenticated: state.user.isAuthenticated
     });
 

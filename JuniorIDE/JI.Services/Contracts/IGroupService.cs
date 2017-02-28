@@ -1,17 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using JI.Services.Business;
 using JI.Services.Models;
 
 namespace JI.Services.Contracts
 {
-    public interface IGroupService
+    public interface IGroupService : IDisposable
     {
+        ServiceResult<Group> Save(Group group);
+        ServiceResult Delete(string id);
         IList<Group> GetAll();
-        void Save(Group group);
-        void Delete(string id);
-        Group GetById(string id);
-
-        void AssignToGroup(string groupId, string subjectId);
-
-        void UnassignFromGroup(string groupId, string subjectId);
+        Group FindById(string groupId);
     }
 }

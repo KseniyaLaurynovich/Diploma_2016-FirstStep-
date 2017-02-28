@@ -6,6 +6,7 @@ import LoginRoute from './Login'
 import RegistrationRoute from './Registration'
 import ChangePasswordRoute from './ChangePassword'
 import UsersGridRoute from './AdminRoutes/UsersGrid'
+import GroupsGridRoute from './AdminRoutes/GroupsGrid'
 import SubjectsGridRoute from './SubjectGrid/'
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -21,6 +22,7 @@ export const createRoutes = (store) => ({
     CounterRoute(store),
     ChangePasswordRoute(store),
     UsersGridRoute(store),
+    GroupsGridRoute(store),
     SubjectsGridRoute(store)
   ]
 })

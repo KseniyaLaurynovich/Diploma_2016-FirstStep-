@@ -175,6 +175,7 @@
     <Compile Include="Business\Helpers\ControllerHelper.cs" />
     <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\RolesApiController.cs" />
     <Compile Include="Controllers\SubjectsApiController.cs" />
     <Compile Include="Controllers\UsersApiController.cs" />
