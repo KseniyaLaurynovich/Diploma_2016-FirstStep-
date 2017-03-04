@@ -61,8 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\ServiceResult.cs" />
-    <Compile Include="Infrastructure\DependencyResolverPackage.cs" />
+    <Compile Include="Business\Models\ServiceResult.cs" />
+    <Compile Include="Business\Models\ServiceResultExtentions.cs" />
     <Compile Include="Contracts\IFileService.cs" />
     <Compile Include="Contracts\IGroupService.cs" />
     <Compile Include="Contracts\IProjectService.cs" />
@@ -71,6 +71,7 @@
     <Compile Include="Contracts\ITestService.cs" />
     <Compile Include="Helpers\ArchiveHelper.cs" />
     <Compile Include="Helpers\FolderHelper.cs" />
+    <Compile Include="Infrastructure\DependencyResolverPackage.cs" />
     <Compile Include="Infrastructure\MapperRegistration.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Group.cs" />
@@ -78,6 +79,12 @@
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Resources.cs" />
     <Compile Include="Services\GroupService.cs" />
     <Compile Include="Services\SubjectService.cs" />
   </ItemGroup>
@@ -99,7 +106,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

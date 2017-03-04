@@ -7,7 +7,6 @@ using LinqToDB;
 using Microsoft.AspNet.Identity;
 using ExpressMapper;
 using ExpressMapper.Extensions;
-using JI.DataStorageAccess.Repositories.Models;
 using JI.DataStorageAccess.Identity.Models;
 using JI.Identity.Models;
 

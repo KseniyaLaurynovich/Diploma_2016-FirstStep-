@@ -3,7 +3,6 @@ using System.Web.Http;
 using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
-using JI.Api.ViewModels;
 using JI.Identity.Models;
 using Microsoft.AspNet.Identity;
 

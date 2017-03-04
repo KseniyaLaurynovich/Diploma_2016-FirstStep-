@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JI.Services.Business;
+using JI.Services.Business.Models;
 using JI.Services.Models;
 
 namespace JI.Services.Contracts

@@ -58,16 +58,15 @@
     <Compile Include="Linq2DbStores\ApplicationRoleStore.cs" />
     <Compile Include="Linq2DbStores\ApplicationUserStore.cs" />
     <Compile Include="Models\IdentityDbConnection.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Mapper.csproj">
       <Project>{a091cf6f-140d-4d30-aaa0-326592d0f5fd}</Project>
       <Name>JI.Common.Mapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JI.DataStorageAccess.Repositories\JI.DataStorageAccess.Repositories.csproj">
-      <Project>{ff57212d-d410-46e8-9026-4fd564187b2e}</Project>
-      <Name>JI.DataStorageAccess.Repositories</Name>
     </ProjectReference>
     <ProjectReference Include="..\JI.Identity.Models\JI.Identity.Models.csproj">
       <Project>{1d7fdc2e-a921-434b-b5c5-9db4ce4e21bd}</Project>

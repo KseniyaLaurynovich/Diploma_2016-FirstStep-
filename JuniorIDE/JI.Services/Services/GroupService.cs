@@ -4,7 +4,7 @@ using System.Linq;
 using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Repositories.Contracts;
-using JI.Services.Business;
+using JI.Services.Business.Models;
 using JI.Services.Contracts;
 using JI.Services.Models;
 
@@ -34,7 +34,7 @@ namespace JI.Services.Services
                 catch (Exception ex)
                 {
                     //todo add logging
-                    return ServiceResult<Group>.Failed("Error occured while processing request.");
+                    return ServiceResult<Group>.Failed(Resources.Resources.InternalError);
                 }
 
             }
@@ -51,9 +51,9 @@ namespace JI.Services.Services
             catch (Exception ex)
             {
                 //todo add logging
-                return ServiceResult.Failed("Error occured while processing request.");
+                return ServiceResult<Group>.Failed(Resources.Resources.InternalError);
             }
-            return ServiceResult.Success();
+            return ServiceResult.Success;
         }
 
         public IList<Group> GetAll()
@@ -82,10 +82,10 @@ namespace JI.Services.Services
                 .Any(g => g.Name.Equals(group.Name, StringComparison.OrdinalIgnoreCase)
                           && !g.Id.Equals(group.Id)))
             {
-                return ServiceResult.Failed($"Group with name {group.Name} already exists");
+                return ServiceResult.Failed(Resources.Resources.GroupNameDuplicated(group.Name));
             }
 
-            return ServiceResult.Success();
+            return ServiceResult.Success;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using ExpressMapper;
 using JI.Common.Mapper.Contracts;
-using JI.DataStorageAccess.Repositories.Models;
+using JI.DataStorageAccess.Identity.Models;
 using JI.Identity.Models;
 
 namespace JI.DataStorageAccess.Identity.Infrastructure
@@ -12,7 +12,6 @@ namespace JI.DataStorageAccess.Identity.Infrastructure
         {
             Mapper.Register<User, ApplicationUser>()
                 .Member(dest => dest.Id, src => src.Id.ToString());
-
             Mapper.Register<ApplicationUser, User>()
                 .Ignore(dest => dest.Id)
                 .After((appUser, user) =>
@@ -25,7 +24,6 @@ namespace JI.DataStorageAccess.Identity.Infrastructure
 
             Mapper.Register<Role, ApplicationRole>()
                 .Member(dest => dest.Id, src => src.Id.ToString());
-
             Mapper.Register<ApplicationRole, Role>()
                 .Ignore(dest => dest.Id)
                 .After((appUser, user) =>

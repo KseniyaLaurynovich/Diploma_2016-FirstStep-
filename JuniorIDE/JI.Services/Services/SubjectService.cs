@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using ExpressMapper;
 using JI.DataStorageAccess.Repositories.Contracts;
-using JI.Services.Business;
 using JI.Services.Contracts;
 using JI.Services.Models;
 using System.Linq;
 using ExpressMapper.Extensions;
+using JI.Services.Business.Models;
 
 namespace JI.Services.Services
 {
@@ -34,7 +34,7 @@ namespace JI.Services.Services
                 catch (Exception ex)
                 {
                     //todo add logging
-                    return ServiceResult<Subject>.Failed("Error occured while processing request.");
+                    return ServiceResult<Subject>.Failed(Resources.Resources.InternalError);
                 }
                 
             }
@@ -51,9 +51,9 @@ namespace JI.Services.Services
             catch (Exception ex)
             {
                 //todo add logging
-                return ServiceResult.Failed("Error occured while processing request.");
+                return ServiceResult.Failed(Resources.Resources.InternalError);
             }
-            return ServiceResult.Success();
+            return ServiceResult.Success;
         }
 
         public IList<Subject> GetAll()
@@ -88,10 +88,10 @@ namespace JI.Services.Services
                             && s.UserId.Equals(subject.UserId)
                             && !s.Id.Equals(subject.Id)))
             {
-                return ServiceResult.Failed($"Subject with name {subject.Name} already exists.");
+                return ServiceResult.Failed(Resources.Resources.SubjectNameDuplicated(subject.Name));
             }
 
-            return ServiceResult.Success();
+            return ServiceResult.Success;
         }
     }
 }

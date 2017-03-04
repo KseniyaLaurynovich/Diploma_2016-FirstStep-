@@ -10,7 +10,6 @@ using Task = System.Threading.Tasks.Task;
 using System.Transactions;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Identity.Contracts;
-using JI.DataStorageAccess.Repositories.Models;
 using JI.Identity.Models;
 
 namespace JI.DataStorageAccess.Identity.Linq2DbStores

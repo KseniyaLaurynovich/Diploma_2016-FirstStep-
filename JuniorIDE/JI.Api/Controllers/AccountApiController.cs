@@ -100,7 +100,7 @@ namespace JI.Api.Controllers
             }
 
             var code = UserManager.Value.GeneratePasswordResetToken(user.Id);
-            UserManager.Value.SendEmail(user.Id, "Reset Password", $"Please reset your password using this code \"{code}\".");
+            UserManager.Value.SendEmail(user.Id, "Reset Password", Resources.Resources.ResetPassword(code));
 
             return Ok();
         }

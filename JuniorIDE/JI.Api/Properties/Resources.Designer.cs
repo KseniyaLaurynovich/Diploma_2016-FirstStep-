@@ -59,5 +59,14 @@ namespace JI.Api.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please reset your password using this code \&quot;{0}\&quot;..
+        /// </summary>
+        internal static string ResetPassword {
+            get {
+                return ResourceManager.GetString("ResetPassword", resourceCulture);
+            }
+        }
     }
 }

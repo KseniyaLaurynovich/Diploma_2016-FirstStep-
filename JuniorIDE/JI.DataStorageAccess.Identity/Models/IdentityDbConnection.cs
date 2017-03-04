@@ -1,5 +1,4 @@
-﻿using JI.DataStorageAccess.Repositories.Models;
-using LinqToDB;
+﻿using LinqToDB;
 using LinqToDB.Data;
 
 namespace JI.DataStorageAccess.Identity.Models

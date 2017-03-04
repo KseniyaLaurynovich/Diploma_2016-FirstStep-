@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
-using JI.Services.Business;
 using JI.UserIdentity.Managers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;

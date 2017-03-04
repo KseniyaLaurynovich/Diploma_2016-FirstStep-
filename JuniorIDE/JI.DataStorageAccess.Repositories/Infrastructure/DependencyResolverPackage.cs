@@ -14,14 +14,11 @@ namespace JI.DataStorageAccess.Repositories.Infrastructure
             container.Register(typeof(IFilesRepository), typeof(FilesRepository), Lifestyle.Scoped);
             container.Register(typeof(IGroupsRepository), typeof(GroupsRepository), Lifestyle.Scoped);
             container.Register(typeof(IProjectsRepository), typeof(ProjectsRepository), Lifestyle.Scoped);
-            container.Register(typeof(IRolesRepository), typeof(RolesRepository), Lifestyle.Scoped);
             container.Register(typeof(ISubjectGroupsRepository), typeof(SubjectGroupsRepository), Lifestyle.Scoped);
             container.Register(typeof(ISubjectsRespository), typeof(SubjectsRespository), Lifestyle.Scoped);
             container.Register(typeof(ITasksRepository), typeof(TasksRepository), Lifestyle.Scoped);
             container.Register(typeof(ITestsRepository), typeof(TestsRepository), Lifestyle.Scoped);
             container.Register(typeof(ITryingsHistoryRepository), typeof(TryingsHistoryRepository), Lifestyle.Scoped);
-            container.Register(typeof(IUserRolesRepository), typeof(UserRolesRepository), Lifestyle.Scoped);
-            container.Register(typeof(IUsersRepository), typeof(UsersRepository), Lifestyle.Scoped);
         }
     }
 }

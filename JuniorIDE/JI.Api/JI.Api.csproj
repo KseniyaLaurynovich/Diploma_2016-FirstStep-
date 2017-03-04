@@ -197,11 +197,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Resources.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\RoleViewModel.cs" />
-    <Compile Include="ViewModels\SubjectViewModel.cs" />
-    <Compile Include="ViewModels\TaskViewModel.cs" />
-    <Compile Include="ViewModels\UserDetailsViewModel.cs" />
     <Compile Include="Models\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>

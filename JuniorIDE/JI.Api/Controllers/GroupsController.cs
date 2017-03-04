@@ -5,6 +5,7 @@ using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using JI.Services.Contracts;
 using JI.Services.Models;
+using JI.Services.Resources;
 
 namespace JI.Api.Controllers
 {
