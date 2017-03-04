@@ -71,7 +71,7 @@ export function logoutUser(){
   return (dispatch, getState) => {
     localStorage.removeItem('user')
     dispatch(logout())
-    browserHistory.push('/login')
+    browserHistory.push('/account/login')
   }
 }
 // ------------------------------------

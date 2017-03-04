@@ -35,12 +35,12 @@ export const Login = (props) => (
        </Button>
      </FormGroup>
       <p className="message">{'Not registered? '}
-        <Link to='/registration' activeClassName='route--active'>
+        <Link to='/account/registration' activeClassName='route--active'>
           Create an account
         </Link>
       </p>
       <p className='message'>
-        <Link to='/forgotpasword' activeClassName='route--active'>
+        <Link to='/account/forgotpasword' activeClassName='route--active'>
           {'Forgot password?'}
         </Link>
       </p>

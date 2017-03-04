@@ -1,10 +1,12 @@
 $small: 750px;
 $large: 1024px;
 $gray: #D8DCE6;
-$green: #76b852;
-$green1: #174c30;
+$green: #0c7f43;
+$green: #0c7f43;
 $red: #d43f3a;
 
+$border-radius: 4px;
+$shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
 
 @mixin respond-to($media) {
   @if $media == handhelds {

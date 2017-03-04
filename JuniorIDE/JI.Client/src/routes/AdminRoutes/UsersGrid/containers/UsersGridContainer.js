@@ -2,9 +2,11 @@ import React from 'react'
 import Griddle  from 'griddle-react'
 import { connect } from 'react-redux'
 import { actions } from '../modules/usersgrid'
+import { FormControl } from 'react-bootstrap'
+
+import Toolbar from '../../../../containers/ToolbarContainer'
 import UserGridRowView from '../components/UserGridRowView'
 import UserEditFormContainer from './UserEditFormContainer'
-
 
 const UsersGridContainer = React.createClass({
   getInitialState(){
@@ -23,7 +25,9 @@ const UsersGridContainer = React.createClass({
           enableInfiniteScroll  = {true}
           globalData            = {{openEditModal: this.props.openEditModal}}
           />
-
+        <Toolbar>
+           <FormControl type="text" placeholder="Filter.." />
+        </Toolbar>
         <UserEditFormContainer
           user                = {this.state.currentUser}
           showEditModal       = {this.state.showEditModal}

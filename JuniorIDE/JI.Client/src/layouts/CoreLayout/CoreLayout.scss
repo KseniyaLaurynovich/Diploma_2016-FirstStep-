@@ -1,3 +1,23 @@
+@import 'base';
+
 .core-layout__viewport {
   padding-top: 4rem;
+}
+
+.container--layout {
+  min-height: 100%;
+  @include respond-to(wide-screens) {
+    width: calc(100% - 300px);
+    margin-left: 300px;
+  }
+  @include respond-to(medium-screens) {
+      width: 100vh;
+  }
+  @include respond-to(small-screens) {
+      width: 100vh;
+  }
+}
+
+.menu{
+  padding-left: 0px;
 }

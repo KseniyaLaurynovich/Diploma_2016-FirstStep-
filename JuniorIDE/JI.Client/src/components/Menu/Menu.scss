@@ -1,0 +1,70 @@
+@import 'base';
+
+.sidebar{
+  background-image: url('img/color.png');
+  border-radius: 0px;
+  border: 0px;
+  .nav{
+    a{
+      font-size: medium;
+      color: #fff !important;
+    }
+  }
+  @include respond-to(medium-screens) { .container{
+      width: 100vh !important;
+    }
+  }
+  @include respond-to(small-screens) {
+    .container{
+      width: 100vh !important;
+    }
+  }
+  @include respond-to(wide-screens) {
+    width: 250px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-bottom: 0px;
+    position: fixed;
+
+    .container{
+        width: 250px;
+    }
+
+    .navbar-nav{
+      float: none !important;
+      li{
+          float: none !important;
+      }
+    }
+    .navbar-header{
+      float: none !important;
+    }
+  }
+}
+
+.brand-logo{
+  margin-left: 0px !important;
+  @include respond-to(wide-screens) {
+    margin-top: 30px;
+    height: 60px;
+  }
+  @include respond-to(medium-screens) {
+    height: 50px;
+  }
+  @include respond-to(small-screens) {
+    height: 50px;
+  }
+}
+
+.nav-header-bottom{
+  bottom: 0;
+}
+
+.menu-list{
+  margin-top: 40px;
+}
+
+.navbar-collapse{
+  padding-left: 0px !important;
+}

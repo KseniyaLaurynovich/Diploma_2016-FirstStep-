@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { actions } from '../modules/subjectsgrid'
-import GroupEditFormView from '../components/GroupEditFormView'
+import SubjectEditFormView from '../components/SubjectEditFormView'
 
 const mapStateToProps = (state) => ({
   group                 : state.groupsGrid.currentGroup,
@@ -20,4 +20,4 @@ const mapDispatchToProps = {
   handleDeleteConfirmation  : actions.onDeleteConfirmation
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(GroupEditFormView)
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectEditFormView)

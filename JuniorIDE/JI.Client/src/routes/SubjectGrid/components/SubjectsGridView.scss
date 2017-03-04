@@ -1,7 +1,9 @@
+@import 'base';
+
 .subject-grid-item{
   padding: 10px;
   background-color: #fff;
-  border-radius: 6px;
+  border-radius: $border-radius;
   box-shadow: 0 0 20px 0 rgba(0,0,0,.2);
   width: 70%;
   margin: 10px auto;

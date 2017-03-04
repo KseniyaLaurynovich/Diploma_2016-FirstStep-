@@ -1,17 +1,14 @@
 import React from 'react'
 import './LoginLayout.scss'
-import '../../styles/core.scss'
 
-export const CoreLayout = ({ children }) => (
-  <div className='container text-center'>
-    <div className='core-layout__viewport'>
-      {children}
-    </div>
+export const LoginLayout = ({ children }) => (
+  <div className='login-layout'>
+    {children}
   </div>
 )
 
-CoreLayout.propTypes = {
+LoginLayout.propTypes = {
   children : React.PropTypes.element.isRequired
 }
 
-export default CoreLayout
+export default LoginLayout

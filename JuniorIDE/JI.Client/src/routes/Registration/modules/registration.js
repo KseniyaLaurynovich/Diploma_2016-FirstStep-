@@ -129,7 +129,7 @@ export function registration(e){
       dispatch(setValidationState(validationStates.success))
       dispatch(setIsLoading(false))
 
-      browserHistory.push('/login')
+      browserHistory.push('/account/login')
 
       }, function(error){
         var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)

@@ -1,3 +1,5 @@
+@import 'base';
+
 .loginPage{
     width: 360px;
     padding: 5% 0 0;
@@ -12,9 +14,8 @@
   margin: 0 auto 70px;
   padding: 45px;
   text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  box-shadow: $shadow;
+  border-radius: $border-radius;
 }
 
 .btn-submit{

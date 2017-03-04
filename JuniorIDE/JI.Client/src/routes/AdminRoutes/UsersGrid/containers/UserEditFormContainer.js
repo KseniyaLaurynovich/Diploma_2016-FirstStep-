@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { actions } from '../modules/usersgrid'
+
 import UserEditFormView from '../components/UserEditFormView'
 
 const mapStateToProps = (state) => ({

@@ -10,8 +10,8 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: linear-gradient(to left, #76b852, #8DC26F);
   color: #555;
+  font-family: 'Open Sans',sans-serif;
 }
 
 *,
@@ -20,13 +20,17 @@ body {
   box-sizing: inherit;
 }
 
-.container--layout{
-  margin-bottom: 50px;
-}
-
 .flex-1 {
   -webkit-box-flex: 1;
   flex: 1;
+}
+
+.fixed{
+  position: fixed;
+}
+
+.panel-footer{
+  background-color: #d8dce6 !important;
 }
 
 //common
@@ -41,12 +45,12 @@ body {
   border: $gray;
   border-width: 2px;
   border-style: solid;
-  border-radius: 6px;
+  border-radius: $border-radius;
   padding: 9px;
 }
 
 .glypicon--button:hover{
-  color: $green1;
+  color: $green;
   border-color: $green;
 }
 
@@ -55,6 +59,11 @@ body {
   line-height: 1.5;
   padding: 1px 5px;
   margin-bottom: 3px;
+}
+
+.glypicon-md{
+  font-size: 18px;
+  margin-right: 10px;
 }
 
 .title{
@@ -67,16 +76,16 @@ body {
   border: $gray;
   border-width: 2px;
   border-style: solid;
-  border-radius: 6px;
+  border-radius: $border-radius;
   padding: 9px;
 }
 
 .btn:hover{
-  color: $green1;
+  color: $green;
   border: $green;
   border-width: 2px;
   border-style: solid;
-  border-radius: 6px;
+  border-radius: $border-radius;
   padding: 9px;
 }
 
@@ -94,13 +103,13 @@ body {
 
 .btn-success:hover {
   border-color: $green;
-  color: $green1;
+  color: $green;
   background-color: $gray;
 }
 
 .btn-danger:active {
   border-color: $green;
-  color: $green1;
+  color: $green;
   background-color: $gray;
 }
 

@@ -1,0 +1,27 @@
+@import 'base';
+
+.route--active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.navbar-brand{
+  padding: 10px 10px;
+}
+
+.navbar-wide{
+  @include respond-to(wide-screens) {
+    width: calc(100% - 250px);
+    left: 250px;
+  }
+  @include respond-to(medium-screens) {
+      width: 100vh;
+  }
+  @include respond-to(small-screens) {
+      width: 100vh;
+  }
+}
+
+.toolbar{
+  margin: 5px auto;
+}
