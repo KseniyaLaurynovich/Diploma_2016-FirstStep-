@@ -41,7 +41,7 @@ const GroupEditFormView = (props) => (
        <FormGroup controlId="groupName">
          <FormControl type="text" required placeholder='Name'
            defaultValue={props.group && props.group.name}
-           onChange={props.handleGroupNameChange}/>
+           onChange={props.handleNameChange}/>
        </FormGroup>
      </Modal.Body>
 

@@ -24,7 +24,7 @@ var Menu = React.createClass({
   renderAccount(props){
     return (
       <Nav>
-          <NavItem onClick={this.toggleAccountMenu}>
+          <NavItem className='account' onClick={this.toggleAccountMenu}>
             { props.userInfo != null ? this.getUserFullName(props.userInfo) + ' ' : '' }
             <span className='caret'></span>
           </NavItem>

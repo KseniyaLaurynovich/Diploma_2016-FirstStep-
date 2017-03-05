@@ -9,8 +9,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
   color: #555;
+  min-height: 100vh;
   font-family: 'Open Sans',sans-serif;
 }
 
@@ -18,11 +18,6 @@ body {
 *:before,
 *:after {
   box-sizing: inherit;
-}
-
-.flex-1 {
-  -webkit-box-flex: 1;
-  flex: 1;
 }
 
 .fixed{
@@ -33,6 +28,17 @@ body {
   background-color: #d8dce6 !important;
 }
 
+.inline {
+  display: inline-block;
+}
+
+.padding-sm{
+  padding: 6px !important;
+}
+
+.inline{
+  display: inline-block;
+}
 //common
 
 .glypicon--pointer{

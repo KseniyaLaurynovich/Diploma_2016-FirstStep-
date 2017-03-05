@@ -105,6 +105,23 @@ export function fetchGroups(token){
   });
 }
 
+export function editGroup(token, group){
+  return axios({
+    method  : 'post',
+    url     : BASE_URL + '/groups/save',
+    headers : {"Authorization": "Bearer " + token, "Content-Type": "application/json" },
+    data    : JSON.stringify(group)
+  })
+}
+
+export function deleteGroup(token ,groupId){
+  return axios({
+    method  : 'delete',
+    url     : BASE_URL + '/groups/delete/' + groupId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -117,7 +134,9 @@ const requests = {
   fetchSubjectsForTeacher,
   saveSubject,
   deleteSubject,
-  fetchGroups
+  fetchGroups,
+  editGroup,
+  deleteGroup
 }
 
 export default requests

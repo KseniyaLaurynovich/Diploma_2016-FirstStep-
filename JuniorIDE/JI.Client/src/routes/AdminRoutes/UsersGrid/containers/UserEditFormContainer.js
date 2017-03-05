@@ -11,14 +11,15 @@ const mapStateToProps = (state) => ({
   saveUserError     : state.usersGrid.saveUserError,
   deleteConfirmed   : state.usersGrid.deleteConfirmed,
   saveUserLoading   : state.usersGrid.saveUserLoading,
-  deleteUserLoading : state.usersGrid.deleteUserLoading
+  deleteUserLoading : state.usersGrid.deleteUserLoading,
+  deleteConfirmed   : state.usersGrid.deleteConfirmed
 })
 
 const mapDispatchToProps = {
   close                     : actions.closeEditModal,
   submit                    : actions.saveEditedUser,
   handleFirstNameChange     : actions.onFirstNameChange,
-  handleLastNameChange      : actions.handleLastNameChange,
+  handleLastNameChange      : actions.onLastNameChange,
   handlePatronymicChange    : actions.onPatronymicChange,
   handleRolesChanges        : actions.onRolesChange,
   handleEmailChange         : actions.onEmailChange,

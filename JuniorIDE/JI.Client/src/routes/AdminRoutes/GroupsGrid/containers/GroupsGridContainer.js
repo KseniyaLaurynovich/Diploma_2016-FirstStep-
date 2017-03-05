@@ -1,7 +1,11 @@
 import React from 'react'
-import Griddle  from 'griddle-react'
 import { connect } from 'react-redux'
+import deep from '../../../../utils/deep'
+
 import { actions } from '../modules/groupsgrid'
+
+import GroupGridToolbar from './GroupGridToolbarContainer'
+import Grid from '../../../../containers/GridContainer'
 import GroupGridRowView from '../components/GroupGridRowView'
 import GroupEditFormContainer from './GroupEditFormContainer'
 
@@ -10,24 +14,46 @@ const GroupsGridContainer = React.createClass({
     this.props.getGroups()
     return {}
   },
+  filter(groups){
+    if(this.props.textFilter && this.props.textFilter != ''){
+        var textFilter = this.props.textFilter
+        groups = groups.filter(function (item) {
+            var arr = deep.keys(item);
+            for (var i = 0; i < arr.length; i++) {
+                if ((deep.getAt(item, arr[i]) || "").toString()
+                  .toLowerCase()
+                  .indexOf(textFilter.toLowerCase()) >= 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+      }
+
+    return groups
+  },
   render() {
     return  (
       <div className='groupsGridPage'>
-        <Griddle
-          results               = {this.props.groups}
-          customRowComponent    = {GroupGridRowView}
-          showFilter            = {true}
-          useCustomRowComponent = {true}
-          enableInfiniteScroll  = {true}
-          globalData            = {{openEditModal: this.props.openEditModal}}
-          />
-          <GroupEditFormContainer/>
-    </div>);
+        <Grid
+          items         = {this.props.groups}
+          itemComponent = {GroupGridRowView}
+          filter        = {this.filter}
+          openEditModal = {this.props.openEditModal}
+          md            = {12}
+          sm            = {12}
+          xs            = {12}/>
+
+        <GroupGridToolbar />
+        <GroupEditFormContainer />
+    </div>
+    )
   }
 })
 
 const mapStateToProps = (state) => ({
-  groups: state.groupsGrid.groups
+  groups        : state.groupsGrid.groups,
+  textFilter    : state.groupsGrid.textFilter
 })
 
 const mapDispatchToProps = {

@@ -19,9 +19,34 @@ export const EDIT_USER_RESET_ERRORS         = 'EDIT_USER_RESET_ERRORS'
 export const SET_DELETE_USER_CONFIRMED      = 'SET_DELETE_USER_CONFIRMED'
 export const DELETE_USER_IS_LOADING         = 'DELETE_USER_IS_LOADING'
 export const DELETE_USER_SUCCESS            = 'DELETE_USER_SUCCESS'
+export const SET_USERS_FILTER               = 'SET_USERS_FILTER'
+export const SET_USERS_SORT                 = 'SET_USERS_SORT'
+export const SET_USERS_TEXT_FILTER          = 'SET_USERS_TEXT_FILTER'
 // ------------------------------------
 // Actions
 // ------------------------------------
+
+export const setFilter = (key, label) => {
+  return {
+    type    : SET_USERS_FILTER,
+    payload : { filterKey: key, filterLabel : label }
+  }
+}
+
+export const setSort = (key, label) => {
+  return {
+    type    : SET_USERS_SORT,
+    payload : { sortKey: key, sortLabel : label }
+  }
+}
+
+export const setTextFilter = (filter) => {
+  return {
+    type    : SET_USERS_TEXT_FILTER,
+    payload : filter
+  }
+}
+
 export const onFirstNameChange = (event) => {
   return {
     type    : EDITING_FIRST_NAME_CHANGED,
@@ -99,9 +124,10 @@ export const saveEditUserFailed = (error) => {
   }
 }
 
-export const saveEditUserSuccess = () => {
+export const saveEditUserSuccess = (user) => {
   return {
-    type    : SAVE_EDITED_USER_SUCCESS
+    type    : SAVE_EDITED_USER_SUCCESS,
+    payload : user
   }
 }
 
@@ -157,7 +183,7 @@ export function saveEditedUser(event){
     var user = getState().usersGrid.currentUser
     var token = getState().user.credentials.access_token
     requests.editUser(token, user).then(function(response){
-      dispatch(saveEditUserSuccess())
+      dispatch(saveEditUserSuccess(response.data))
       dispatch(setSaveEditUserLoading(false))
       dispatch(setEditModalShowing(null, false))
     },function(error){
@@ -221,7 +247,10 @@ export const actions = {
   onEmailChange,
   onRolesChange,
   onDeleteConfirmation,
-  onDeleteUser
+  onDeleteUser,
+  setFilter,
+  setSort,
+  setTextFilter
 }
 
 // ------------------------------------
@@ -238,7 +267,8 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, action.payload )
   },
   [EDITING_FIRST_NAME_CHANGED]  : (state, action) => {
-    return Object.assign({}, state, { currentUser: Object.assign({}, state.currentUser, { firstName: action.payload })})
+    return Object.assign({}, state, { currentUser:
+      Object.assign({}, state.currentUser, { firstName: action.payload })})
   },
   [EDITING_LAST_NAME_CHANGED]   : (state, action) => {
     return Object.assign({}, state, { currentUser:
@@ -253,17 +283,17 @@ const ACTION_HANDLERS = {
       Object.assign({}, state.currentUser, { email: action.payload })})
   },
   [EDITING_ROLES_CHANGED]       : (state, action) => {
-    return Object.assign({}, state, { currentUser: Object.assign({}, state.currentUser, { roles: action.payload })})
+    return Object.assign({}, state, { currentUser:
+      Object.assign({}, state.currentUser, { roles: action.payload })})
   },
   [SAVE_EDITED_USER_SUCCESS]    : (state, action) => {
-    var userId = state.currentUser.id
     var users = _.cloneDeep(state.users)
     var user = users.find((u) => {
-      return u.id === userId
+      return u.id === action.payload.id
     });
 
     var userIndex = users.indexOf(user)
-    users[userIndex] = _.cloneDeep(state.currentUser)
+    users[userIndex] = _.cloneDeep(action.payload)
 
     return Object.assign({}, state, { users: users } )
   },
@@ -294,6 +324,15 @@ const ACTION_HANDLERS = {
   [DELETE_USER_IS_LOADING]      : (state, action) => {
     return Object.assign({}, state, { deleteUserLoading : action.payload  } )
   },
+  [SET_USERS_FILTER]            : (state, action)=> {
+    return Object.assign({}, state, action.payload )
+  },
+  [SET_USERS_SORT]            : (state, action)=> {
+    return Object.assign({}, state, action.payload )
+  },
+  [SET_USERS_TEXT_FILTER]      : (state, action)=> {
+    return Object.assign({}, state, { textFilter: action.payload })
+  }
 }
 // ------------------------------------
 // Reducer
@@ -306,7 +345,12 @@ const initialState = {
   saveUserLoading         : false,
   deleteUserLoading       : false,
   saveUserError           : null,
-  deleteConfirmed         : false
+  deleteConfirmed         : false,
+  filterKey               : '',
+  filterLabel             : 'Filter',
+  sortKey                 : '',
+  sortLabel               : 'Sort',
+  textFilter              : ''
 }
 
 export default function usersGridReducer (state = initialState, action){

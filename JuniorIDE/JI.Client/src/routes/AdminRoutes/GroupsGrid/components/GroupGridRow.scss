@@ -1,18 +1,15 @@
 @import 'base';
 
-.panel--user{
+.panel--group{
   border-color: $gray;
   border: 1px solid $gray;
   background-color: #FFF;
   box-shadow: $shadow;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
-.panel-body{
-  height: 100%;
-}
-
-.usersGridPage{
+.groupsGridPage{
   width: 100%;
   height: 100%;
   padding-top: 15px;

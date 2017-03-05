@@ -8,7 +8,7 @@
   min-height: 100%;
   @include respond-to(wide-screens) {
     width: calc(100% - 300px);
-    margin-left: 300px;
+    margin-left: 250px;
   }
   @include respond-to(medium-screens) {
       width: 100vh;
@@ -16,8 +16,4 @@
   @include respond-to(small-screens) {
       width: 100vh;
   }
-}
-
-.menu{
-  padding-left: 0px;
 }
