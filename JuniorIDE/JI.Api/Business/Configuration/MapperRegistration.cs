@@ -41,6 +41,18 @@ namespace JI.Api.Business.Configuration
                         ? new Guid(subjectModel.UserId) 
                         : Guid.Empty;
                 });
+
+            Mapper.Register<Group, GroupModel>()
+                .Member(dest => dest.Id, src => src.Id.ToString());
+            Mapper.Register<GroupModel, Group>()
+                .Ignore(dest => dest.Id)
+                .After((subjectModel, subject) =>
+                {
+                    subject.Id =
+                        subjectModel.Id != null
+                        ? new Guid(subjectModel.Id)
+                        : Guid.Empty;
+                });
         }
     }
 }

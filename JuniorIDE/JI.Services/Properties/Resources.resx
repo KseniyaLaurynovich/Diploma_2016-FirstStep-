@@ -117,7 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultError" xml:space="preserve">
-    <value>Error</value>
+  <data name="GroupNameDuplicated" xml:space="preserve">
+    <value>The group with '{0}' name already exists.</value>
+  </data>
+  <data name="InternalError" xml:space="preserve">
+    <value>Some server error occures.</value>
+  </data>
+  <data name="SubjectNameDuplicated" xml:space="preserve">
+    <value>The subject with '{0}' name already exists.</value>
   </data>
 </root>

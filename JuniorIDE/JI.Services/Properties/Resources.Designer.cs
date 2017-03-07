@@ -61,7 +61,7 @@ namespace JI.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Group with name {0} already exists..
+        ///   Looks up a localized string similar to The group with &apos;{0}&apos; name already exists..
         /// </summary>
         internal static string GroupNameDuplicated {
             get {
@@ -70,7 +70,7 @@ namespace JI.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error occured while processing request..
+        ///   Looks up a localized string similar to Some server error occures..
         /// </summary>
         internal static string InternalError {
             get {
@@ -79,7 +79,7 @@ namespace JI.Services.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Subject with name {0} already exists..
+        ///   Looks up a localized string similar to The subject with &apos;{0}&apos; name already exists..
         /// </summary>
         internal static string SubjectNameDuplicated {
             get {

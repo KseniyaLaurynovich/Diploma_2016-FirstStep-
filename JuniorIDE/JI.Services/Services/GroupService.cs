@@ -79,7 +79,7 @@ namespace JI.Services.Services
         private ServiceResult ValidateGroup(Group group)
         {
             if (_groupRepository.Items()
-                .Any(g => g.Name.Equals(group.Name, StringComparison.OrdinalIgnoreCase)
+                .Any(g => g.Name.Equals(group.Name)
                           && !g.Id.Equals(group.Id)))
             {
                 return ServiceResult.Failed(Resources.Resources.GroupNameDuplicated(group.Name));

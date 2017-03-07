@@ -52,7 +52,7 @@ namespace JI.Api.Controllers
 
             return !result.Succeeded
                 ? GetErrorResult(result) 
-                : Ok();
+                : Ok(model); 
         }
 
         [HttpDelete]

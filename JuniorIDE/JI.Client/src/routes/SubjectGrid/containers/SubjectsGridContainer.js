@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { actions } from '../modules/subjectsgrid'
+import { actions } from '../modules/subjectsGrid'
 import SubjectsGridView from '../components/SubjectsGridView'
 import SubjectEditFormContainer from './SubjectEditFormContainer'
 
@@ -36,7 +36,7 @@ const SubjectsGridContainer = React.createClass({
 
 const mapStateToProps = (state) => ({
   roles       : state.user.credentials.roles,
-  subjects    : state.subjectsgrid.subjects
+  subjects    : state.subjectsGrid.subjects
 })
 
 const mapDispatchToProps = {
