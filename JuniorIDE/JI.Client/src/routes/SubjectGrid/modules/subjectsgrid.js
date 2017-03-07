@@ -100,7 +100,7 @@ export function saveEditedSubject(event){
       dispatch(resetErrors())
       dispatch(setSaveEditUserLoading(true))
 
-      var subject = getState().subjectsgrid.currentSubject
+      var subject = getState().subjectsGrid.currentSubject
       var token = getState().user.credentials.access_token
       requests.saveSubject(token, subject).then(function(response){
         dispatch(saveEditSubjectSuccess(response.data))
@@ -133,7 +133,7 @@ export function onDeleteSubject(){
   return (dispatch, getState) => {
     dispatch(setDeleteSubjectLoading(true))
 
-    var subjectId = getState().subjectsgrid.currentSubject.id
+    var subjectId = getState().subjectsGrid.currentSubject.id
     var token = getState().user.credentials.access_token
     requests.deleteSubject(token, subjectId).then(function(response){
       dispatch(deleteSubjectSuccess())

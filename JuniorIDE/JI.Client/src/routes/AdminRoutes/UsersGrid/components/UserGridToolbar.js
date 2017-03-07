@@ -28,7 +28,9 @@ function renderMenu(menuItems, onClick){
 const UserGridToolbar = (props) => (
   <Toolbar>
    <div className='inline'>
-     <FormControl type="text" placeholder="Type for filtering..." onChange={(e) => props.handleTextFilterChange(e.target.value)} />
+     <FormControl type="text" placeholder="Type for filtering..."
+       defaultValue={props.textFilter}
+       onChange={(e) => props.handleTextFilterChange(e.target.value)} />
    </div>
 
    <div className='inline padding-sm'>

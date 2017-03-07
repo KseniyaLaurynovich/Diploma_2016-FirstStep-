@@ -108,6 +108,8 @@ export function fetchGroups(){
 
 export function openEditModal(groupId){
     return (dispatch, getState) => {
+      dispatch(resetErrors())
+      
       var groups = getState().groupsGrid.groups
       var group = null
 

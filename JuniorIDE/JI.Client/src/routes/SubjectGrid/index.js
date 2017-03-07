@@ -1,4 +1,5 @@
 import { injectReducer } from '../../store/reducers'
+import requireAuthorization from '../requireAuthorization'
 
 export default (store) => ({
   path: 'subjects',
@@ -7,10 +8,11 @@ export default (store) => ({
 
     require.ensure([], (require) => {
 
-      const SubjectsGrid = require('./containers/SubjectsGridContainer').default
-      const reducer = require('./modules/subjectsgrid').default
+      const SubjectsGrid =
+        requireAuthorization(require('./containers/SubjectsGridContainer').default, ['Teacher'])
+      const reducer = require('./modules/subjectsGrid').default
 
-      injectReducer(store, { key: 'subjectsgrid', reducer })
+      injectReducer(store, { key: 'subjectsGrid', reducer })
       cb(null, SubjectsGrid)
 
     }, 'subjects')

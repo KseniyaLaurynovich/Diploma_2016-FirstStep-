@@ -16,7 +16,7 @@ export const REGISTRATION_VALIDATIONSTATE_CHANGED     = 'REGISTRATION_VALIDATION
 export const SET_REGISTRATION_ERROR                   = 'SET_REGISTRATION_ERROR'
 export const SET_CONFIRM_PASSWORD_ERROR               = 'SET_CONFIRM_PASSWORD_ERROR'
 export const SET_IS_REGISTRATION_LOADING              = 'SET_IS_REGISTRATION_LOADING'
-export const RESET_REGISTRATION_ERRORS                             = 'RESET_REGISTRATION_ERRORS'
+export const RESET_REGISTRATION_ERRORS                = 'RESET_REGISTRATION_ERRORS'
 export const REGISTRATION_FAILED                      = 'REGISTRATION_FAILED'
 
 // ------------------------------------
@@ -138,6 +138,8 @@ export function registration(e){
         dispatch(setRegistrationError(errorMessage))
         dispatch(setIsLoading(false))
       })
+    }else{
+      dispatch(setValidationState(validationStates.error))
     }
   }
 }
@@ -146,7 +148,7 @@ function validateModel(dispatch, model){
   var isValid = true;
 
   if(model.password != model.confirmPassword){
-    dispatch(setConfirmPasswordError("Confirm password doesn't equals password"))
+    dispatch(setRegistrationError("Password confiramtion doesn't match password"))
     isValid = false
   }
 
