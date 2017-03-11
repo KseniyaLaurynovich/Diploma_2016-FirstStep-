@@ -22,6 +22,9 @@ export const DELETE_USER_SUCCESS            = 'DELETE_USER_SUCCESS'
 export const SET_USERS_FILTER               = 'SET_USERS_FILTER'
 export const SET_USERS_SORT                 = 'SET_USERS_SORT'
 export const SET_USERS_TEXT_FILTER          = 'SET_USERS_TEXT_FILTER'
+export const FETCH_USERS_GROUPS_SUCCESS     = 'FETCH_USERS_GROUPS_SUCCESS'
+export const EDITING_USER_GROUPS_CHANGED    = 'EDITING_USER_GROUPS_CHANGED'
+export const SET_USERS_GROUP_FILTER         = 'SET_USERS_GROUP_FILTER'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -37,6 +40,13 @@ export const setSort = (key, label) => {
   return {
     type    : SET_USERS_SORT,
     payload : { sortKey: key, sortLabel : label }
+  }
+}
+
+export const setGroupFilter = (key, label) => {
+  return {
+    type    : SET_USERS_GROUP_FILTER,
+    payload : { groupFilterKey: key, groupFilterLabel : label }
   }
 }
 
@@ -82,6 +92,13 @@ export const onRolesChange = (roles) => {
   }
 }
 
+export const onGroupsChange = (groups) => {
+  return {
+    type    : EDITING_USER_GROUPS_CHANGED,
+    payload : groups
+  }
+}
+
 export const fetchUsersSuccess = (users) => {
   return {
     type    : FETCH_USERS_SUCCESS,
@@ -93,6 +110,13 @@ export const fetchRolesSuccess = (roles) => {
   return {
     type    : FETCH_ROLES_SUCCESS,
     payload : roles
+  }
+}
+
+export const fetchGroupsSuccess = (groups) => {
+  return {
+    type    : FETCH_USERS_GROUPS_SUCCESS,
+    payload : groups
   }
 }
 
@@ -158,6 +182,18 @@ export function fetchRoles(){
     },function(error){
       //handle error
       dispatch(fetchUsersSuccess([]))
+    })
+  }
+}
+
+export function fetchGroups(){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    requests.fetchGroups(token).then(function(response){
+      dispatch(fetchGroupsSuccess(response.data))
+    },function(error){
+      //handle error
+      dispatch(fetchGroupsSuccess([]))
     })
   }
 }
@@ -237,6 +273,7 @@ export function closeEditModal(){
 
 export const actions = {
   fetchRoles,
+  fetchGroups,
   fetchUsers,
   openEditModal,
   closeEditModal,
@@ -246,11 +283,13 @@ export const actions = {
   onPatronymicChange,
   onEmailChange,
   onRolesChange,
+  onGroupsChange,
   onDeleteConfirmation,
   onDeleteUser,
   setFilter,
   setSort,
-  setTextFilter
+  setTextFilter,
+  setGroupFilter
 }
 
 // ------------------------------------
@@ -259,6 +298,9 @@ export const actions = {
 const ACTION_HANDLERS = {
   [FETCH_USERS_SUCCESS]         : (state, action) => {
     return Object.assign({}, state, { users: action.payload })
+  },
+  [FETCH_USERS_GROUPS_SUCCESS]         : (state, action) => {
+    return Object.assign({}, state, { groups: action.payload })
   },
   [FETCH_ROLES_SUCCESS]         : (state, action) => {
     return Object.assign({}, state, { roles: action.payload })
@@ -286,6 +328,10 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, { currentUser:
       Object.assign({}, state.currentUser, { roles: action.payload })})
   },
+  [EDITING_USER_GROUPS_CHANGED]: (state, action) => {
+    return Object.assign({}, state, { currentUser:
+      Object.assign({}, state.currentUser, { groups: action.payload })})
+  },
   [SAVE_EDITED_USER_SUCCESS]    : (state, action) => {
     var users = _.cloneDeep(state.users)
     var user = users.find((u) => {
@@ -297,7 +343,7 @@ const ACTION_HANDLERS = {
 
     return Object.assign({}, state, { users: users } )
   },
-  [DELETE_USER_SUCCESS]  : (state, action) => {
+  [DELETE_USER_SUCCESS]        : (state, action) => {
     var userId = state.currentUser.id
     var users = _.cloneDeep(state.users)
     var user = users.find((u) => {
@@ -315,19 +361,22 @@ const ACTION_HANDLERS = {
   [SAVE_EDITED_USER_IS_LOADING] : (state, action) => {
     return Object.assign({}, state, { saveUserLoading : action.payload } )
   },
-  [EDIT_USER_RESET_ERRORS]      : (state, action) => {
+  [EDIT_USER_RESET_ERRORS]     : (state, action) => {
     return Object.assign({}, state, { saveUserError : null  } )
   },
-  [SET_DELETE_USER_CONFIRMED]   : (state, action) => {
+  [SET_DELETE_USER_CONFIRMED]  : (state, action) => {
     return Object.assign({}, state, { deleteConfirmed : action.payload  } )
   },
-  [DELETE_USER_IS_LOADING]      : (state, action) => {
+  [DELETE_USER_IS_LOADING]     : (state, action) => {
     return Object.assign({}, state, { deleteUserLoading : action.payload  } )
   },
-  [SET_USERS_FILTER]            : (state, action)=> {
+  [SET_USERS_FILTER]           : (state, action)=> {
     return Object.assign({}, state, action.payload )
   },
-  [SET_USERS_SORT]            : (state, action)=> {
+  [SET_USERS_SORT]             : (state, action)=> {
+    return Object.assign({}, state, action.payload )
+  },
+  [SET_USERS_GROUP_FILTER]     : (state, action)=> {
     return Object.assign({}, state, action.payload )
   },
   [SET_USERS_TEXT_FILTER]      : (state, action)=> {
@@ -340,6 +389,7 @@ const ACTION_HANDLERS = {
 const initialState = {
   users                   : [],
   roles                   : [],
+  groups                  : [],
   currentUser             : null,
   showEditModal           : false,
   saveUserLoading         : false,
@@ -350,7 +400,9 @@ const initialState = {
   filterLabel             : 'Filter',
   sortKey                 : '',
   sortLabel               : 'Sort',
-  textFilter              : ''
+  textFilter              : '',
+  groupFilterLabel        : 'Group',
+  groupFilterKey          : ''
 }
 
 export default function usersGridReducer (state = initialState, action){

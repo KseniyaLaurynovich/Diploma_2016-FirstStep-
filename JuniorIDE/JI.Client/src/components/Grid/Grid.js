@@ -1,11 +1,12 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
+import _ from 'lodash'
 
-const Grid = (props) => (
-  <Row>
+function drawRow(props, items, index){
+  return (
+  <Row key={index}>
     {
-      props.items && props.items.length > 0
-        ? props.filter(props.items).map((item, index) => {
+      items.map((item, index) => {
           return(
           <Col md={props.md} sm={props.sm} xs={props.xs} key={index}>
 
@@ -16,9 +17,24 @@ const Grid = (props) => (
 
           </Col>)
         })
-        : <p>No items</p>
     }
   </Row>
+)}
+
+function drawGrid(props){
+  var chunkSize = 3
+  var items = _.chunk(props.filter(props.items), chunkSize);
+  return items.map((row, index) => drawRow(props, row, index))
+}
+
+const Grid = (props) => (
+  <div>
+    {
+      props.items && props.items.length > 0
+        ? drawGrid(props)
+        : <p>No items</p>
+    }
+  </div>
 )
 
 export default Grid

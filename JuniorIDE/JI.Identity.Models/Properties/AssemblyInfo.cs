@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("JI.IdentityModels")]
+[assembly: AssemblyTitle("JI.Identity.Models")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("JI.IdentityModels")]
+[assembly: AssemblyProduct("JI.Identity.Models")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1d7fdc2e-a921-434b-b5c5-9db4ce4e21bd")]
+[assembly: Guid("383dc084-a33d-44b3-9473-c0a52c63d5fd")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Http;
 using JI.Api.Business.Configuration;
+using JI.Common.Contracts.Contracts;
 
 namespace JI.Api
 {
@@ -10,6 +12,7 @@ namespace JI.Api
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            Configure();
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)
@@ -23,6 +26,19 @@ namespace JI.Api
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "authorization,Content-Type");
 
                 HttpContext.Current.Response.End();
+            }
+        }
+
+        protected void Configure()
+        {
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+               .SelectMany(assembly => assembly.GetTypes())
+               .Where(type => type.IsClass && typeof(IGlobalConfiguration).IsAssignableFrom(type));
+
+            foreach (var type in types)
+            {
+                var instance = (IGlobalConfiguration)Activator.CreateInstance(type);
+                instance?.Configure();
             }
         }
     }

@@ -9,7 +9,7 @@ export default (store) => ({
     require.ensure([], (require) => {
 
       const GroupsGrid = requireAuthorization(
-        require('./containers/GroupsGridContainer').default, ['Administrator'])
+        require('./containers/GroupGridContainer').default, ['Administrator'])
       const reducer = require('./modules/groupsgrid').default
 
       injectReducer(store, { key: 'groupsGrid', reducer })

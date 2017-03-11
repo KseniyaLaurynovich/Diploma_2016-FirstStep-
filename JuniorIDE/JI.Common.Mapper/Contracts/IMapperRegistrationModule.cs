@@ -1,4 +1,4 @@
-﻿namespace JI.Common.Mapper.Contracts
+﻿namespace JI.Common.Contracts.Contracts
 {
     public interface IMapperRegistrationModule
     {

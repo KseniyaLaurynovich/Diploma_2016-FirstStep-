@@ -4,7 +4,7 @@ import { Panel, Row, Col, Glyphicon } from 'react-bootstrap'
 import './GroupGridRow.scss'
 
 const GroupsGridView = (props) => (
-  <Panel className='panel--group inline'>
+  <Panel className='panel--item inline'>
     <Row>
        <Col md={10} xs={12} sm={10}>
          <p className='title'>{props.item.name}</p>

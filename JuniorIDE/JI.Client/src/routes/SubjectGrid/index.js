@@ -9,7 +9,7 @@ export default (store) => ({
     require.ensure([], (require) => {
 
       const SubjectsGrid =
-        requireAuthorization(require('./containers/SubjectsGridContainer').default, ['Teacher'])
+        requireAuthorization(require('./containers/SubjectGridContainer').default, ['Teacher'])
       const reducer = require('./modules/subjectsGrid').default
 
       injectReducer(store, { key: 'subjectsGrid', reducer })

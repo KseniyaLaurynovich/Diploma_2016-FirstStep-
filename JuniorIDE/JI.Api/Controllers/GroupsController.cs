@@ -3,9 +3,8 @@ using System.Web.Http;
 using ExpressMapper;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
-using JI.Services.Contracts;
-using JI.Services.Models;
-using JI.Services.Resources;
+using JI.Managers.Contracts;
+using JI.Managers.Models;
 
 namespace JI.Api.Controllers
 {
@@ -13,18 +12,18 @@ namespace JI.Api.Controllers
     [Authorize(Roles = "Administrator")]
     public class GroupsController : BaseApiController
     {
-        private readonly IGroupService _groupService;
+        private readonly IGroupManager _groupManager;
 
-        public GroupsController(IGroupService groupService)
+        public GroupsController(IGroupManager groupManager)
         {
-            _groupService = groupService;
+            _groupManager = groupManager;
         }
 
         [HttpGet]
         [Route("all")]
         public IHttpActionResult GetGroups()
         {
-            var groups = _groupService
+            var groups = _groupManager
                 .GetAll()
                 .Select(Mapper.Map<Group, GroupModel>)
                 .ToList();
@@ -36,7 +35,7 @@ namespace JI.Api.Controllers
         [Route("save")]
         public IHttpActionResult SaveSubject(GroupModel group)
         {
-            var result = _groupService.Save(Mapper.Map<GroupModel, Group>(group));
+            var result = _groupManager.Save(Mapper.Map<GroupModel, Group>(group));
 
             return !result.Succeeded
                 ? GetErrorResult(result.Errors)
@@ -47,7 +46,7 @@ namespace JI.Api.Controllers
         [Route("delete/{groupId}")]
         public IHttpActionResult DeleteSubject(string groupId)
         {
-            var result = _groupService.Delete(groupId);
+            var result = _groupManager.Delete(groupId);
 
             return !result.Succeeded
                 ? GetErrorResult(result.Errors)
@@ -60,7 +59,7 @@ namespace JI.Api.Controllers
 
             if (!disposing)
             {
-                _groupService?.Dispose();
+                _groupManager?.Dispose();
             }
         }
     }

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1D7FDC2E-A921-434B-B5C5-9DB4CE4E21BD}</ProjectGuid>
+    <ProjectGuid>{383DC084-A33D-44B3-9473-C0A52C63D5FD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>JI.Identity.Models</RootNamespace>

@@ -7,6 +7,7 @@ import UserEditFormView from '../components/UserEditFormView'
 const mapStateToProps = (state) => ({
   user              : state.usersGrid.currentUser,
   roles             : state.usersGrid.roles,
+  groups            : state.usersGrid.groups,
   showModal         : state.usersGrid.showEditModal,
   saveUserError     : state.usersGrid.saveUserError,
   deleteConfirmed   : state.usersGrid.deleteConfirmed,
@@ -22,6 +23,7 @@ const mapDispatchToProps = {
   handleLastNameChange      : actions.onLastNameChange,
   handlePatronymicChange    : actions.onPatronymicChange,
   handleRolesChanges        : actions.onRolesChange,
+  handleGroupsChanges       : actions.onGroupsChange,
   handleEmailChange         : actions.onEmailChange,
   handleDeleteConfirmation  : actions.onDeleteConfirmation,
   handleDelete              : actions.onDeleteUser

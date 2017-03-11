@@ -11,69 +11,97 @@ import Grid from '../../../../containers/GridContainer'
 import UserGridRowView from '../components/UserGridRowView'
 import UserEditFormContainer from './UserEditFormContainer'
 
-const filters = {
-  ['withoutRoles'] :
-    {  label: 'Without roles',
-       filter: function(user, index){
-        return !user.groups || user.groups.length == 0
-      }
-    },
-  ['withoutGroups'] :
-    { label: 'Without groups',
-      filter: function(user, index){
-       return !user.groups || user.groups.length == 0
-     }
-    },
-  ['teacher'] :
-    { label: 'Teacher',
-      filter: function(user, index){
-       return user.roles.indexOf('Teacher') != -1
-     }
-    },
-  ['student'] :
-    { label: 'Student',
-      filter: function(user, index){
-       return user.roles.indexOf('Student') != -1
-     }
-    },
-  ['admin'] :
-    { label: 'Administrator',
-      filter: function(user, index){
-       return user.roles.indexOf('Administrator') != -1
-     }
-   }
-}
 
-const sorts = {
-  ['date']  :
-    { label: 'Registration date',
-      sort: function(user, index){
-       return new Date(user.registrationDate)
-      }
-    },
-  ['name']  :
-    { label: 'Name',
-      sort: function(user, index){
-       return (user.firstName + ' ' + user.lastName + ' ' + user.patronymic).toLowerCase()
-      }
-    }
-}
 
 const UsersGridContainer = React.createClass({
+  filters(){
+    return {
+      ['withoutRoles'] :
+        {  label: 'Without roles',
+           filter: function(user, index){
+            return !user.groups || user.groups.length == 0
+          }
+        },
+      ['withoutGroups'] :
+        { label: 'Without groups',
+          filter: function(user, index){
+           return !user.groups || user.groups.length == 0
+         }
+        },
+      ['teacher'] :
+        { label: 'Teacher',
+          filter: function(user, index){
+           return user.roles.indexOf('Teacher') != -1
+         }
+        },
+      ['student'] :
+        { label: 'Student',
+          filter: function(user, index){
+           return user.roles.indexOf('Student') != -1
+         }
+        },
+      ['admin'] :
+        { label: 'Administrator',
+          filter: function(user, index){
+           return user.roles.indexOf('Administrator') != -1
+         }
+       }
+    }
+  },
+  sorts(){
+    return {
+      ['date']  :
+        { label: 'Registration date',
+          sort: function(user, index){
+            return new Date(user.registrationDate)
+          }
+        },
+      ['name']  :
+        { label: 'Name',
+          sort: function(user, index){
+           return (user.firstName + ' ' + user.lastName + ' ' + user.patronymic).toLowerCase()
+          }
+        }
+    }
+  },
+  groupFilter: function(user, groupId){
+    return _.findIndex(user.groups, function(g){
+      return g.id == groupId;
+    }) != -1
+  },
+  getGroupsFilters(groups){
+    var groupsFilters = {}
+    var filter = this.groupFilter
+    _.forEach(groups, function(group){
+      groupsFilters[group.id] = {
+        label : group.name
+      }
+    })
+    return groupsFilters;
+  },
   getInitialState(){
-    this.props.getUsers()
+    this.props.getUsers(),
+    this.props.getGroups(),
     this.props.getRoles()
     return {}
   },
   filter(users){
     if(this.props.filterKey != ''){
-      const filter = filters[this.props.filterKey]
+      const filter = this.filters()[this.props.filterKey]
       users = users.filter(filter.filter)
     }
 
     if(this.props.sortKey != ''){
-      const sort = sorts[this.props.sortKey]
+      const sort = this.sorts()[this.props.sortKey]
       users = _.sortBy(users, sort.sort)
+    }
+
+    if(this.props.groupFilterKey != ''){
+      var groupId = this.props.groupFilterKey
+      var filter = this.groupFilter
+      users = users.filter(function(user){
+        return filter(user, groupId)
+      })
     }
 
     if(this.props.textFilter != ''){
@@ -107,8 +135,9 @@ const UsersGridContainer = React.createClass({
           xs            = {12}/>
 
         <UserGridToolbar
-          filters       = {filters}
-          sorts         = {sorts}
+          filters       = {this.filters()}
+          sorts         = {this.sorts()}
+          groups        = {this.getGroupsFilters(this.props.groups)}
           openEditModal = {this.props.openEditModal}/>
 
         <UserEditFormContainer
@@ -124,6 +153,7 @@ const UsersGridContainer = React.createClass({
 const mapDispatchToProps = {
   getUsers      : actions.fetchUsers,
   getRoles      : actions.fetchRoles,
+  getGroups     : actions.fetchGroups,
   editUser      : actions.editUser,
   openEditModal : actions.openEditModal
 }
@@ -131,11 +161,13 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   users             : state.usersGrid.users,
   roles             : state.usersGrid.roles,
+  groups            : state.usersGrid.groups,
   filterKey         : state.usersGrid.filterKey,
   filterLabel       : state.usersGrid.filterLabel,
   sortKey           : state.usersGrid.sortKey,
   sortLabel         : state.usersGrid.sortLabel,
-  textFilter        : state.usersGrid.textFilter
+  textFilter        : state.usersGrid.textFilter,
+  groupFilterKey    : state.usersGrid.groupFilterKey
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersGridContainer)

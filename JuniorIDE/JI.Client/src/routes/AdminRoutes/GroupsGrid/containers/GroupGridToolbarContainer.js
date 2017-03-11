@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { actions } from '../modules/groupsgrid'
 
-import Toolbar from '../components/GroupsGridToolbar'
+import Toolbar from '../components/GroupGridToolbar'
 
 const GroupGridToolbarContainer = React.createClass({
   render(){

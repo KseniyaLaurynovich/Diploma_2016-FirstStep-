@@ -18,22 +18,30 @@ const UserGridRowView = (props) => (
 
      <Col md={12} xs={12} sm={12}>
        <p>
-         Id: {props.item.id}
+         <b>Login:</b> {props.item.userName}
        </p>
      </Col>
 
      <Col md={12} xs={12} sm={12}>
        <p>
-         Email: {props.item.email}
+         <b>Email:</b> {props.item.email}
        </p>
      </Col>
 
      <Col md={12} xs={12} sm={12}>
-       <p>Roles: {props.item.roles.join(', ')}</p>
+       {
+         props.item.roles && props.item.roles.length > 0
+         ? <p><b>Roles:</b> {props.item.roles.join(', ')}</p>
+         : ''
+       }
      </Col>
 
      <Col md={12} xs={12} sm={12}>
-       <p>Groups:</p>
+      {
+        props.item.groups && props.item.groups.length > 0
+        ? <p><b>Groups:</b> {props.item.groups.map((group) => { return group.name; }).join(', ')}</p>
+        : ''
+      }
      </Col>
    </Row>
 </Panel>

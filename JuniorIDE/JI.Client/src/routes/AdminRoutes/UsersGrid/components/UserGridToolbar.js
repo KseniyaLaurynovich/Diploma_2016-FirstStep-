@@ -50,6 +50,14 @@ const UserGridToolbar = (props) => (
    </div>
 
    <div className='inline padding-sm'>
+     <DropdownButton title={props.groupFilterLabel} id="bg-nested-dropdown" className='padding-sm'>
+       {
+         renderMenu(props.groups, props.groupFilter)
+       }
+    </DropdownButton>
+   </div>
+
+   <div className='inline padding-sm'>
      <Button className='padding-sm' onClick={props.resetAll}>
        Reset filters
      </Button>

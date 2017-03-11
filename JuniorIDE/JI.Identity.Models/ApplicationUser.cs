@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Microsoft.AspNet.Identity;
 
 namespace JI.Identity.Models
@@ -26,5 +28,7 @@ namespace JI.Identity.Models
         public DateTime RegistrationDate { get; set; }
 
         public bool IsActivated { get; set; }
+
+        public IList<string> Roles { get; set; }
     }
 }

@@ -2,16 +2,15 @@
 using System.Linq;
 using System.Web.Http;
 using JI.Api;
-using JI.Common.Mapper.Contracts;
-using JI.UserIdentity.Infrastructure;
-using JI.UserIdentity.Providers;
+using JI.Common.Contracts.Contracts;
+using JI.Managers.Infrastructure;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using SimpleInjector;
 using SimpleInjector.Extensions.ExecutionContextScoping;
 using SimpleInjector.Integration.WebApi;
+using JI.Managers.Providers;
 
 [assembly: OwinStartup(typeof(Startup))]
 namespace JI.Api

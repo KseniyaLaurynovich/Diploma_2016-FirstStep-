@@ -1,9 +1,9 @@
 ﻿using System;
 using ExpressMapper;
 using JI.Api.Models;
-using JI.Common.Mapper.Contracts;
+using JI.Common.Contracts.Contracts;
+using JI.Managers.Models;
 using JI.Identity.Models;
-using JI.Services.Models;
 
 namespace JI.Api.Business.Configuration
 {
@@ -23,36 +23,11 @@ namespace JI.Api.Business.Configuration
             Mapper.Register<RoleModel, ApplicationRole>();
             Mapper.Register<ApplicationRole, RoleModel> ();
 
-            Mapper.Register<Subject, SubjectModel>()
-                .Member(dest => dest.Id, src => src.Id.ToString())
-                .Member(dest => dest.UserId, src => src.UserId.ToString());
-            Mapper.Register<SubjectModel, Subject>()
-                .Ignore(dest => dest.Id)
-                .Ignore(dest => dest.UserId)
-                .After((subjectModel, subject) =>
-                {
-                    subject.Id = 
-                        subjectModel.Id != null 
-                        ? new Guid(subjectModel.Id) 
-                        : Guid.Empty;
+            Mapper.Register<Subject, SubjectModel>();
+            Mapper.Register<SubjectModel, Subject>();
 
-                    subject.UserId = 
-                        subjectModel.UserId != null 
-                        ? new Guid(subjectModel.UserId) 
-                        : Guid.Empty;
-                });
-
-            Mapper.Register<Group, GroupModel>()
-                .Member(dest => dest.Id, src => src.Id.ToString());
-            Mapper.Register<GroupModel, Group>()
-                .Ignore(dest => dest.Id)
-                .After((subjectModel, subject) =>
-                {
-                    subject.Id =
-                        subjectModel.Id != null
-                        ? new Guid(subjectModel.Id)
-                        : Guid.Empty;
-                });
+            Mapper.Register<Group, GroupModel>();
+            Mapper.Register<GroupModel, Group>();
         }
     }
 }

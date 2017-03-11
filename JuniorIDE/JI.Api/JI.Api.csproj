@@ -215,21 +215,17 @@
     <Folder Include="Business\Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Mapper.csproj">
+    <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Contracts.csproj">
       <Project>{a091cf6f-140d-4d30-aaa0-326592d0f5fd}</Project>
-      <Name>JI.Common.Mapper</Name>
+      <Name>JI.Common.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\JI.Identity.Models\JI.Identity.Models.csproj">
-      <Project>{1d7fdc2e-a921-434b-b5c5-9db4ce4e21bd}</Project>
+      <Project>{383DC084-A33D-44B3-9473-C0A52C63D5FD}</Project>
       <Name>JI.Identity.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\JI.Services\JI.Services.csproj">
-      <Project>{0ca7b780-a3c4-4174-832f-23ca9ec6b1a3}</Project>
-      <Name>JI.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JI.UserIdentity\JI.UserIdentity.csproj">
-      <Project>{363d889b-fc33-42cf-8ee6-bc635907fa24}</Project>
-      <Name>JI.UserIdentity</Name>
+    <ProjectReference Include="..\JI.Managers\JI.Managers.csproj">
+      <Project>{363D889B-FC33-42CF-8EE6-BC635907FA24}</Project>
+      <Name>JI.Managers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

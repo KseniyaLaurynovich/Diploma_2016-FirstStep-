@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Http;
+using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using JI.Identity.Models;
+using JI.Managers.Models;
 using Microsoft.AspNet.Identity;
 
 namespace JI.Api.Controllers
@@ -23,10 +25,9 @@ namespace JI.Api.Controllers
 
             foreach (var user in users)
             {
-                var roles = UserManager.Value
-                .GetRoles(user.Id);
-
-                user.Roles = roles;
+                user.Roles = UserManager.Value.GetRoles(user.Id);
+                user.Groups = UserManager.Value.GetGroups(user.Id)
+                    .Select(Mapper.Map<Group, GroupModel>).ToList();
             }
 
             return Ok(users);
@@ -44,11 +45,8 @@ namespace JI.Api.Controllers
             var user = UserManager.Value.FindById(model.Id);
             user = model.Map(user);
 
-            var roles = UserManager.Value.GetRoles(user.Id);
-            var addedRoles = model.Roles.Where(r => !roles.Contains(r)).ToArray();
-            var removedRoles = roles.Where(r => !model.Roles.Contains(r)).ToArray();
-
-            var result = UserManager.Value.UpdateWithRoles(user, addedRoles, removedRoles);
+            var result = UserManager.Value.AdvancedUpdate(
+                user, model.Groups.Select(Mapper.Map<GroupModel, Group>).ToArray());
 
             return !result.Succeeded
                 ? GetErrorResult(result) 

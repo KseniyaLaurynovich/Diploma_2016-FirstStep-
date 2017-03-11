@@ -48,7 +48,7 @@ const GroupEditFormView = (props) => (
      <Modal.Footer>
        <Row>
          <Col md={6} sm={12} xs={12}>
-          <FormGroup validationState='error' className='pull-left'>
+          <FormGroup validationState='error'>
              <HelpBlock>
                {
                   props.saveGroupError != null
