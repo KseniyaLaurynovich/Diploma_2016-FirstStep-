@@ -21,5 +21,7 @@ namespace JI.DataStorageAccess.Models
 
         [Association(ThisKey = "Id", OtherKey = "SubjectId")]
         public ICollection<SubjectGroup> SubjectGroups { get; set; }
+
+        public ICollection<Group> Groups { get; set; }
     }
 }

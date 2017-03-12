@@ -25,7 +25,6 @@ namespace JI.Api.Controllers
 
             foreach (var user in users)
             {
-                user.Roles = UserManager.Value.GetRoles(user.Id);
                 user.Groups = UserManager.Value.GetGroups(user.Id)
                     .Select(Mapper.Map<Group, GroupModel>).ToList();
             }
@@ -64,28 +63,6 @@ namespace JI.Api.Controllers
 
             return !result.Succeeded 
                 ? GetErrorResult(result) 
-                : Ok();
-        }
-
-        [HttpPut]
-        [Route("addtorole/{id}")]
-        public IHttpActionResult AddUserToRole([FromUri] string id, [FromBody] string roleName)
-        {
-            var result = UserManager.Value.AddToRole(id, roleName);
-
-            return !result.Succeeded
-                ? GetErrorResult(result)
-                : Ok();
-        }
-
-        [HttpPut]
-        [Route("removefromrole/{id}")]
-        public IHttpActionResult RemoveUserFromRole([FromUri] string id, [FromBody] string roleName)
-        {
-            var result = UserManager.Value.RemoveFromRole(id, roleName);
-
-            return !result.Succeeded
-                ? GetErrorResult(result)
                 : Ok();
         }
     }

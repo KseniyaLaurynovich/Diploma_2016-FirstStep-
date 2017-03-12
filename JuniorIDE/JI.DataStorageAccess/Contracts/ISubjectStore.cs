@@ -7,7 +7,7 @@ namespace JI.DataStorageAccess.Contracts
 {
     public interface ISubjectStore: IStore<Subject>
     {
-        IQueryable<Subject> GetByUser(Guid userId);
+        IQueryable<Subject> FindByUser(Guid userId);
         void AddToGroup(Subject subject, Guid groupId);
         void RemoveFromGroup(Subject subject, Guid groupId);
         IList<Group> GetGroups(Guid subjectId);

@@ -15,6 +15,8 @@ export const EDIT_SUBJECT_RESET_ERRORS      = 'EDIT_SUBJECT_RESET_ERRORS'
 export const SET_DELETE_SUBJECT_CONFIRMED   = 'SET_DELETE_SUBJECT_CONFIRMED'
 export const DELETE_SUBJECT_IS_LOADING      = 'DELETE_SUBJECT_IS_LOADING'
 export const DELETE_SUBJECT_SUCCESS         = 'DELETE_SUBJECT_SUCCESS'
+export const FETCH_SUBJECT_GROUPS_SUCCESS   = 'FETCH_SUBJECT_GROUPS_SUCCESS'
+export const SUBJECT_GROUPS_CHANGES         = 'SUBJECT_GROUPS_CHANGES'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -64,6 +66,20 @@ export const saveEditSubjectSuccess = (subject) => {
 export const resetErrors = () => {
   return {
     type    : EDIT_SUBJECT_RESET_ERRORS
+  }
+}
+
+export const onGroupsChanges = (groups) => {
+  return {
+    type    : SUBJECT_GROUPS_CHANGES,
+    payload : groups
+  }
+}
+
+export const fetchGroupsSuccess = (groups) => {
+  return {
+    type    : FETCH_SUBJECT_GROUPS_SUCCESS,
+    payload : groups
   }
 }
 
@@ -128,6 +144,18 @@ export function fetchSubjects(){
   }
 }
 
+export function fetchGroups(){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    requests.fetchGroups(token).then(function(response){
+      dispatch(fetchGroupsSuccess(response.data))
+    },function(error){
+      //handle error
+      dispatch(fetchGroupsSuccess([]))
+    })
+  }
+}
+
 export function onDeleteSubject(){
   event.preventDefault()
   return (dispatch, getState) => {
@@ -147,13 +175,40 @@ export function onDeleteSubject(){
   }
 }
 
+export function openEditModal(subjectId){
+    return (dispatch, getState) => {
+      dispatch(resetErrors())
+
+      if(subjectId && subjectId != null){
+        var subject = _.cloneDeep(getState().subjectsGrid.subjects.find((subject) => {
+          return subject.id == subjectId
+        }))
+        if(subject){
+          dispatch(setEditModalShowing(true, subject))
+          return
+        }
+      }
+      dispatch(setEditModalShowing(true, {}))
+  }
+}
+
+export function closeEditModal(){
+  return (dispatch, getState) => {
+    dispatch(setEditModalShowing(false, null))
+  }
+}
+
 export const actions = {
   fetchSubjects,
+  fetchGroups,
   setEditModalShowing,
   onSubjectNameChange,
   saveEditedSubject,
   onDeleteSubject,
-  onDeleteConfirmation
+  onDeleteConfirmation,
+  openEditModal,
+  closeEditModal,
+  onGroupsChanges
 }
 // ------------------------------------
 //  Action Handlers
@@ -211,6 +266,13 @@ const ACTION_HANDLERS = {
     subjects.splice(subjectIndex, 1)
 
     return Object.assign({}, state, { subjects: subjects } )
+  },
+  [FETCH_SUBJECT_GROUPS_SUCCESS]  : (state, action) => {
+    return Object.assign({}, state, { groups: action.payload })
+  },
+  [SUBJECT_GROUPS_CHANGES]  :(state, action) => {
+    return Object.assign({}, state, { currentSubject:
+      Object.assign({}, state.currentSubject, { groups: action.payload })})
   }
 }
 
@@ -219,6 +281,7 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 const initialState = {
   subjects              : [],
+  groups                : [],
   currentSubject        : null,
   showEditModal         : false,
   saveSubjectError      : null,

@@ -9,7 +9,7 @@ using JI.Managers.Models;
 namespace JI.Api.Controllers
 {
     [RoutePrefix("groups")]
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = "Administrator, Teacher")]
     public class GroupsController : BaseApiController
     {
         private readonly IGroupManager _groupManager;
@@ -21,6 +21,7 @@ namespace JI.Api.Controllers
 
         [HttpGet]
         [Route("all")]
+        [Authorize(Roles = "Administrator, Teacher")]
         public IHttpActionResult GetGroups()
         {
             var groups = _groupManager
@@ -33,7 +34,7 @@ namespace JI.Api.Controllers
 
         [HttpPost]
         [Route("save")]
-        public IHttpActionResult SaveSubject(GroupModel group)
+        public IHttpActionResult Save(GroupModel group)
         {
             var result = _groupManager.Save(Mapper.Map<GroupModel, Group>(group));
 
@@ -44,7 +45,7 @@ namespace JI.Api.Controllers
 
         [HttpDelete]
         [Route("delete/{groupId}")]
-        public IHttpActionResult DeleteSubject(string groupId)
+        public IHttpActionResult Delete(string groupId)
         {
             var result = _groupManager.Delete(groupId);
 

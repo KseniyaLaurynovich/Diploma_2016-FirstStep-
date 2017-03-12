@@ -79,7 +79,17 @@ namespace JI.Managers.Managers
 
         public IList<Subject> FindByUserId(string userId)
         {
-            return GetAll().Where(s => s.UserId.Equals(userId)).ToList();
+            var subjects =  _subjectStore.FindByUser(new Guid(userId))
+                .Select(Mapper.Map<DataStorageAccess.Models.Subject, Subject>)
+                .ToList();
+
+            foreach (var subject in subjects)
+            {
+                subject.Groups = _subjectStore.GetGroups(new Guid(subject.Id))
+                    .Select(Mapper.Map<DataStorageAccess.Models.Group, Group>)
+                    .ToList();
+            }
+            return subjects;
         }
 
         public void Dispose()

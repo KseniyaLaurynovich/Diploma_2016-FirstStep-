@@ -10,19 +10,8 @@ import SubjectGridToolbarContainer from './SubjectGridToolbarContainer'
 const SubjectGridContainer = React.createClass({
   getInitialState(){
     this.props.fetchSubjects()
+    this.props.fetchGroups()
     return {}
-  },
-  openEditModal(subjectId){
-    if(subjectId){
-      var subject = _.cloneDeep(this.props.subjects.find((subject) => {
-        return subject.id == subjectId
-      }))
-      if(subject){
-        this.props.setEditModalShowing(true, subject)
-        return
-      }
-    }
-    this.props.setEditModalShowing(true, {})
   },
   render(){
     return(
@@ -31,13 +20,12 @@ const SubjectGridContainer = React.createClass({
           items         = {this.props.subjects}
           itemComponent = {SubjectGridRowView}
           filter        = {(item) => {return item;}}
-          openEditModal = {this.openEditModal}
+          openEditModal = {this.props.openEditModal}
           md            = {4}
           sm            = {6}
           xs            = {12}/>
 
-        <SubjectGridToolbarContainer
-          openEditModal = {this.openEditModal}/>
+        <SubjectGridToolbarContainer/>
         <SubjectEditFormContainer/>
       </div>
     )
@@ -51,7 +39,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   fetchSubjects       : actions.fetchSubjects,
-  setEditModalShowing : actions.setEditModalShowing
+  fetchGroups         : actions.fetchGroups,
+  openEditModal       : actions.openEditModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubjectGridContainer)

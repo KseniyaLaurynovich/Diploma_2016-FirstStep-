@@ -16,6 +16,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+  openEditModal : actions.openEditModal
 }
 
-export default SubjectGridToolbarContainer
+export default connect(mapStateToProps, mapDispatchToProps)(SubjectGridToolbarContainer)

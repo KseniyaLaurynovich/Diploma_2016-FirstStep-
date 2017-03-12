@@ -30,16 +30,16 @@ namespace JI.DataStorageAccess.Linq2DbStores
 
         public virtual IQueryable<T> Items => DbConnection.GetTable<T>();
 
-        public virtual Guid Save(T obj)
+        public virtual Guid Save(T subject)
         {
-            if (obj.Id == Guid.Empty)
+            if (subject.Id == Guid.Empty)
             {
-                return (Guid)DbConnection.InsertWithIdentity(obj);
+                return (Guid)DbConnection.InsertWithIdentity(subject);
             }
 
-            DbConnection.Update(obj);
+            DbConnection.Update(subject);
             
-            return obj.Id;
+            return subject.Id;
         }
 
         public void Dispose()

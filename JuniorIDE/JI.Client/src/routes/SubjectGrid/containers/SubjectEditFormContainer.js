@@ -4,6 +4,7 @@ import { actions } from '../modules/subjectsGrid'
 import SubjectEditFormView from '../components/SubjectEditFormView'
 
 const mapStateToProps = (state) => ({
+  groups              : state.subjectsGrid.groups,
   subject             : state.subjectsGrid.currentSubject,
   showModal           : state.subjectsGrid.showEditModal,
   saveSubjectError    : state.subjectsGrid.saveSubjectError,
@@ -13,11 +14,12 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  close                     : () => actions.setEditModalShowing(false, null),
+  close                     : actions.closeEditModal,
   submit                    : actions.saveEditedSubject,
   handleSubjectNameChange   : actions.onSubjectNameChange,
-  handleDelete              : actions.handleDelete,
-  handleDeleteConfirmation  : actions.handleDeleteConfirmation
+  handleDelete              : actions.onDeleteSubject,
+  handleDeleteConfirmation  : actions.onDeleteConfirmation,
+  handleGroupsChanges       : actions.onGroupsChanges
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubjectEditFormView)

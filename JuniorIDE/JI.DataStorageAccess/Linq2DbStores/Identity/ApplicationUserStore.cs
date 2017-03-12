@@ -276,8 +276,19 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
         #region IQueryableUserStore
 
-        public IQueryable<ApplicationUser> Users => DbConnection.Users
-            .Select(u => u.Map<User, ApplicationUser>());
+        public IQueryable<ApplicationUser> Users
+        {
+            get
+            {
+                var users = DbConnection.Users
+                    .Select(u => u.Map<User, ApplicationUser>());
+                foreach (var user in users)
+                {
+                    user.Roles = GetRolesAsync(user).Result;
+                }
+                return users;
+            }
+        }
 
         #endregion
 

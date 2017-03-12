@@ -6,7 +6,7 @@ namespace JI.DataStorageAccess.Contracts
     public interface IStore<T> : IDisposable
         where T: class
     {
-        Guid Save(T obj);
+        Guid Save(T subject);
 
         void Delete(Guid objId);
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace JI.Api.Models
@@ -14,5 +15,8 @@ namespace JI.Api.Models
         [Required]
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "groups")]
+        public IList<GroupModel> Groups { get; set; }
     }
 }
