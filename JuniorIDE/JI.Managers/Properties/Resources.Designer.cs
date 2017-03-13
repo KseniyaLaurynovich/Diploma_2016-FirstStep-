@@ -95,5 +95,14 @@ namespace JI.Managers.Properties {
                 return ResourceManager.GetString("SubjectNameDuplicated", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The task with &apos;{0}&apos; name already exists..
+        /// </summary>
+        internal static string TaskNameDuplicated {
+            get {
+                return ResourceManager.GetString("TaskNameDuplicated", resourceCulture);
+            }
+        }
     }
 }

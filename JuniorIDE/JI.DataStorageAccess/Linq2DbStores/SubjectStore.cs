@@ -65,14 +65,16 @@ namespace JI.DataStorageAccess.Linq2DbStores
                     .ToList();
         }
 
-        public override IQueryable<Subject> Items => DbConnection.Subjects
-            .LoadWith(s => s.Tasks)
-            .LoadWith(s => s.SubjectGroups);
-
         public IQueryable<Subject> FindByUser(Guid userId)
         {
-            return Items
-                .Where(s => s.UserId.Equals(userId));
+            return Items.Where(s => s.UserId.Equals(userId));
+        }
+
+        public override Subject FindById(Guid id)
+        {
+            return DbConnection.Subjects
+                .LoadWith(s => s.Tasks)
+                .FirstOrDefault(s => s.Id.Equals(id));
         }
     }
 }

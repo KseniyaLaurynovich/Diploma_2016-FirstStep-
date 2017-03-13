@@ -10,11 +10,11 @@ namespace JI.Api.Controllers
 {
     [RoutePrefix("groups")]
     [Authorize(Roles = "Administrator, Teacher")]
-    public class GroupsController : BaseApiController
+    public class GroupController : BaseApiController
     {
         private readonly IGroupManager _groupManager;
 
-        public GroupsController(IGroupManager groupManager)
+        public GroupController(IGroupManager groupManager)
         {
             _groupManager = groupManager;
         }

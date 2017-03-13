@@ -18,5 +18,8 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "groups")]
         public IList<GroupModel> Groups { get; set; }
+
+        [JsonProperty(PropertyName = "tasks")]
+        public IList<TaskModel> Tasks { get; set; }
     }
 }

@@ -80,12 +80,32 @@ export function fetchSubjectsForTeacher(token){
   })
 }
 
+export function fetchSubjectById(token, id){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/subjects/getById/' + id,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 export function saveSubject(token, subject){
   return axios({
     method  : 'post',
     url     : BASE_URL + '/subjects/save',
     headers : {"Authorization": "Bearer " + token, "Content-Type": "application/json" },
     data    : JSON.stringify(subject)
+  })
+}
+
+export function saveTask(token, task){
+  return axios({
+    method  : 'post',
+    url     : BASE_URL + '/tasks/save',
+    headers : {
+      "Authorization" : "Bearer " + token,
+      "Content-Type"  : "application/json"
+     },
+    data    : JSON.stringify(task)
   })
 }
 
@@ -133,10 +153,12 @@ const requests = {
   deleteUser,
   fetchSubjectsForTeacher,
   saveSubject,
+  fetchSubjectById,
   deleteSubject,
   fetchGroups,
   editGroup,
-  deleteGroup
+  deleteGroup,
+  saveTask
 }
 
 export default requests

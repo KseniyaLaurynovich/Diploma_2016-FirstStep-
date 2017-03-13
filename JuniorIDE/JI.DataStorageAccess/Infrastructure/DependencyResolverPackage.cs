@@ -11,6 +11,8 @@ namespace JI.DataStorageAccess.Infrastructure
         {
             container.Register(typeof(IGroupStore), typeof(GroupStore), Lifestyle.Scoped);
             container.Register(typeof(ISubjectStore), typeof(SubjectStore), Lifestyle.Scoped);
+            container.Register(typeof(ITaskStore), typeof(TaskStore), Lifestyle.Scoped);
+            container.Register(typeof(ITestStore), typeof(TestStore), Lifestyle.Scoped);
         }
     }
 }

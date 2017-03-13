@@ -11,6 +11,7 @@ namespace JI.Managers.Infrastructure
         {
             container.Register(typeof(ISubjectManager), typeof(SubjectManager), Lifestyle.Scoped);
             container.Register(typeof(IGroupManager), typeof(GroupManager), Lifestyle.Scoped);
+            container.Register(typeof(ITaskManager), typeof(TaskManager), Lifestyle.Scoped);
         }
     }
 }

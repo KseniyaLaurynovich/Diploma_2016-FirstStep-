@@ -16,9 +16,6 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "Description"), NotNull]
         public string Description { get; set; }
 
-        [Column(Name = "AdditionalInfo"), Nullable]
-        public string AdditionalInfo { get; set; }
-
         [Column(Name = "SubjectId"), NotNull]
         public Guid SubjectId { get; set; }
 
@@ -27,6 +24,9 @@ namespace JI.DataStorageAccess.Models
 
         [Column(Name = "LastModified"), NotNull]
         public DateTime LastModified { get; set; }
+
+        [Column(Name = "AutoTested")]
+        public bool AutoTested { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "TaskId")]
         public ICollection<Test> Tests { get; set; }

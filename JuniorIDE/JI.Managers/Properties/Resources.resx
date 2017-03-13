@@ -129,4 +129,7 @@
   <data name="SubjectNameDuplicated" xml:space="preserve">
     <value>The subject with '{0}' name already exists.</value>
   </data>
+  <data name="TaskNameDuplicated" xml:space="preserve">
+    <value>The task with '{0}' name already exists.</value>
+  </data>
 </root>

@@ -68,6 +68,8 @@
     <Compile Include="Contracts\IGroupStore.cs" />
     <Compile Include="Contracts\IStore.cs" />
     <Compile Include="Contracts\IAdvancedUserStore.cs" />
+    <Compile Include="Contracts\ITaskStore.cs" />
+    <Compile Include="Contracts\ITestStore.cs" />
     <Compile Include="Contracts\IUserGroupStore.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Infrastructure\Configuration.cs" />
@@ -77,6 +79,8 @@
     <Compile Include="Linq2DbStores\GroupStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationRoleStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationUserStore.cs" />
+    <Compile Include="Linq2DbStores\TaskStore.cs" />
+    <Compile Include="Linq2DbStores\TestStore.cs" />
     <Compile Include="Models\AssignRule.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\File.cs" />

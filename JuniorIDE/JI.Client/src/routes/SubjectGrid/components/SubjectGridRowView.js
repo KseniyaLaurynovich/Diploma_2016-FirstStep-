@@ -1,13 +1,20 @@
 import React from 'react'
+import { Link } from 'react-router'
 import { Panel, Row, Col, Glyphicon } from 'react-bootstrap'
 
 import './SubjectsGridView.scss'
+
+function getSubjectTasksLink(subject){
+  return '/' + subject.id + '/tasks'
+}
 
 export const SubjectsGridView = (props) => (
   <Panel className='panel--item inline'>
     <Row>
        <Col md={10} xs={12} sm={10}>
-         <p className='title'>{props.item.name}</p>
+         <p className='title'>
+           <Link to={getSubjectTasksLink(props.item)}>{props.item.name}</Link>
+         </p>
        </Col>
 
        <Col md={2} xs={12} sm={2}>

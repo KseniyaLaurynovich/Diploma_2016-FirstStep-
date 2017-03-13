@@ -28,6 +28,9 @@ namespace JI.Api.Business.Configuration
 
             Mapper.Register<Group, GroupModel>();
             Mapper.Register<GroupModel, Group>();
+
+            Mapper.Register<Task, TaskModel>();
+            Mapper.Register<TaskModel, Task>();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace JI.Api.Controllers
 {
     [RoutePrefix("users")]
     [Authorize(Roles="Administrator")]
-    public class UsersApiController : BaseApiController
+    public class UserApiController : BaseApiController
     {
         [HttpGet]
         [Route("all")]

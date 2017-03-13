@@ -29,5 +29,8 @@ namespace JI.Managers.Resources
         public static string SubjectNameDuplicated(string name)
             => string.Format(ResourceManager?.GetString("SubjectNameDuplicated", Culture) ?? string.Empty, name);
 
+        public static string TaskNameDuplicated(string name)
+            => string.Format(ResourceManager?.GetString("TaskNameDuplicated", Culture) ?? string.Empty, name);
+
     }
 }

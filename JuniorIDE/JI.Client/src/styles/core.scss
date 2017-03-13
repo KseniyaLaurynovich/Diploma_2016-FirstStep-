@@ -59,6 +59,14 @@ body {
 .modal-footer--error{
   text-align: left !important;
 }
+
+.mt-10{
+  margin-top: 10px;
+}
+
+.mr-10{
+  margin-right: 10px;
+}
 //common
 
 .glypicon--pointer{
@@ -189,4 +197,32 @@ body {
   border-bottom-left-radius: 6px !important;
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
+}
+
+//tinymce
+.mce-tinymce{
+  border-radius: 4px;
+}
+
+.mce-panel{
+  background-color: #d8dce6 !important;
+}
+
+.mce-btn{
+    background-color: #d8dce6 !important;
+}
+
+//dropzone
+.dropZone{
+  width: auto;
+  height: 100px;
+  border-width: 2px;
+  border-color: rgb(102, 102, 102);
+  border-style: dashed;
+  border-radius: 5px;
+
+  p{
+    line-height: 100px;
+    text-align: center;
+  }
 }

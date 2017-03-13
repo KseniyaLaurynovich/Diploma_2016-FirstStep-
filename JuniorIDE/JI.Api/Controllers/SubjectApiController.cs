@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Http;
 using ExpressMapper;
+using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using JI.Managers.Contracts;
@@ -10,13 +11,22 @@ using Microsoft.AspNet.Identity;
 namespace JI.Api.Controllers
 {
     [RoutePrefix("subjects")]
-    public class SubjectsApiController : BaseApiController
+    public class SubjectApiController : BaseApiController
     {
         private readonly ISubjectManager _subjectManager;
 
-        public SubjectsApiController(ISubjectManager subjectManager)
+        public SubjectApiController(ISubjectManager subjectManager)
         {
             _subjectManager = subjectManager;
+        }
+
+        [Route("getById/{subjectId}")]
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        public IHttpActionResult GetById(string subjectId)
+        {
+            var subject = _subjectManager.FindById(subjectId).Map<Subject, SubjectModel>();
+            return Ok(subject);
         }
 
         [Route("getByUser")]

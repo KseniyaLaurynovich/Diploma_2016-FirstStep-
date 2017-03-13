@@ -12,23 +12,11 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "TaskId"), NotNull]
         public Guid TaskId { get; set; }
 
-        [Column(Name = "Name"), NotNull]
-        public string Name { get; set; }
-
-        [Column(Name = "InputArguments"), Nullable]
-        public string InputArguments { get; set; }
-
-        [Column(Name = "OutputArguments"), Nullable]
-        public string OutputArguments { get; set; }
-
         [Column(Name = "InputFile"), Nullable]
-        public byte[] InputFile { get; set; }
+        public Guid InputFile { get; set; }
 
         [Column(Name = "OutputFile"), Nullable]
-        public byte[] OutputFile { get; set; }
-
-        [Column(Name = "Weight"), NotNull]
-        public int Weight { get; set; }
+        public Guid OutputFile { get; set; }
 
         [Association(ThisKey = "TaskId", OtherKey = "Id")]
         public Task Task { get; set; }

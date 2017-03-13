@@ -54,7 +54,7 @@ var Menu = React.createClass({
   },
   render(){
     return(
-      <Navbar className='sidebar' collapseOnSelect>
+      <Navbar className='leftSidebar' collapseOnSelect>
         <Navbar.Header className='nav-header-bottom'>
           <Navbar.Brand>
             <img className='brand-logo' src={LogoImage}/>

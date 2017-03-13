@@ -5,11 +5,7 @@ using JI.Managers.Models;
 
 namespace JI.Managers.Contracts
 {
-    public interface IGroupManager : IDisposable
+    public interface IGroupManager : IManager<Group>
     {
-        ServiceResult<Group> Save(Group group);
-        ServiceResult Delete(string id);
-        IList<Group> GetAll();
-        Group FindById(string groupId);
     }
 }

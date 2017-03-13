@@ -10,6 +10,8 @@ import ChangePasswordRoute from './ChangePassword'
 import UsersGridRoute from './AdminRoutes/UsersGrid'
 import GroupsGridRoute from './AdminRoutes/GroupsGrid'
 import SubjectsGridRoute from './SubjectGrid/'
+import TasksGridRoute from './TaskGrid/'
+import TaskEditFormRoute from './TaskEditForm/'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -23,7 +25,9 @@ export const createRoutes = (store) => ([{
     ChangePasswordRoute(store),
     UsersGridRoute(store),
     GroupsGridRoute(store),
-    SubjectsGridRoute(store)
+    SubjectsGridRoute(store),
+    TasksGridRoute(store),
+    TaskEditFormRoute(store)
   ]
 },
 {

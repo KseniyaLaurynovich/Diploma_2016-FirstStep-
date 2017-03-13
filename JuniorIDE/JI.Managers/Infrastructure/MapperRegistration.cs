@@ -9,6 +9,42 @@ namespace JI.Managers.Infrastructure
     {
         public void Register()
         {
+            Mapper.Register<Task, Models.Task>()
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.SubjectId, src => src.SubjectId.ToString());
+            Mapper.Register<Models.Task, Task>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.SubjectId)
+                .After((appSubject, subject) =>
+                {
+                    if (appSubject.Id != null)
+                    {
+                        subject.Id = new Guid(appSubject.Id);
+                    }
+                    if (appSubject.SubjectId != null)
+                    {
+                        subject.SubjectId = new Guid(appSubject.SubjectId);
+                    }
+                });
+
+            Mapper.Register<Test, Models.Test>()
+               .Member(dest => dest.Id, src => src.Id.ToString())
+               .Member(dest => dest.TaskId, src => src.TaskId.ToString());
+            Mapper.Register<Models.Test, Test>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.TaskId)
+                .After((appSubject, subject) =>
+                {
+                    if (appSubject.Id != null)
+                    {
+                        subject.Id = new Guid(appSubject.Id);
+                    }
+                    if (appSubject.TaskId != null)
+                    {
+                        subject.TaskId = new Guid(appSubject.TaskId);
+                    }
+                });
+
             Mapper.Register<Subject, Models.Subject>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.UserId, src => src.UserId.ToString());

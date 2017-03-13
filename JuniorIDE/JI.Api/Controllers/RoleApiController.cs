@@ -10,7 +10,7 @@ namespace JI.Api.Controllers
 {
     [RoutePrefix("roles")]
     [Authorize(Roles = "Administrator")]
-    public class RolesApiController : BaseApiController
+    public class RoleApiController : BaseApiController
     {
         [HttpGet]
         [Route("{id:guid}")]
