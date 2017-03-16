@@ -17,21 +17,8 @@ export const fetchSubjectSuccess = (subject) => {
   }
 }
 
-export function fetchSubject(subjectId){
-  return (dispatch, getState) => {
-    var token = getState().user.credentials.access_token
-    requests.fetchSubjectById(token, subjectId).then(function(response){
-      dispatch(fetchSubjectSuccess(response.data))
-    },function(error){
-      var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
-
-      //todo handle error
-    })
-  }
-}
-
 export const actions = {
-  fetchSubject
+  fetchSubjectSuccess
 }
 // ------------------------------------
 //  Action Handlers
@@ -46,10 +33,24 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  subject   : null
+  subject     : null,
+  isEditMode  : false
 }
 
 export default function registrationReducer (state = initialState, action){
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
+}
+
+export function fetchSubject(subjectId){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    requests.fetchSubjectById(token, subjectId).then(function(response){
+      dispatch(fetchSubjectSuccess(response.data))
+    },function(error){
+      var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
+
+      //todo handle error
+    })
+  }
 }

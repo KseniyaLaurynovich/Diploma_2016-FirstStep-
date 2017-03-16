@@ -12,6 +12,7 @@ namespace JI.Managers.Infrastructure
             Mapper.Register<Task, Models.Task>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.SubjectId, src => src.SubjectId.ToString());
+
             Mapper.Register<Models.Task, Task>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.SubjectId)
@@ -29,7 +30,10 @@ namespace JI.Managers.Infrastructure
 
             Mapper.Register<Test, Models.Test>()
                .Member(dest => dest.Id, src => src.Id.ToString())
-               .Member(dest => dest.TaskId, src => src.TaskId.ToString());
+               .Member(dest => dest.TaskId, src => src.TaskId.ToString())
+               .Member(dest => dest.OutputFile, src => src.OutputFile.ToString())
+               .Member(dest => dest.InputFile, src => src.InputFile.ToString());
+
             Mapper.Register<Models.Test, Test>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.TaskId)
@@ -42,6 +46,14 @@ namespace JI.Managers.Infrastructure
                     if (appSubject.TaskId != null)
                     {
                         subject.TaskId = new Guid(appSubject.TaskId);
+                    }
+                    if (appSubject.OutputFile != null)
+                    {
+                        subject.OutputFile = new Guid(appSubject.OutputFile);
+                    }
+                    if (appSubject.InputFile != null)
+                    {
+                        subject.InputFile = new Guid(appSubject.InputFile);
                     }
                 });
 

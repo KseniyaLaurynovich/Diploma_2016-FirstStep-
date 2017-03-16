@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace JI.Managers.Models
 {
@@ -11,5 +12,6 @@ namespace JI.Managers.Models
         public string Name { get; set; }
 
         public IList<Group> Groups { get; set; }
+        public IList<Task> Tasks { get; set; }
     }
 }
