@@ -88,6 +88,14 @@ export function fetchSubjectById(token, id){
   })
 }
 
+export function fetchTask(token, id){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/tasks/getById/' + id,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 export function saveSubject(token, subject){
   return axios({
     method  : 'post',
@@ -142,6 +150,14 @@ export function deleteGroup(token ,groupId){
   })
 }
 
+export function toggleTaskVisibility(token, taskId, isVisible){
+  return axios({
+    method  : 'put',
+    url     : BASE_URL + '/tasks/changeVisibility/' + taskId + '/' + isVisible,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -158,7 +174,9 @@ const requests = {
   fetchGroups,
   editGroup,
   deleteGroup,
-  saveTask
+  saveTask,
+  fetchTask,
+  toggleTaskVisibility
 }
 
 export default requests

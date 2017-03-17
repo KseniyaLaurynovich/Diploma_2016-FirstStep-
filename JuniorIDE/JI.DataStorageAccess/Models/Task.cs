@@ -28,6 +28,9 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "AutoTested")]
         public bool AutoTested { get; set; }
 
+        [Column(Name = "IsVisible")]
+        public bool IsVisible { get; set; }
+
         [Association(ThisKey = "Id", OtherKey = "TaskId")]
         public ICollection<Test> Tests { get; set; }
     }

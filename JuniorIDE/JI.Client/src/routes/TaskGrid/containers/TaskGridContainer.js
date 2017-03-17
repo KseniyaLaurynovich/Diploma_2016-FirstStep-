@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Grid from '../../../containers/GridContainer'
-import { actions } from '../modules/tasksGrid'
+import { fetchSubject } from '../modules/tasksGrid'
 import TaskGridRowView from '../components/TaskGridRowView'
 import TaskGridToolbarContainer from './TaskGridToolbarContainer'
 
@@ -42,7 +42,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  fetchSubject: actions.fetchSubject
+  fetchSubject  : fetchSubject
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGridContainer)

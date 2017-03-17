@@ -29,6 +29,9 @@ namespace JI.Api.Models
         [JsonProperty(PropertyName = "autoTested")]
         public bool AutoTested { get; set; }
 
+        [JsonProperty(PropertyName = "isVisible")]
+        public bool IsVisible { get; set; }
+
         [JsonProperty(PropertyName = "tests")]
         public IList<TestModel> Tests { get; set; }
     }

@@ -2,14 +2,15 @@ import requests from '../../../utils/requests'
 import { browserHistory } from 'react-router'
 import { validationStates } from '../../../utils/constants'
 import helpers from '../../../utils/helpers'
+
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const FETCH_SUBJECT_SUCCESS    = 'FETCH_SUBJECT_SUCCESS'
+
 // ------------------------------------
 // Actions
 // ------------------------------------
-
 export const fetchSubjectSuccess = (subject) => {
   return {
     type    : FETCH_SUBJECT_SUCCESS,
@@ -20,6 +21,7 @@ export const fetchSubjectSuccess = (subject) => {
 export const actions = {
   fetchSubjectSuccess
 }
+
 // ------------------------------------
 //  Action Handlers
 // ------------------------------------
@@ -33,8 +35,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  subject     : null,
-  isEditMode  : false
+  subject     : null
 }
 
 export default function registrationReducer (state = initialState, action){

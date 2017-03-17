@@ -27,5 +27,19 @@ namespace JI.Managers.Managers
 
             return ServiceResult.Success;
         }
+
+        public ServiceResult SetVisibility(string taskId, bool isVisible)
+        {
+            var task = Store.FindById(new Guid(taskId));
+
+            if (task != null)
+            {
+                task.IsVisible = isVisible;
+                Store.Save(task);
+                return ServiceResult.Success;
+            }
+
+            return ServiceResult.Failed(new [] { Resources.Resources.InternalError });
+        }
     }
 }

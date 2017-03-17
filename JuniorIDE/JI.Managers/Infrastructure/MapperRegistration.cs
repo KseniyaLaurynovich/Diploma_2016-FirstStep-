@@ -37,6 +37,8 @@ namespace JI.Managers.Infrastructure
             Mapper.Register<Models.Test, Test>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.TaskId)
+                .Ignore(dest => dest.OutputFile)
+                .Ignore(dest => dest.InputFile)
                 .After((appSubject, subject) =>
                 {
                     if (appSubject.Id != null)

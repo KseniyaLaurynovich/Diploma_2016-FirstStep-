@@ -19,6 +19,16 @@ namespace JI.Api.Controllers
             _taskManager = taskManager;
         }
 
+        [HttpPut]
+        [Route("changeVisibility/{taskId}/{isVisible}")]
+        public IHttpActionResult ChangeVisibility(string taskId, bool isVisible)
+        {
+            var result = _taskManager.SetVisibility(taskId, isVisible);
+            return !result.Succeeded
+               ? GetErrorResult(result.Errors)
+               : Ok();
+        }
+
         [HttpPost]
         [Route("save")]
         public IHttpActionResult Save(TaskModel task)
@@ -27,6 +37,15 @@ namespace JI.Api.Controllers
             return !result.Succeeded
                ? GetErrorResult(result.Errors)
                : Ok(Mapper.Map<Task, TaskModel>(result.Result));
+        }
+
+        [Route("getById/{taskId}")]
+        [Authorize(Roles = "Teacher")]
+        [HttpGet]
+        public IHttpActionResult GetById(string taskId)
+        {
+            var task = _taskManager.FindById(taskId).Map<Task, TaskModel>();
+            return Ok(task);
         }
 
         protected override void Dispose(bool disposing)
