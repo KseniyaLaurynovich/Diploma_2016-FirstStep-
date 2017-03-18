@@ -1,5 +1,6 @@
 ﻿using System;
 using LinqToDB.Mapping;
+using Microsoft.SqlServer.Types;
 
 namespace JI.DataStorageAccess.Models
 {
@@ -13,10 +14,10 @@ namespace JI.DataStorageAccess.Models
         public Guid TaskId { get; set; }
 
         [Column(Name = "InputFile"), Nullable]
-        public Guid InputFile { get; set; }
+        public SqlHierarchyId InputFile { get; set; }
 
         [Column(Name = "OutputFile"), Nullable]
-        public Guid OutputFile { get; set; }
+        public SqlHierarchyId OutputFile { get; set; }
 
         [Association(ThisKey = "TaskId", OtherKey = "Id")]
         public Task Task { get; set; }

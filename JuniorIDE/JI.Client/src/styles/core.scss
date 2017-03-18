@@ -1,4 +1,5 @@
 @import 'base';
+@import "reactBootstrapTable";
 @import '~normalize.css/normalize';
 
 html {
@@ -33,7 +34,8 @@ body {
 }
 
 .padding-sm{
-  padding: 6px !important;
+  padding-bottom: 6px !important;
+  padding-top: 6px !important;
 }
 
 .inline{
@@ -71,6 +73,19 @@ body {
 .ml-5{
   margin-left: 5px;
 }
+
+.mr-5{
+  margin-right: 5px;
+}
+
+.mt-5{
+  margin-top: 5px;
+}
+
+.page--toollbar{
+  margin-bottom: 50px;
+}
+
 //common
 
 .glypicon--pointer{
@@ -143,6 +158,16 @@ body {
   border-color: $green;
   color: $green;
   background-color: $gray;
+}
+
+.btn-warning:hover {
+  border-color: $orange;
+  color: $orange;
+  background-color: $gray;
+}
+
+.btn-group-sm:hover{
+  padding: 0px !important;
 }
 
 .btn-danger:active {
@@ -229,4 +254,9 @@ body {
     line-height: 100px;
     text-align: center;
   }
+}
+
+//bootstrap-table
+.react-bs-table{
+  margin: 0px !important;
 }

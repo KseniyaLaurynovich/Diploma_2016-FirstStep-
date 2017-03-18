@@ -158,6 +158,18 @@ export function toggleTaskVisibility(token, taskId, isVisible){
   })
 }
 
+export function saveTaskTest(token, taskId, file){
+  var data = new FormData();
+  data.append("file", file);
+  return axios({
+    method : 'post',
+    url    :  BASE_URL + '/tasks/saveTest/' + taskId,
+    contentType: false,
+    headers : {"Content-Type": "multipart/form-data"},
+    data   :  data
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -176,7 +188,8 @@ const requests = {
   deleteGroup,
   saveTask,
   fetchTask,
-  toggleTaskVisibility
+  toggleTaskVisibility,
+  saveTaskTest
 }
 
 export default requests

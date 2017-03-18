@@ -1,0 +1,323 @@
+<?xml version="1.0"?>
+<ArrayOfAnimal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>коричневый</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Обезьяна</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>белый</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Зебра</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>черный</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Пингвин</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>зеленый</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Лягушка</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>оранжевый</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Тигр</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>оранжевый</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Жираф</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>черный</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Ворона</Name>
+  </Animal>
+  <Animal>
+    <Expressions>
+      <ExpertExpression>
+        <Id>6c40b7bb-d37a-43f5-9b53-b0e0354be1fb</Id>
+        <Question>Есть шерсть?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>2970e051-a1d0-431d-972a-aa6bfee20c71</Id>
+        <Question>Есть копыта?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>cc4ddee6-622e-4d7f-96f8-8052c390b12a</Id>
+        <Question>Какого цвета?</Question>
+        <Answer>черный</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>4e3f0914-9919-452b-a699-a50850b339b0</Id>
+        <Question>Есть крылья?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>aeddb8c9-f178-46da-86ee-0b06865ffa64</Id>
+        <Question>Есть клылки и когти?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>73f612f3-c5e3-4991-a79d-627bdaf10a6e</Id>
+        <Question>Умеет летать?</Question>
+        <Answer>нет</Answer>
+      </ExpertExpression>
+      <ExpertExpression>
+        <Id>8fe61140-c43a-4f39-9340-fc5526505106</Id>
+        <Question>Длинные ноги?</Question>
+        <Answer>да</Answer>
+      </ExpertExpression>
+    </Expressions>
+    <Name>Страус</Name>
+  </Animal>
+</ArrayOfAnimal>

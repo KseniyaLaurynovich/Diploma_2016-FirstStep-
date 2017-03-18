@@ -1,7 +1,9 @@
 ﻿using System;
 using ExpressMapper;
 using JI.Common.Contracts.Contracts;
+using JI.DataStorageAccess.Business.Extensions;
 using JI.DataStorageAccess.Models;
+using Microsoft.SqlServer.Types;
 
 namespace JI.Managers.Infrastructure
 {
@@ -9,6 +11,28 @@ namespace JI.Managers.Infrastructure
     {
         public void Register()
         {
+            Mapper.Register<File, Models.File>()
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.ParentId, 
+                    src => src.ParentId.IsNull ? null : src.ParentId.ToString());
+
+            Mapper.Register<Models.File, File>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.ParentId)
+                .After((appFile, file) =>
+                {
+                    if (appFile.Id != null)
+                    {
+                        file.Id = SqlHierarchyId.Parse(appFile.Id);
+                    }
+                    if (appFile.ParentId != null)
+                    {
+                        file.ParentId = appFile.ParentId == null 
+                            ? SqlHierarchyId.Null 
+                            : SqlHierarchyId.Parse(appFile.ParentId);
+                    }
+                });
+
             Mapper.Register<Task, Models.Task>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.SubjectId, src => src.SubjectId.ToString());
@@ -16,46 +40,51 @@ namespace JI.Managers.Infrastructure
             Mapper.Register<Models.Task, Task>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.SubjectId)
-                .After((appSubject, subject) =>
+                .Ignore(dest => dest.TempFolder)
+                .After((appTask, task) =>
                 {
-                    if (appSubject.Id != null)
+                    if (appTask.Id != null)
                     {
-                        subject.Id = new Guid(appSubject.Id);
+                        task.Id = new Guid(appTask.Id);
                     }
-                    if (appSubject.SubjectId != null)
+                    if (appTask.SubjectId != null)
                     {
-                        subject.SubjectId = new Guid(appSubject.SubjectId);
+                        task.SubjectId = new Guid(appTask.SubjectId);
                     }
                 });
 
             Mapper.Register<Test, Models.Test>()
                .Member(dest => dest.Id, src => src.Id.ToString())
                .Member(dest => dest.TaskId, src => src.TaskId.ToString())
-               .Member(dest => dest.OutputFile, src => src.OutputFile.ToString())
-               .Member(dest => dest.InputFile, src => src.InputFile.ToString());
+               .Member(dest => dest.OutputFile, src => src.OutputFile.ToValidString())
+               .Member(dest => dest.InputFile, src => src.InputFile.ToValidString());
 
             Mapper.Register<Models.Test, Test>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.TaskId)
                 .Ignore(dest => dest.OutputFile)
                 .Ignore(dest => dest.InputFile)
-                .After((appSubject, subject) =>
+                .After((appTest, test) =>
                 {
-                    if (appSubject.Id != null)
+                    if (appTest.Id != null)
                     {
-                        subject.Id = new Guid(appSubject.Id);
+                        test.Id = new Guid(appTest.Id);
                     }
-                    if (appSubject.TaskId != null)
+                    if (appTest.TaskId != null)
                     {
-                        subject.TaskId = new Guid(appSubject.TaskId);
+                        test.TaskId = new Guid(appTest.TaskId);
                     }
-                    if (appSubject.OutputFile != null)
+                    if (appTest.OutputFile != null)
                     {
-                        subject.OutputFile = new Guid(appSubject.OutputFile);
+                        test.OutputFile = appTest.OutputFile == null
+                            ? SqlHierarchyId.Null
+                            : SqlHierarchyId.Parse(appTest.OutputFile);
                     }
-                    if (appSubject.InputFile != null)
+                    if (appTest.InputFile != null)
                     {
-                        subject.InputFile = new Guid(appSubject.InputFile);
+                        test.InputFile = appTest.OutputFile == null
+                            ? SqlHierarchyId.Null
+                            : SqlHierarchyId.Parse(appTest.InputFile);
                     }
                 });
 

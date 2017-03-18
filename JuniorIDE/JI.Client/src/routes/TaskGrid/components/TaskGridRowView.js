@@ -15,12 +15,6 @@ const TaskGridRowView = (props) => (
          </p>
        </Col>
      </Row>
-     <Row>
-       <Col md={12} xs={12} sm={2}>
-           <Glyphicon className='glypicon--button' glyph="pencil"
-             onClick={() => props.openEditModal(props.item.id)}/>
-       </Col>
-     </Row>
   </Panel>
 )
 

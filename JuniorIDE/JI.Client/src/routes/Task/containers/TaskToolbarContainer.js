@@ -5,6 +5,7 @@ import { toggleVisibility, openEditMode, closeEditMode, saveTask } from '../modu
 import Toolbar from '../components/TaskViewToolbar'
 
 const mapStateToProps = (state) => ({
+  taskId      : state.task.currentTask ? state.task.currentTask.id : null,
   isVisible   : state.task.currentTask ? state.task.currentTask.isVisible : false,
   isEditMode  : state.task.isEditMode
 })

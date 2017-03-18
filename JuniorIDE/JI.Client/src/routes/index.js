@@ -11,6 +11,7 @@ import UsersGridRoute from './AdminRoutes/UsersGrid'
 import GroupsGridRoute from './AdminRoutes/GroupsGrid'
 import SubjectsGridRoute from './SubjectGrid/'
 import TasksGridRoute from './TaskGrid/'
+import TestsGridRoute from './TestGrid/'
 import TaskRoute from './Task'
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -27,7 +28,8 @@ export const createRoutes = (store) => ([{
     GroupsGridRoute(store),
     SubjectsGridRoute(store),
     TasksGridRoute(store),
-    TaskRoute(store)
+    TaskRoute(store),
+    TestsGridRoute(store)
   ]
 },
 {

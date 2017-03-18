@@ -1,8 +1,8 @@
-﻿using JI.DataStorageAccess.Models;
+﻿using System;
+using JI.DataStorageAccess.Models;
 
 namespace JI.DataStorageAccess.Contracts
 {
     public interface IGroupStore : IStore<Group>
-    {
-    }
+    {}
 }

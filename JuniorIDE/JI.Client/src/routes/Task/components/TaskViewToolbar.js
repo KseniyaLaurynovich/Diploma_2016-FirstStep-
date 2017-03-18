@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 
 import { FormControl, Button, DropdownButton, MenuItem, Glyphicon } from 'react-bootstrap'
 import Toolbar from '../../../containers/ToolbarContainer'
@@ -28,10 +29,12 @@ const renderViewMode = (props) => (
          </Glyphicon>
        </Button>
        <Button className='padding-sm ml-5'>
-         <Glyphicon
-           className  = 'glypicon--pointer'
-           glyph      = 'align-justify'>
-         </Glyphicon>
+         <Link to={ '/task/' + props.taskId + '/tests'}>
+           <Glyphicon
+             className  = 'glypicon--pointer'
+             glyph      = 'align-justify'>
+           </Glyphicon>
+         </Link>
        </Button>
        <Button className='padding-sm ml-5'>
          <Glyphicon

@@ -173,6 +173,7 @@
     <Compile Include="Business\Configuration\MapperRegistration.cs" />
     <Compile Include="Business\Configuration\WebApiConfig.cs" />
     <Compile Include="Business\Helpers\ControllerHelper.cs" />
+    <Compile Include="Business\Helpers\StreamExtensions.cs" />
     <Compile Include="Controllers\AccountApiController.cs" />
     <Compile Include="Controllers\Base\BaseApiController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Models\AccountInfoModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\CreateRoleModel.cs" />
+    <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\ForgotPasswordModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />

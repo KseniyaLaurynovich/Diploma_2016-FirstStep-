@@ -1,5 +1,4 @@
-﻿using System;
-using ExpressMapper;
+﻿using ExpressMapper;
 using JI.Api.Models;
 using JI.Common.Contracts.Contracts;
 using JI.Managers.Models;
@@ -31,6 +30,28 @@ namespace JI.Api.Business.Configuration
 
             Mapper.Register<Task, TaskModel>();
             Mapper.Register<TaskModel, Task>();
+
+            Mapper.Register<Test, TestModel>()
+                .Member(dest => dest.InputFile, src => new FileModel { Id = src.InputFile })
+                .Member(dest => dest.OutputFile, src => new FileModel { Id = src.OutputFile });
+            Mapper.Register<TestModel, Test>()
+                .Ignore(dest => dest.OutputFile)
+                .Ignore(dest => dest.InputFile)
+                .After((appTest, test) =>
+                {
+                    if (appTest.OutputFile != null)
+                    {
+                        test.OutputFile = string.IsNullOrEmpty(appTest.OutputFile.Id)
+                            ? null
+                            : appTest.OutputFile.Id;
+                    }
+                    if (appTest.InputFile != null)
+                    {
+                        test.InputFile = string.IsNullOrEmpty(appTest.InputFile.Id)
+                            ? null
+                            : appTest.InputFile.Id;
+                    }
+                });
         }
     }
 }

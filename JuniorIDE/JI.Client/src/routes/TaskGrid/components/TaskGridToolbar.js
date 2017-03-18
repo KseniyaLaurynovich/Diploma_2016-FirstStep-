@@ -13,12 +13,10 @@ const TaskGridToolbarView = (props) => (
 
      <div className='inline padding-sm'>
        <Button className='padding-sm'>
-         <Link to='/task/edit/null'>
-           <Glyphicon
-             className  = 'glypicon--pointer'
-             glyph      = 'plus'>
-           </Glyphicon>
-         </Link>
+         <Glyphicon
+           className  = 'glypicon--pointer'
+           glyph      = 'plus'>
+         </Glyphicon>
        </Button>
      </div>
   </Toolbar>

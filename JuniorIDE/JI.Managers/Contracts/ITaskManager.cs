@@ -6,5 +6,6 @@ namespace JI.Managers.Contracts
     public interface ITaskManager : IManager<Task>
     {
         ServiceResult SetVisibility(string taskId, bool isVisible);
+        ServiceResult<File> SaveTempFile(string taskId, File file);
     }
 }

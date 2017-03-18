@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LinqToDB.Mapping;
+using Microsoft.SqlServer.Types;
 
 namespace JI.DataStorageAccess.Models
 {
@@ -30,6 +31,12 @@ namespace JI.DataStorageAccess.Models
 
         [Column(Name = "IsVisible")]
         public bool IsVisible { get; set; }
+
+        [Column(Name = "TaskFolder")]
+        public SqlHierarchyId TaskFolder { get; set; }
+
+        [Column(Name = "TempFolder")]
+        public SqlHierarchyId TempFolder { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "TaskId")]
         public ICollection<Test> Tests { get; set; }

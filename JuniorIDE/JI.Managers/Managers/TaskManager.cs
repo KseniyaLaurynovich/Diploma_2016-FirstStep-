@@ -4,6 +4,9 @@ using JI.Managers.Business.Models;
 using JI.Managers.Contracts;
 using JI.Managers.Models;
 using System.Linq;
+using ExpressMapper;
+using ExpressMapper.Extensions;
+using JI.DataStorageAccess.Business.Extensions;
 
 namespace JI.Managers.Managers
 {
@@ -11,7 +14,38 @@ namespace JI.Managers.Managers
     {
         public TaskManager(ITaskStore store) 
             : base(store)
+        {}
+
+        public override ServiceResult<Task> Save(Task obj)
         {
+            var validationResult = Validate(obj);
+            if (validationResult.Succeeded)
+            {
+                DataStorageAccess.Models.Task storageObj;
+                if (!string.IsNullOrWhiteSpace(obj.Id))
+                {
+                    storageObj = Store.FindById(new Guid(obj.Id));
+                    storageObj = obj.Map(storageObj);
+                }
+                else
+                {
+                    storageObj = obj.Map<Task, DataStorageAccess.Models.Task>();
+                }
+
+                try
+                {
+                    var id = Store.Save(storageObj).ToString();
+                    return ServiceResult<Task>.Success(obj);
+                }
+                catch (Exception ex)
+                {
+                    //todo add logging
+                    return ServiceResult<Task>.Failed(Resources.Resources.InternalError);
+                }
+
+            }
+
+            return validationResult.Convert<Task>();
         }
 
         protected override ServiceResult Validate(Task task)
@@ -39,7 +73,17 @@ namespace JI.Managers.Managers
                 return ServiceResult.Success;
             }
 
-            return ServiceResult.Failed(new [] { Resources.Resources.InternalError });
+            return ServiceResult.Failed(Resources.Resources.InternalError);
+        }
+
+        public ServiceResult<File> SaveTempFile(string taskId, File file)
+        {
+           var taskStore = Store as ITaskStore;
+           file.Id = taskStore
+                ?.SaveTestFile(new Guid(taskId), file.Map<File, DataStorageAccess.Models.File>())
+                .ToValidString();
+
+            return ServiceResult<File>.Success(file);
         }
     }
 }

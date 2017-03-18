@@ -11,9 +11,9 @@ namespace JI.Api.Models
         public string TaskId { get; set; }
 
         [JsonProperty(PropertyName = "inputFile")]
-        public string InputFile { get; set; }
+        public FileModel InputFile { get; set; }
 
         [JsonProperty(PropertyName = "outputFile")]
-        public string OutputFile { get; set; }
+        public FileModel OutputFile { get; set; }
     }
 }

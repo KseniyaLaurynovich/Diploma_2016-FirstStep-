@@ -1,16 +1,17 @@
 ﻿using System;
 using LinqToDB.Mapping;
+using Microsoft.SqlServer.Types;
 
 namespace JI.DataStorageAccess.Models
 {
-    [Table(Name = "Files")]
-    public class File : IWithIdentifier
+    [Table(Name = "ProjectsFiles")]
+    public class File 
     {
-        [Column(Name = "path_locator")]
-        public Guid Id { get; set; }
+        [Column(Name = "path_locator", SkipOnInsert = true)]
+        public SqlHierarchyId Id { get; set; }
 
         [Column(Name = "parent_path_locator", SkipOnInsert = true, SkipOnUpdate = true)]
-        public string ParentId { get; set; }
+        public SqlHierarchyId ParentId { get; set; }
 
         [Column(Name = "name")]
         public string Name { get; set; }
