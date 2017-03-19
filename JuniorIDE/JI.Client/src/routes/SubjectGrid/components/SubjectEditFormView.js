@@ -11,7 +11,7 @@ function filteredGroups(props){
 }
 
 function addGroup(props, group){
-  var groups = props.subject.groups
+  var groups = props.subject.groups || []
   groups.push(group)
 
   props.handleGroupsChanges(groups)

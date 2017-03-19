@@ -36,7 +36,7 @@ function filteredGroups(props){
 }
 
 function addGroup(props, group){
-  var groups = props.user.groups
+  var groups = props.user.groups || []
   groups.push(group)
 
   props.handleGroupsChanges(groups)

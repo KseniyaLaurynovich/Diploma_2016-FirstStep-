@@ -15,22 +15,6 @@ namespace JI.Managers.Managers
             : base(store)
         {}
 
-        public override IList<Subject> GetAll()
-        {
-            var subjects = Store.Items
-                .Select(Mapper.Map<DataStorageAccess.Models.Subject, Subject>)
-                .ToList();
-
-            var subjectStore = Store as ISubjectStore;
-            foreach (var subject in subjects)
-            {
-                subject.Groups = subjectStore?.GetGroups(new Guid(subject.Id))
-                    .Select(Mapper.Map<DataStorageAccess.Models.Group, Group>)
-                    .ToList();
-            }
-            return subjects;
-        }
-
         public IList<Subject> FindByUserId(string userId)
         {
             var subjectStore = Store as ISubjectStore;
@@ -38,17 +22,9 @@ namespace JI.Managers.Managers
             if (subjectStore == null)
                 return Enumerable.Empty<Subject>().ToList();
 
-            var subjects = subjectStore.FindByUser(new Guid(userId))
+            return subjectStore.FindByUser(new Guid(userId))
                 .Select(Mapper.Map<DataStorageAccess.Models.Subject, Subject>)
                 .ToList();
-
-            foreach (var subject in subjects)
-            {
-                subject.Groups = subjectStore.GetGroups(new Guid(subject.Id))
-                    .Select(Mapper.Map<DataStorageAccess.Models.Group, Group>)
-                    .ToList();
-            }
-            return subjects;
         }
 
         #region protected
@@ -57,9 +33,9 @@ namespace JI.Managers.Managers
         {
             var subjectId = subject.Id != null ? new Guid(subject.Id) : Guid.Empty;
             if (Store.Items.Any(s =>
-                            s.Name.Equals(subject.Name)
-                            && s.UserId.Equals(new Guid(subject.UserId))
-                            && !s.Id.Equals(subjectId)))
+                            s.Name == subject.Name
+                            && s.UserId == new Guid(subject.UserId)
+                            && s.Id != subjectId))
             {
                 return ServiceResult.Failed(Resources.Resources.SubjectNameDuplicated(subject.Name));
             }

@@ -11,6 +11,7 @@ using LinqToDB;
 using Microsoft.AspNet.Identity;
 using Task = System.Threading.Tasks.Task;
 using System.Transactions;
+using JI.DataStorageAccess.Business.Extensions;
 
 namespace JI.DataStorageAccess.Linq2DbStores.Identity
 {
@@ -98,21 +99,28 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
         public Task<ApplicationUser> FindByIdAsync(string userId)
         {
-            var user = DbConnection.Users
-                .FirstOrDefault(e => e.Id == new Guid(userId));
+            var searchedUser = 
+                from user in DbConnection.Users.LoadWith(u => u.UserRoles)
+                where user.Id == new Guid(userId)
+                select new User(user)
+                {
+                    Roles = user.GetRoles().ToList()
+                };
 
-            return Task.FromResult(Mapper.Map<User, ApplicationUser>(user));
+            return Task.FromResult(searchedUser.FirstOrDefault()?.Map<User, ApplicationUser>());
         }
 
         public Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            var user = DbConnection.Users
-                .FirstOrDefault(e => e.UserName.Equals(userName));
+            var searchedUser =
+                from user in DbConnection.Users.LoadWith(u => u.UserRoles)
+                where user.UserName == userName
+                select new User(user)
+                {
+                    Roles = user.GetRoles().ToList()
+                };
 
-            return Task.FromResult(
-                user != null
-                    ? Mapper.Map<User, ApplicationUser>(user)
-                    : default(ApplicationUser));
+            return Task.FromResult(searchedUser.FirstOrDefault()?.Map<User, ApplicationUser>());
         }
 
         #endregion
@@ -234,12 +242,12 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
         public Task<IList<string>> GetRolesAsync(ApplicationUser user)
         {
-            var roles = DbConnection.UserRoles
-                    .LoadWith(ur => ur.User)
-                    .LoadWith(ur => ur.Role)
-                    .Where(ur => ur.UserId.Equals(new Guid(user.Id)))
-                    .Select(ur => ur.Role.Name)
-                    .ToList();
+            var roles = DbConnection.Users
+                .Where(u => u.Id.Equals(new Guid(user.Id)))
+                .Select(u => u.GetRoles())
+                .FirstOrDefault()
+                ?.Select(r => r.Name)
+                .ToList();
 
             return Task.FromResult((IList<string>)roles);
         }
@@ -280,13 +288,13 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
         {
             get
             {
-                var users = DbConnection.Users
-                    .Select(u => u.Map<User, ApplicationUser>());
-                foreach (var user in users)
-                {
-                    user.Roles = GetRolesAsync(user).Result;
-                }
-                return users;
+                var users = from user in DbConnection.Users.LoadWith(u => u.UserRoles)
+                            select new User(user)
+                            {
+                                Roles = user.GetRoles().ToList()
+                            };
+
+                return users.Select(u => u.Map<User, ApplicationUser>());
             }
         }
 
@@ -320,13 +328,11 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
         public IList<Group> GetGroupsAsync(string userId)
         {
-            var groups = DbConnection.UserGroups
-                    .LoadWith(ur => ur.Group)
-                    .Where(ur => ur.UserId.Equals(new Guid(userId)))
-                    .Select(ug => ug.Group)
-                    .ToList();
-
-            return groups.Select(Mapper.Map<Group, Group>).ToList();
+            return DbConnection.Users
+                .Where(u => u.Id.Equals(new Guid(userId)))
+                .Select(u => u.GetGroups())
+                .FirstOrDefault()
+                ?.ToList();
         }
 
         public bool IsInGroupAsync(ApplicationUser user, Guid groupId)

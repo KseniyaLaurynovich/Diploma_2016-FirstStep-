@@ -4,7 +4,7 @@ using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Models;
 using LinqToDB;
 using System.Collections.Generic;
-using System.Transactions;
+using JI.DataStorageAccess.Business.Extensions;
 using JI.DataStorageAccess.Linq2DbStores.Base;
 
 namespace JI.DataStorageAccess.Linq2DbStores
@@ -13,11 +13,15 @@ namespace JI.DataStorageAccess.Linq2DbStores
     {
         public override Guid Save(Subject task)
         {
-            using (var transaction = new TransactionScope())
+            using (var transaction = DbConnection.BeginTransaction())
             {
                 task.Id = base.Save(task);
 
                 var oldGroups = GetGroups(task.Id);
+
+                if(task.Groups == null)
+                    task.Groups = new List<Group>();
+
                 var addedGroups = task.Groups.Where(g => !oldGroups.Any(i => i.Id.Equals(g.Id)));
                 var removedGroups = oldGroups.Where(g => !task.Groups.Any(i => i.Id.Equals(g.Id)));
 
@@ -31,9 +35,19 @@ namespace JI.DataStorageAccess.Linq2DbStores
                     RemoveFromGroup(task, group.Id);
                 }
 
-                transaction.Complete();
+                transaction.Commit();
             }
             return task.Id;
+        }
+
+        public override IQueryable<Subject> Items
+        {
+            get
+            {
+                return DbConnection.Subjects
+                    .LoadWith(s => s.SubjectGroups)
+                    .LoadWith(s => s.Tasks);
+            }
         }
 
         public void AddToGroup(Subject subject, Guid groupId)
@@ -59,23 +73,36 @@ namespace JI.DataStorageAccess.Linq2DbStores
 
         public IList<Group> GetGroups(Guid subjectId)
         {
-            return DbConnection.SubjectGroups
-                    .LoadWith(sg => sg.Group)
-                    .Where(ug => ug.SubjectId.Equals(subjectId))
-                    .Select(ug => ug.Group)
-                    .ToList();
+            return DbConnection.Subjects
+                .Where(s => s.Id.Equals(subjectId))
+                .Select(s => s.GetGroups())
+                .FirstOrDefault()
+                ?.ToList();
         }
 
         public IQueryable<Subject> FindByUser(Guid userId)
         {
-            return Items.Where(s => s.UserId.Equals(userId));
+            return from subject in DbConnection.Subjects
+                                                .LoadWith(s => s.SubjectGroups)
+                                                .LoadWith(s => s.Tasks)
+                   where subject.UserId == userId
+                   select new Subject(subject)
+                   {
+                       Groups = subject.GetGroups().ToList()
+                   };
         }
 
         public override Subject FindById(Guid id)
         {
-            return DbConnection.Subjects
-                .LoadWith(s => s.Tasks)
-                .FirstOrDefault(s => s.Id.Equals(id));
+            return (from subject in DbConnection.Subjects
+                                                .LoadWith(s => s.SubjectGroups)
+                                                .LoadWith(s => s.Tasks)
+                   where subject.Id == id
+                   select new Subject(subject)
+                   {
+                       Groups = subject.GetGroups().ToList()
+                   })
+                   .FirstOrDefault();
         }
     }
 }

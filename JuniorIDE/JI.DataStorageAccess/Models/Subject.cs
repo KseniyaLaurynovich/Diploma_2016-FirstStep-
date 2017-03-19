@@ -7,6 +7,16 @@ namespace JI.DataStorageAccess.Models
     [Table(Name = "Subjects")]
     public class Subject : IWithIdentifier
     {
+        public Subject() { }
+
+        internal Subject(Subject subject)
+        {
+            Id = subject.Id;
+            UserId = subject.UserId;
+            Name = subject.Name;
+            Tasks = subject.Tasks;
+        }
+
         [Column(Name = "Id"), PrimaryKey, Identity]
         public Guid Id { get; set; }
 
@@ -17,11 +27,11 @@ namespace JI.DataStorageAccess.Models
         public string Name { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "SubjectId")]
-        public ICollection<Task> Tasks { get; set; }
+        public IList<Task> Tasks { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "SubjectId")]
-        public ICollection<SubjectGroup> SubjectGroups { get; set; }
+        public IList<SubjectGroup> SubjectGroups { get; set; }
 
-        public ICollection<Group> Groups { get; set; }
+        public IList<Group> Groups { get; set; }
     }
 }

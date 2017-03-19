@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ExpressMapper;
 using JI.Common.Contracts.Contracts;
 using JI.DataStorageAccess.Models;
@@ -11,9 +12,11 @@ namespace JI.DataStorageAccess.Infrastructure
         public void Register()
         {
             Mapper.Register<User, ApplicationUser>()
-                .Member(dest => dest.Id, src => src.Id.ToString());
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.Roles, src => src.Roles.Select(r => r.Name));
             Mapper.Register<ApplicationUser, User>()
                 .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.Roles)
                 .After((appUser, user) =>
                 {
                     if (appUser.Id != null)

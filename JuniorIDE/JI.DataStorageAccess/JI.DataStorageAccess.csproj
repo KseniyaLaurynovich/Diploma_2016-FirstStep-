@@ -69,6 +69,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\Extensions\QueryExtensions.cs" />
     <Compile Include="Business\Extensions\SqlHierarchyIdExtensions.cs" />
     <Compile Include="Contracts\IGroupStore.cs" />
     <Compile Include="Contracts\IObjectSpecifiedFolderStore.cs" />
