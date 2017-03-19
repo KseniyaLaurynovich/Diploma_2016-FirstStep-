@@ -41,6 +41,25 @@ const renderEditMode = (props) => (
          Shared
        </Checkbox>
      </FormGroup>
+     <hr/>
+     <Row>
+       <Col md={6} sm={6} xs={6}>
+         <Checkbox onChange={props.handleDeleteConfirmation}>
+           I undestand that task can not be restored.
+         </Checkbox>
+       </Col>
+       <Col md={6} sm={6} xs={6}>
+         <Button onClick={props.handleDelete}
+           disabled={!props.deleteConfirmed
+                    || props.deleteLoading} bsStyle='danger' className='pull-right'>
+           {
+             props.deleteSubjectLoading
+             ? 'Deleting...'
+             : 'Delete this task'
+           }
+         </Button>
+       </Col>
+     </Row>
   </div>
 )
 

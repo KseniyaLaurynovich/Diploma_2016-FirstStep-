@@ -10,7 +10,7 @@ export default (store) => ({
 
       const TasksGrid =
         requireAuthorization(require('./containers/TaskGridContainer').default, ['Teacher'])
-      const reducer = require('./modules/tasksGrid').default
+      const reducer = require('./modules/taskGrid').default
 
       injectReducer(store, { key: 'tasksGrid', reducer })
       cb(null, TasksGrid)

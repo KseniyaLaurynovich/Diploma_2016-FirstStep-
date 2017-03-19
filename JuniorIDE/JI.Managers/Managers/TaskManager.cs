@@ -20,6 +20,18 @@ namespace JI.Managers.Managers
             TaskTestsFolderStore = taskTestsFolderStore;
         }
 
+        public override ServiceResult<Task> Save(Task obj)
+        {
+            var now = DateTime.Now;
+            if (string.IsNullOrWhiteSpace(obj.Id))
+            {
+                obj.CreationDate = now;
+            }
+            obj.LastModified = now;
+
+            return base.Save(obj);
+        }
+
         public ServiceResult SetVisibility(string taskId, bool isVisible)
         {
             var task = Store.FindById(new Guid(taskId));
@@ -61,7 +73,10 @@ namespace JI.Managers.Managers
 
         protected override DbModels.Task Map(Task model)
         {
-            var dbModel = Store.FindById(new Guid(model.Id));
+            var dbModel = !string.IsNullOrWhiteSpace(model.Id)
+                ? Store.FindById(new Guid(model.Id))
+                : new DbModels.Task();
+
             return model.Map(dbModel);
         }
 

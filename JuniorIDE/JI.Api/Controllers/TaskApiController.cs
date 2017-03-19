@@ -85,6 +85,17 @@ namespace JI.Api.Controllers
             return Ok(task);
         }
 
+        [Route("delete/{taskId}")]
+        [Authorize(Roles = "Teacher")]
+        [HttpDelete]
+        public IHttpActionResult Delete(string taskId)
+        {
+            var serviceResult = _taskManager.Delete(taskId);
+            return serviceResult.Succeeded
+                ? Ok()
+                : GetErrorResult(serviceResult.Errors);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (!disposing)

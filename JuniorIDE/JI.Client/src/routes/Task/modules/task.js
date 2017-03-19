@@ -14,6 +14,8 @@ export const FETCH_TASK_SUCCESS       = 'FETCH_TASK_SUCCESS'
 export const SET_TASK_VISIBILITY      = 'SET_TASK_VISIBILITY'
 export const SET_EDIT_MODE            = 'SET_EDIT_MODE'
 export const SAVE_TASK_SUCCESS        = 'SAVE_TASK_SUCCESS'
+export const DELETE_TASK_CONFIRMATION_CHANGE = 'DELETE_TASK_CONFIRMATION_CHANGE'
+export const DELETE_TASK_LOADING_CHANGE = 'DELETE_TASK_LOADING_CHANGE'
 
 // ------------------------------------
 // Actions
@@ -75,6 +77,20 @@ export const saveTaskSuccess = (task) => {
   }
 }
 
+export const onDeleteLoadingChange = (isLoading) => {
+  return {
+    type    : DELETE_TASK_LOADING_CHANGE,
+    payload : isLoading
+  }
+}
+
+export const onDeleteConfirmation = (event) => {
+  return {
+    type    : DELETE_TASK_CONFIRMATION_CHANGE,
+    payload : event.target.checked
+  }
+}
+
 export const actions = {
   onNameChange,
   onDescriptionChange,
@@ -83,7 +99,9 @@ export const actions = {
   fetchTaskSuccess,
   setEditMode,
   saveTaskSuccess,
-  setTaskVisibility
+  setTaskVisibility,
+  onDeleteLoadingChange,
+  onDeleteConfirmation
 }
 
 // ------------------------------------
@@ -118,6 +136,12 @@ const ACTION_HANDLERS = {
   },
   [SAVE_TASK_SUCCESS]     : (state, action) => {
     return Object.assign({}, state, { currentTask: action.payload })
+  },
+  [DELETE_TASK_CONFIRMATION_CHANGE] : (state, action) => {
+    return Object.assign({}, state, { deleteConfirmed: action.payload })
+  },
+  [DELETE_TASK_LOADING_CHANGE]      : (state, action) => {
+    return Object.assign({}, state, { deleteLoading: action.payload })
   }
 }
 
@@ -127,7 +151,9 @@ const ACTION_HANDLERS = {
 const initialState = {
   currentTask           : {},
   editingTask           : null,
-  isEditMode            : false
+  isEditMode            : false,
+  deleteConfirmed       : false,
+  deleteLoading         : false
 }
 
 export default function taskReducer (state = initialState, action){
@@ -180,6 +206,18 @@ export function saveTask(event){
     .then(function(response){
       dispatch(saveTaskSuccess(response.data))
       dispatch(setEditMode(false, null))
+    },function(error){
+      //todo handle error
+    })
+  }
+}
+
+export function deleteTask(){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    requests.deleteTask(token, getState().task.currentTask.id)
+    .then(function(response){
+      browserHistory.push('/' + getState().task.currentTask.subjectId + '/tasks')
     })
   }
 }

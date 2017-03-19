@@ -170,6 +170,14 @@ export function saveTaskTest(token, taskId, file){
   })
 }
 
+export function deleteTask(token, taskId){
+  return axios({
+    method  : 'delete',
+    url     : BASE_URL + '/tasks/delete/' + taskId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -189,7 +197,8 @@ const requests = {
   saveTask,
   fetchTask,
   toggleTaskVisibility,
-  saveTaskTest
+  saveTaskTest,
+  deleteTask
 }
 
 export default requests

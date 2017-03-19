@@ -14,14 +14,14 @@ namespace JI.DataStorageAccess.Linq2DbStores
     {
         public override Guid Save(Task task)
         {
-            using (var transaction = new TransactionScope())
+            using (var transaction = DbConnection.BeginTransaction())
             {
                 task.Id = base.Save(task);
 
                 var oldTests = GetTests(task);
                 var removedTests = oldTests.Where(ot => !task.Tests.Any(t => ot.Id.Equals(t.Id)));
 
-                foreach (var test in task.Tests)
+                foreach (var test in task.Tests??Enumerable.Empty<Test>())
                 {
                     AddTest(task, test);
                 }
@@ -31,7 +31,7 @@ namespace JI.DataStorageAccess.Linq2DbStores
                     RemoveTest(task, test);
                 }
 
-                transaction.Complete();
+                transaction.Commit();
 
                 return task.Id;
             }

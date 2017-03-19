@@ -14,7 +14,7 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "Name"), NotNull]
         public string Name { get; set; }
 
-        [Column(Name = "Description"), NotNull]
+        [Column(Name = "Description"), Nullable]
         public string Description { get; set; }
 
         [Column(Name = "SubjectId"), NotNull]

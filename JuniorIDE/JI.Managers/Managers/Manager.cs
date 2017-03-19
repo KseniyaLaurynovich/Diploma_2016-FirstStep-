@@ -28,8 +28,8 @@ namespace JI.Managers.Managers
                 var storageObj = Map(obj);
                 try
                 {
-                    var id = Store.Save(storageObj).ToString();
-                    return ServiceResult<T>.Success(obj);
+                    storageObj.Id = Store.Save(storageObj);
+                    return ServiceResult<T>.Success(storageObj.Map(obj));
                 }
                 catch (Exception ex)
                 {

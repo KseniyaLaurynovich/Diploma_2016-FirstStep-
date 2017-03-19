@@ -2,9 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Grid from '../../../containers/GridContainer'
-import { fetchSubject } from '../modules/tasksGrid'
+import { fetchSubject } from '../modules/taskGrid'
 import TaskGridRowView from '../components/TaskGridRowView'
 import TaskGridToolbarContainer from './TaskGridToolbarContainer'
+import TaskNewFormContainer from './TaskNewFormContainer'
 
 const TaskGridContainer = React.createClass({
   getInitialState(){
@@ -32,6 +33,7 @@ const TaskGridContainer = React.createClass({
           xs            = {12}/>
 
         <TaskGridToolbarContainer/>
+        <TaskNewFormContainer/>
       </div>
     )
   }
