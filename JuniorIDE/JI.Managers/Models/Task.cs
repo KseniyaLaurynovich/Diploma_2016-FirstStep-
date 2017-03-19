@@ -19,6 +19,8 @@ namespace JI.Managers.Models
 
         public bool AutoTested { get; set; }
 
+        public bool IsShared { get; set; }
+
         public bool IsVisible { get; set; }
 
         public IList<Test> Tests { get; set; }

@@ -10,7 +10,7 @@ const renderViewMode = (props) => (
       <Button className='padding-sm' onClick={props.toggleVisibility}>
         <Glyphicon
           className  = 'glypicon--pointer'
-          glyph      = { props.isVisible ? 'eye-close' : 'eye-open'}>
+          glyph      = { props.task.isVisible ? 'eye-close' : 'eye-open'}>
         </Glyphicon>
         { props.isVisible ? ' Make unvisible' : ' Make visible'}
       </Button>
@@ -28,20 +28,28 @@ const renderViewMode = (props) => (
            glyph      = 'user'>
          </Glyphicon>
        </Button>
-       <Button className='padding-sm ml-5'>
-         <Link to={ '/task/' + props.taskId + '/tests'}>
-           <Glyphicon
-             className  = 'glypicon--pointer'
-             glyph      = 'align-justify'>
-           </Glyphicon>
-         </Link>
-       </Button>
-       <Button className='padding-sm ml-5'>
-         <Glyphicon
-           className  = 'glypicon--pointer'
-           glyph      = 'calendar'>
-         </Glyphicon>
-       </Button>
+       {
+         props.task.autoTested
+         ? <Button className='padding-sm ml-5'>
+             <Link to={ '/task/' +  props.task.id + '/tests'}>
+               <Glyphicon
+                 className  = 'glypicon--pointer'
+                 glyph      = 'align-justify'>
+               </Glyphicon>
+             </Link>
+           </Button>
+         : ''
+       }
+       {
+         !props.task.isShared
+         ? <Button className='padding-sm ml-5'>
+             <Glyphicon
+               className  = 'glypicon--pointer'
+               glyph      = 'calendar'>
+             </Glyphicon>
+           </Button>
+         : ''
+       }
      </div>
   </Toolbar>
 )

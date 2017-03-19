@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTask, onNameChange, onDescriptionChange, onTestedTypeChange } from '../modules/task'
+import { fetchTask, onNameChange, onDescriptionChange, onTestedTypeChange, onSharedTypeChange } from '../modules/task'
 
 import TaskView from '../components/TaskView'
 import TaskGridContainer from './TaskToolbarContainer'
@@ -21,7 +21,8 @@ const TaskContainer = React.createClass({
           isEditMode              = {this.props.isEditMode}
           handleNameChange        = {this.props.onNameChange}
           handleDescriptionChange = {this.props.onDescriptionChange}
-          handleTestedTypeChange  = {this.props.onTestedTypeChange}/>
+          handleTestedTypeChange  = {this.props.onTestedTypeChange}
+          handleSharedTypeChange  = {this.props.onSharedTypeChange}/>
         <TaskGridContainer/>
       </div>
     )
@@ -38,7 +39,8 @@ const mapDispatchToProps = {
   fetchTask           : fetchTask,
   onNameChange        : onNameChange,
   onDescriptionChange : onDescriptionChange,
-  onTestedTypeChange  : onTestedTypeChange
+  onTestedTypeChange  : onTestedTypeChange,
+  onSharedTypeChange  : onSharedTypeChange
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskContainer)

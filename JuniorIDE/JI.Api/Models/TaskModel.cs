@@ -32,6 +32,9 @@ namespace JI.Api.Models
         [JsonProperty(PropertyName = "isVisible")]
         public bool IsVisible { get; set; }
 
+        [JsonProperty(PropertyName = "isShared")]
+        public bool IsShared { get; set; }
+
         [JsonProperty(PropertyName = "tests")]
         public IList<TestModel> Tests { get; set; }
     }

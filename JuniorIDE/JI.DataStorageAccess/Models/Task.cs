@@ -32,6 +32,9 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "IsVisible")]
         public bool IsVisible { get; set; }
 
+        [Column(Name = "IsShared")]
+        public bool IsShared { get; set; }
+
         [Column(Name = "TaskFolder")]
         public SqlHierarchyId TaskFolder { get; set; }
 

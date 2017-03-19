@@ -34,6 +34,13 @@ const renderEditMode = (props) => (
          Auto tested
        </Checkbox>
      </FormGroup>
+     <FormGroup>
+       <Checkbox
+         onChange={props.handleSharedTypeChange}
+         defaultChecked={props.editingItem ? props.editingItem.isShared : false}>
+         Shared
+       </Checkbox>
+     </FormGroup>
   </div>
 )
 
