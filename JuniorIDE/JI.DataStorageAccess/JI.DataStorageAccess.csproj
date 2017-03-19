@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Business\Extensions\SqlHierarchyIdExtensions.cs" />
     <Compile Include="Contracts\IGroupStore.cs" />
+    <Compile Include="Contracts\IObjectSpecifiedFolderStore.cs" />
     <Compile Include="Contracts\IStore.cs" />
     <Compile Include="Contracts\IAdvancedUserStore.cs" />
     <Compile Include="Contracts\ITaskStore.cs" />
@@ -81,10 +82,12 @@
     <Compile Include="Infrastructure\DependencyResolverPackage.cs" />
     <Compile Include="Contracts\ISubjectStore.cs" />
     <Compile Include="Infrastructure\MapperRegistration.cs" />
+    <Compile Include="Linq2DbStores\Base\ObjectSpecifiedFolderStore.cs" />
     <Compile Include="Linq2DbStores\GroupStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationRoleStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationUserStore.cs" />
     <Compile Include="Business\FileTableStoredProcedures.cs" />
+    <Compile Include="Linq2DbStores\TaskTestsFolderStore.cs" />
     <Compile Include="Linq2DbStores\TaskStore.cs" />
     <Compile Include="Linq2DbStores\TestStore.cs" />
     <Compile Include="Models\AssignRule.cs" />
@@ -105,7 +108,7 @@
     <Compile Include="Models\UserGroup.cs" />
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Linq2DbStores\BaseStore.cs" />
+    <Compile Include="Linq2DbStores\Base\BaseStore.cs" />
     <Compile Include="Linq2DbStores\SubjectStore.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>

@@ -14,12 +14,12 @@ function fileFormatter(cell, row) {
 
 function toIndexedArray(tests){
   return tests.map(function(test, index){
-    test.index = index + 1
+    test.index = index
     if(test.inputFile){
-      test.inputFile.name = 'input file ' + test.index
+      test.inputFile.name = 'input file ' + (test.index + 1)
     }
     if(test.outputFile){
-      test.outputFile.name = 'output file ' + test.index
+      test.outputFile.name = 'output file ' + (test.index + 1)
     }
     return test
   })
@@ -28,7 +28,7 @@ function toIndexedArray(tests){
 const TestGridView = (props) => (
     <BootstrapTable
       data={toIndexedArray(props.tests)} striped={true} hover={true}
-      options={ { noDataText: 'No tests' } }
+      options={ { noDataText: 'No tests', afterDeleteRow: props.handleDeleteRows } }
       deleteRow={ true }
       selectRow={ { mode: 'checkbox' } }
       cellEdit={ { mode: 'dbclick', afterSaveCell: props.handleEditingPreSave } }>

@@ -12,6 +12,8 @@ namespace JI.Managers.Managers
             : base(store)
         {}
 
+        #region protected
+
         protected override ServiceResult Validate(Group group)
         {
             if (Store.Items.Any(g =>
@@ -23,6 +25,8 @@ namespace JI.Managers.Managers
 
             return ServiceResult.Success;
         }
+
+        #endregion
     }
 }
     

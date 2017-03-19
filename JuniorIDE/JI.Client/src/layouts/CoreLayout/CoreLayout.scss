@@ -7,7 +7,7 @@
 .container--layout {
   min-height: 100%;
   @include respond-to(wide-screens) {
-    width: calc(100% - 300px);
+    width: calc(100% - 250px);
     margin-left: 250px;
   }
   @include respond-to(medium-screens) {

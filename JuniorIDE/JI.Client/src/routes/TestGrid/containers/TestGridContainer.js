@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { fetchTask, preSaveTaskTest } from '../modules/testGrid'
+import { fetchTask, preSaveTaskTest, onDeleteTests } from '../modules/testGrid'
 
 import TestGridView from '../components/TestGridView'
 import TestGridToolbar from './TestGridToolbarContainer'
@@ -20,8 +20,10 @@ const TestGridContainer = React.createClass({
             this.props.task == null ? '' : 'Tests for ' + this.props.task.name
           }
         </h2>
-        <TestGridView tests={this.props.tests}
-          handleEditingPreSave={this.props.preSaveTaskTest}/>
+        <TestGridView
+          tests                = {this.props.tests}
+          handleEditingPreSave = {this.props.preSaveTaskTest}
+          handleDeleteRows     = {this.props.onDeleteTests}/>
         <TestGridToolbar/>
       </div>
     )
@@ -30,14 +32,13 @@ const TestGridContainer = React.createClass({
 
 const mapStateToProps = (state) => ({
   task  : state.testGrid.currentTask,
-  tests : state.testGrid.currentTask != null
-    ? state.testGrid.currentTask.tests == null ? [] : state.testGrid.currentTask.tests
-    : [],
+  tests : state.testGrid.currentTask.tests
 })
 
 const mapDispatchToProps = {
   fetchTask       : fetchTask,
-  preSaveTaskTest : preSaveTaskTest
+  preSaveTaskTest : preSaveTaskTest,
+  onDeleteTests   : onDeleteTests
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TestGridContainer)

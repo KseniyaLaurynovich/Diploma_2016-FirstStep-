@@ -46,12 +46,29 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
-  currentTask           : null
+  currentTask           : { tests: [] }
 }
 
 export default function testGridReducer (state = initialState, action){
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
+}
+
+export function onDeleteTests(rowKeys){
+  return (dispatch, getState) => {
+
+    var state = getState()
+    var tests = state.testGrid.currentTask.tests
+    var clonedTests = _.cloneDeep(tests)
+
+    _.forEach(rowKeys, (rowKey) => {
+      clonedTests[rowKey].delete = true
+    })
+
+    clonedTests = clonedTests.filter((test) => { return !test.delete })
+
+    dispatch(taskTestsChange(clonedTests))
+  }
 }
 
 export function fetchTask(taskId){

@@ -4,62 +4,20 @@ using JI.Managers.Business.Models;
 using JI.Managers.Contracts;
 using JI.Managers.Models;
 using System.Linq;
-using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Business.Extensions;
+using DbModels = JI.DataStorageAccess.Models;
 
 namespace JI.Managers.Managers
 {
-    internal class TaskManager : Manager<Task, DataStorageAccess.Models.Task>, ITaskManager
+    internal class TaskManager : Manager<Task, DbModels.Task>, ITaskManager
     {
-        public TaskManager(ITaskStore store) 
+        protected readonly IObjectSpecifiedFolderStore<DbModels.Task> TaskTestsFolderStore;
+
+        public TaskManager(ITaskStore store, IObjectSpecifiedFolderStore<DbModels.Task> taskTestsFolderStore) 
             : base(store)
-        {}
-
-        public override ServiceResult<Task> Save(Task obj)
         {
-            var validationResult = Validate(obj);
-            if (validationResult.Succeeded)
-            {
-                DataStorageAccess.Models.Task storageObj;
-                if (!string.IsNullOrWhiteSpace(obj.Id))
-                {
-                    storageObj = Store.FindById(new Guid(obj.Id));
-                    storageObj = obj.Map(storageObj);
-                }
-                else
-                {
-                    storageObj = obj.Map<Task, DataStorageAccess.Models.Task>();
-                }
-
-                try
-                {
-                    var id = Store.Save(storageObj).ToString();
-                    return ServiceResult<Task>.Success(obj);
-                }
-                catch (Exception ex)
-                {
-                    //todo add logging
-                    return ServiceResult<Task>.Failed(Resources.Resources.InternalError);
-                }
-
-            }
-
-            return validationResult.Convert<Task>();
-        }
-
-        protected override ServiceResult Validate(Task task)
-        {
-            var id = task.Id != null ? new Guid(task.Id) : Guid.Empty;
-            if (Store.Items.Any(s =>
-                            s.Name.Equals(task.Name)
-                            && s.SubjectId.Equals(new Guid(task.SubjectId))
-                            && !s.Id.Equals(id)))
-            {
-                return ServiceResult.Failed(Resources.Resources.TaskNameDuplicated(task.Name));
-            }
-
-            return ServiceResult.Success;
+            TaskTestsFolderStore = taskTestsFolderStore;
         }
 
         public ServiceResult SetVisibility(string taskId, bool isVisible)
@@ -76,14 +34,37 @@ namespace JI.Managers.Managers
             return ServiceResult.Failed(Resources.Resources.InternalError);
         }
 
-        public ServiceResult<File> SaveTempFile(string taskId, File file)
+        public ServiceResult<File> AssociateTestFile(string taskId, File file)
         {
-           var taskStore = Store as ITaskStore;
-           file.Id = taskStore
-                ?.SaveTestFile(new Guid(taskId), file.Map<File, DataStorageAccess.Models.File>())
+           file.Id = TaskTestsFolderStore
+                .SaveFile(new Guid(taskId), file.Map<File, DbModels.File>())
                 .ToValidString();
 
             return ServiceResult<File>.Success(file);
         }
+
+        #region protected
+
+        protected override ServiceResult Validate(Task task)
+        {
+            var id = task.Id != null ? new Guid(task.Id) : Guid.Empty;
+            if (Store.Items.Any(s =>
+                            s.Name.Equals(task.Name)
+                            && s.SubjectId.Equals(new Guid(task.SubjectId))
+                            && !s.Id.Equals(id)))
+            {
+                return ServiceResult.Failed(Resources.Resources.TaskNameDuplicated(task.Name));
+            }
+
+            return ServiceResult.Success;
+        }
+
+        protected override DbModels.Task Map(Task model)
+        {
+            var dbModel = Store.FindById(new Guid(model.Id));
+            return model.Map(dbModel);
+        }
+
+        #endregion
     }
 }

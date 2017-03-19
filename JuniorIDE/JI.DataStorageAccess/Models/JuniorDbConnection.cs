@@ -17,5 +17,6 @@ namespace JI.DataStorageAccess.Models
         public ITable<Group> Groups => GetTable<Group>();
         public ITable<Task> Tasks => GetTable<Task>();
         public ITable<File> Files => GetTable<File>();
+        public ITable<Test> Tests => GetTable<Test>();
     }
 }

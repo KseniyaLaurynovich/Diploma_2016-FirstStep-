@@ -33,7 +33,7 @@ const UserGridToolbar = (props) => (
        onChange={(e) => props.handleTextFilterChange(e.target.value)} />
    </div>
 
-   <div className='inline padding-sm'>
+   <div className='inline padding-sm ml-5'>
      <DropdownButton title={props.filterLabel} id="bg-nested-dropdown" className='padding-sm'>
        {
           renderMenu(props.filters, props.filter)
@@ -41,7 +41,7 @@ const UserGridToolbar = (props) => (
     </DropdownButton>
    </div>
 
-   <div className='inline padding-sm'>
+   <div className='inline padding-sm ml-5'>
      <DropdownButton title={props.sortLabel} id="bg-nested-dropdown" className='padding-sm'>
        {
          renderMenu(props.sorts, props.sort)
@@ -49,7 +49,7 @@ const UserGridToolbar = (props) => (
     </DropdownButton>
    </div>
 
-   <div className='inline padding-sm'>
+   <div className='inline padding-sm ml-5'>
      <DropdownButton title={props.groupFilterLabel} id="bg-nested-dropdown" className='padding-sm'>
        {
          renderMenu(props.groups, props.groupFilter)
@@ -57,7 +57,7 @@ const UserGridToolbar = (props) => (
     </DropdownButton>
    </div>
 
-   <div className='inline padding-sm'>
+   <div className='inline padding-sm ml-5'>
      <Button className='padding-sm' onClick={props.resetAll}>
        Reset filters
      </Button>

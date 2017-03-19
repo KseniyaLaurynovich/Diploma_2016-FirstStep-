@@ -6,7 +6,7 @@ import Toolbar from '../../../containers/ToolbarContainer'
 
 const renderViewMode = (props) => (
   <Toolbar>
-     <div className='inline padding-sm'>
+     <div className='inline padding-sm ml-5'>
       <Button className='padding-sm' onClick={props.toggleVisibility}>
         <Glyphicon
           className  = 'glypicon--pointer'

@@ -51,6 +51,8 @@ namespace JI.Managers.Managers
             return subjects;
         }
 
+        #region protected
+
         protected override ServiceResult Validate(Subject subject)
         {
             var subjectId = subject.Id != null ? new Guid(subject.Id) : Guid.Empty;
@@ -64,5 +66,7 @@ namespace JI.Managers.Managers
 
             return ServiceResult.Success;
         }
+
+        #endregion
     }
 }

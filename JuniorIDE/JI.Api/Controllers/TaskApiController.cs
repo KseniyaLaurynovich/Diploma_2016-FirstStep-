@@ -30,7 +30,7 @@ namespace JI.Api.Controllers
         [HttpPost]
         [Route("saveTest/{taskId}")]
         [AllowAnonymous]
-        public IHttpActionResult SaveTest(string taskId)
+        public IHttpActionResult SaveTestFile(string taskId)
         {
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -43,7 +43,7 @@ namespace JI.Api.Controllers
 
             if (file != null)
             {
-                var serviceResult = _taskManager.SaveTempFile(taskId, new File
+                var serviceResult = _taskManager.AssociateTestFile(taskId, new File
                 {
                     Name = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}",
                     Data = file.InputStream.toBytesArray()

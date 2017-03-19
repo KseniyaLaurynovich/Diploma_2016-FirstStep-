@@ -26,6 +26,34 @@ namespace JI.Managers.Managers.Identity
             RolesValidator = rolesValidator;
         }
 
+        public static ApplicationUserManager Create(
+            IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
+        {
+            var manager = new ApplicationUserManager(
+                IdentityHelper.UserStore(), new ApplicationUserRolesValidator());
+
+            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+                RequireUniqueEmail = true
+            };
+
+            manager.PasswordValidator = new PasswordValidator
+            {
+                RequiredLength = 6
+            };
+
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider =
+                    new DataProtectorTokenProvider<ApplicationUser>(
+                        dataProtectionProvider.Create("ASP.NET Identity"));
+            }
+
+            return manager;
+        }
+
         public IList<Models.Group> GetGroups(string userId)
         {
             return (Store as IUserGroupStore<ApplicationUser>)
@@ -61,34 +89,6 @@ namespace JI.Managers.Managers.Identity
                 //todo add logging
                 return IdentityResult.Failed("Server error");
             }
-        }
-
-        public static ApplicationUserManager Create(
-            IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
-        {
-            var manager = new ApplicationUserManager(
-                IdentityHelper.UserStore(), new ApplicationUserRolesValidator());
-
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
-            {
-                AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
-            };
-
-            manager.PasswordValidator = new PasswordValidator
-            {
-                RequiredLength = 6
-            };
-
-            var dataProtectionProvider = options.DataProtectionProvider;
-            if (dataProtectionProvider != null)
-            {
-                manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(
-                        dataProtectionProvider.Create("ASP.NET Identity"));
-            }
-
-            return manager;
         }
     }
 }

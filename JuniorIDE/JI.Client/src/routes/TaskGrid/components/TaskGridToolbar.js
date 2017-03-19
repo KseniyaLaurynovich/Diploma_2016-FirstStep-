@@ -11,7 +11,7 @@ const TaskGridToolbarView = (props) => (
          onChange={(e) => props.handleTextFilterChange(e.target.value)} />
      </div>
 
-     <div className='inline padding-sm'>
+     <div className='inline padding-sm ml-5'>
        <Button className='padding-sm'>
          <Glyphicon
            className  = 'glypicon--pointer'

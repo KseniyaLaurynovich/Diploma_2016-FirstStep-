@@ -1,80 +1,78 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
-using JI.DataStorageAccess.Business;
 using JI.DataStorageAccess.Contracts;
+using JI.DataStorageAccess.Linq2DbStores.Base;
 using JI.DataStorageAccess.Models;
 using LinqToDB;
-using Microsoft.SqlServer.Types;
 
 namespace JI.DataStorageAccess.Linq2DbStores
 {
     internal class TaskStore : BaseStore<Task>, ITaskStore
     {
-        private string GetTempFolderName(Guid taskId) => $"task_{taskId}_tests";
-
-        public override Guid Save(Task subject)
+        public override Guid Save(Task task)
         {
             using (var transaction = new TransactionScope())
             {
-                if (subject.Id == Guid.Empty)
+                task.Id = base.Save(task);
+
+                var oldTests = GetTests(task);
+                var removedTests = oldTests.Where(ot => !task.Tests.Any(t => ot.Id.Equals(t.Id)));
+
+                foreach (var test in task.Tests)
                 {
-                    subject.Id = (Guid) DbConnection.InsertWithIdentity(subject);
+                    AddTest(task, test);
                 }
 
-                DbConnection.Update(subject);
-
-                foreach (var test in subject.Tests??Enumerable.Empty<Test>())
+                foreach (var test in removedTests)
                 {
-                    test.TaskId = subject.Id;
-                    DbConnection.InsertWithIdentity(test);
+                    RemoveTest(task, test);
                 }
 
                 transaction.Complete();
 
-                return subject.Id;
+                return task.Id;
             }
         }
 
-        public SqlHierarchyId SaveTestFile(Guid taskId, File file)
-        {
-            var task = FindById(taskId);
+        public override IQueryable<Task> Items => DbConnection.Tasks
+            .LoadWith(t => t.Tests);
 
-            if (task.TempFolder.IsNull)
-            {
-                task.TempFolder = GetTestsFolder(taskId);
-            }
-            file.ParentId = task.TempFolder;
-
-            return FileTableStoredProcedures.InsertFile(DbConnection, file);
-        }
-
-        protected SqlHierarchyId GetTestsFolder(Guid taskId)
-        {
-            using (var transaction = new TransactionScope())
-            {
-                var task = FindById(taskId);
-                if(task == null)
-                    return SqlHierarchyId.Null;
-
-                if (task.TempFolder.IsNull)
-                {
-                    task.TempFolder = 
-                        FileTableStoredProcedures.InsertFile(
-                            DbConnection, 
-                            new File { Name = GetTempFolderName(taskId), IsFolder = true });
-
-                    Save(task);
-                }
-
-                transaction.Complete();
-                return task.TempFolder;
-            }
-        }
-
-        public override IQueryable<Task> Items => DbConnection.Tasks.LoadWith(t => t.Tests);
         public override Task FindById(Guid id) => DbConnection.Tasks
             .LoadWith(t => t.Tests)
             .FirstOrDefault(t => t.Id == id);
+
+        #region TestsStore
+
+        public IList<Test> GetTests(Task task)
+        {
+            return DbConnection.Tests
+                .Where(t => t.TaskId.Equals(task.Id))
+                .ToList();
+        }
+
+        public void AddTest(Task task, Test test)
+        {
+            test.TaskId = task.Id;
+            if (test.Id == Guid.Empty)
+            {
+                DbConnection.Insert(test);
+                return;
+            }
+            DbConnection.Tests
+                .Where(p => p.Id == test.Id)
+                .Set(p => p.OutputFile, test.OutputFile)
+                .Set(p => p.InputFile, test.InputFile)
+                .Update();
+        }
+
+        public void RemoveTest(Task task, Test test)
+        {
+            DbConnection.Delete(test);
+        }
+
+        #endregion
     }
 }

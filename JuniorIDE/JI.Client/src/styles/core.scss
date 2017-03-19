@@ -34,8 +34,8 @@ body {
 }
 
 .padding-sm{
-  padding-bottom: 6px !important;
-  padding-top: 6px !important;
+  padding-bottom: 5px !important;
+  padding-top: 5px !important;
 }
 
 .inline{
@@ -259,4 +259,13 @@ body {
 //bootstrap-table
 .react-bs-table{
   margin: 0px !important;
+}
+
+.react-bs-table-tool-bar .btn-group{
+  margin-bottom: 5px;
+  margin-left: -10px;
+}
+
+.react-bs-table-tool-bar .btn:hover{
+  padding: 5px 10px;
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ExpressMapper;
 using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Models;
 using JI.Managers.Business.Models;
@@ -26,7 +25,7 @@ namespace JI.Managers.Managers
             var validationResult = Validate(obj);
             if (validationResult.Succeeded)
             {
-                var storageObj = Mapper.Map<T, K>(obj);
+                var storageObj = Map(obj);
                 try
                 {
                     var id = Store.Save(storageObj).ToString();
@@ -60,13 +59,13 @@ namespace JI.Managers.Managers
         public virtual IList<T> GetAll()
         {
             return Store.Items
-                .Select(Mapper.Map<K, T>)
+                .Select(Map)
                 .ToList();
         }
 
         public virtual T FindById(string id)
         {
-            return Store.FindById(new Guid(id)).Map<K, T>();
+            return Map(Store.FindById(new Guid(id)));
         }
 
         public virtual void Dispose()
@@ -74,6 +73,20 @@ namespace JI.Managers.Managers
             Store?.Dispose();
         }
 
+        #region protected
+
         protected abstract ServiceResult Validate(T obj);
+
+        protected virtual T Map(K dbModel)
+        {
+            return dbModel.Map<K, T>();
+        }
+
+        protected virtual K Map(T model)
+        {
+            return model.Map<T, K>();
+        }
+
+        #endregion
     }
 }

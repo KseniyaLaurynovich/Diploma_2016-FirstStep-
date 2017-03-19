@@ -5,34 +5,35 @@ using JI.DataStorageAccess.Models;
 using LinqToDB;
 using System.Collections.Generic;
 using System.Transactions;
+using JI.DataStorageAccess.Linq2DbStores.Base;
 
 namespace JI.DataStorageAccess.Linq2DbStores
 {
     internal class SubjectStore: BaseStore<Subject>, ISubjectStore
     {
-        public override Guid Save(Subject subject)
+        public override Guid Save(Subject task)
         {
             using (var transaction = new TransactionScope())
             {
-                subject.Id = base.Save(subject);
+                task.Id = base.Save(task);
 
-                var oldGroups = GetGroups(subject.Id);
-                var addedGroups = subject.Groups.Where(g => !oldGroups.Any(i => i.Id.Equals(g.Id)));
-                var removedGroups = oldGroups.Where(g => !subject.Groups.Any(i => i.Id.Equals(g.Id)));
+                var oldGroups = GetGroups(task.Id);
+                var addedGroups = task.Groups.Where(g => !oldGroups.Any(i => i.Id.Equals(g.Id)));
+                var removedGroups = oldGroups.Where(g => !task.Groups.Any(i => i.Id.Equals(g.Id)));
 
                 foreach (var group in addedGroups)
                 {
-                    AddToGroup(subject, group.Id);
+                    AddToGroup(task, group.Id);
                 }
 
                 foreach (var group in removedGroups)
                 {
-                    RemoveFromGroup(subject, group.Id);
+                    RemoveFromGroup(task, group.Id);
                 }
 
                 transaction.Complete();
             }
-            return subject.Id;
+            return task.Id;
         }
 
         public void AddToGroup(Subject subject, Guid groupId)

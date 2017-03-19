@@ -1,6 +1,7 @@
 import React from 'react'
 import Login from './Login/containers/LoginContainer'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 export default function requireAuthorization(Component, allowedRoles) {
 
@@ -11,14 +12,14 @@ export default function requireAuthorization(Component, allowedRoles) {
         }
 
         render () {
+          if(this.checkAuth(this.props.isAuthenticated, this.props.roles))
+          {
             return (
-              <div>
-                {   this.checkAuth(this.props.isAuthenticated, this.props.roles)
-                    ? <Component {...this.props}/>
-                    : <Login />
-                }
-              </div>
+              <Component {...this.props}/>
             )
+          }
+          browserHistory.push('/account/login')
+          return null
         }
     }
 
