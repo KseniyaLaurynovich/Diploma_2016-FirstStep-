@@ -1,1 +1,1 @@
-This is the Cloud9 simple plugin example
+This is the Cloud9 plugin for Junior IDE.
