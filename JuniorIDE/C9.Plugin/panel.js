@@ -18,10 +18,12 @@ define(function(require, exports, module) {
         var http = imports.http;
         
         var markup = require("text!./panel.xml");
-        var search = require('../c9.ide.navigate/search');
+        var search = require('./search');
         var Tree = require("ace_tree/tree");
         var ListData = require("./dataprovider");
         var TasksProvider = require("./tasks")
+        
+        var group = "E597D6D8-B345-42AE-B4A0-26D537DD16AB"
         
         /***** Initialization *****/
         
@@ -29,6 +31,7 @@ define(function(require, exports, module) {
             index: options.index || 600,
             caption: "Tasks",
             minWidth: 500,
+            width: 500,
             where: options.where || "right"
         });
         // var emit = plugin.getEmitter();
@@ -62,10 +65,30 @@ define(function(require, exports, module) {
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
 
+            // Initialize task provider
+            tasksProvider = new TasksProvider(http, group);
+            tasksProvider.onReload =  handleDataReloading.bind(this);
+
             // Create the Ace Tree
             tree = new Tree(treeParent.$int);
-            ldSearch = new ListData({}, tabs);
-            tasksProvider = new TasksProvider(http, handleDataReloading.bind(this));
+            
+            tree.on("click", function(ev) {
+                var e = ev.domEvent;
+                if (!e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey)
+                if (tree.selection.getSelectedNodes().length === 1){
+                    var selectedIndex = tree.selection.getSelectedNodes()[0].index;
+                    
+                    if(ldSearch.selectedIndex != undefined){
+                        ldSearch.selectedIndex = undefined;
+                    }else{
+                        ldSearch.selectedIndex = selectedIndex;
+                    }
+                    
+                    tree.selection.clearSelection();
+                }
+            });
+            
+            ldSearch = new ListData([], tabs);
             ldSearch.search = search;
             
             tree.renderer.setScrollMargin(0, 10);
@@ -81,52 +104,12 @@ define(function(require, exports, module) {
                     exec: function() { plugin.hide(); }
                 }
             ]);
-            function forwardToTree() {
-                tree.execCommand(this.name);
-            }
-            
-            taskNameFilter.ace.commands.addCommands([
-                "centerselection",
-                "goToStart",
-                "goToEnd",
-                "pageup",
-                "gotopageup",
-                "scrollup",
-                "scrolldown",
-                "goUp",
-                "goDown",
-                "selectUp",
-                "selectDown",
-                "selectMoreUp",
-                "selectMoreDown"
-            ].map(function(name) {
-                var command = tree.commands.byName[name];
-                return {
-                    name: command.name,
-                    bindKey: command.editorKey || command.bindKey,
-                    exec: forwardToTree
-                };
-            }));
             
             taskNameFilter.ace.on("input", function(e) {
                 var val = taskNameFilter.getValue();
                 filter(val);
                 settings.set("state/tasksPanel/@value", val);
             });
-    
-            // Focus the input field
-            setTimeout(function() {
-                taskNameFilter.focus();
-            }, 10);
-            
-            setTimeout(function() {
-                // Assign the dataprovider
-                tree.setDataProvider(ldSearch);
-                tree.selection.$wrapAround = true;
-                var val = settings.get("state/tasksPanel/@value");
-                if (val)
-                    taskNameFilter.ace.setValue(val);
-            }, 200);
         }
         
         /***** Methods *****/
@@ -134,6 +117,9 @@ define(function(require, exports, module) {
         function handleDataReloading(){
             ldSearch.tasks = tasksProvider.tasks;
             ldSearch.updateData();
+            
+            tree.setDataProvider(ldSearch);
+            tree.selection.$wrapAround = true;
         }
     
         /**
@@ -146,7 +132,12 @@ define(function(require, exports, module) {
             // Needed for highlighting
             ldSearch.keyword = keyword;
             
-            var names = tasksProvider.tasks;
+            var names = tasksProvider.tasks.map(function(task){
+                return { 
+                    displayName: task.name + ' ' + task.subjectName, 
+                    id: task.id 
+                };
+            });
             
             var searchResults;
             if (!keyword) {
@@ -154,13 +145,20 @@ define(function(require, exports, module) {
             }
             else {
                 tree.provider.setScrollTop(0);
-                searchResults = search.fileSearch(names, keyword);
+                searchResults = search.byNameSearch(names, keyword);
             }
     
             lastSearch = keyword;
     
-            if (searchResults)
-                ldSearch.updateData(searchResults);
+            if (searchResults){
+                var filteredTasks = tasksProvider.tasks.filter(function(task){
+                    return searchResults.find(function (element, index, array) {
+                      return element.id == task.id;
+                    });
+                });
+                
+                ldSearch.updateData(filteredTasks);
+            }
                 
             if (nosel || !searchResults.length)
                 return;

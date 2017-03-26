@@ -23,6 +23,10 @@ namespace JI.Managers.Models
 
         public bool IsVisible { get; set; }
 
+        public Subject Subject { get; set; }
+
         public IList<Test> Tests { get; set; }
+
+        public IList<TaskDeadline> Deadlines { get; set; }
     }
 }

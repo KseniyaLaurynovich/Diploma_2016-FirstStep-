@@ -117,6 +117,30 @@ namespace JI.Managers.Infrastructure
                         user.Id = new Guid(appUser.Id);
                     }
                 });
+
+            Mapper.Register<TaskDeadline, Models.TaskDeadline>()
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.GroupSubjectId, src => src.GroupSubjectId.ToString())
+                .Member(dest => dest.TaskId, src => src.TaskId.ToString());
+            Mapper.Register<Models.TaskDeadline, TaskDeadline>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.GroupSubjectId)
+                .Ignore(dest => dest.TaskId)
+                .After((appDeadline, deadline) =>
+                {
+                    if (appDeadline.Id != null)
+                    {
+                        deadline.Id = new Guid(appDeadline.Id);
+                    }
+                    if (appDeadline.GroupSubjectId != null)
+                    {
+                        deadline.GroupSubjectId = new Guid(appDeadline.GroupSubjectId);
+                    }
+                    if (appDeadline.TaskId != null)
+                    {
+                        deadline.TaskId = new Guid(appDeadline.TaskId);
+                    }
+                });
         }
     }
 }

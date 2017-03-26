@@ -57,6 +57,5 @@ namespace JI.DataStorageAccess.Business.Extensions
         }
 
         #endregion
-
     }
 }

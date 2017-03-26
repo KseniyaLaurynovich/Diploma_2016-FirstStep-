@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using JI.DataStorageAccess.Contracts;
 using JI.Managers.Business.Models;
 using JI.Managers.Contracts;
 using JI.Managers.Models;
 using System.Linq;
+using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Business.Extensions;
 using DbModels = JI.DataStorageAccess.Models;
@@ -53,6 +55,14 @@ namespace JI.Managers.Managers
                 .ToValidString();
 
             return ServiceResult<File>.Success(file);
+        }
+
+        public IList<Task> GetByGroup(string groupId)
+        {
+            return (Store as ITaskStore)
+                .FindByGroup(new Guid(groupId))
+                .Select(Mapper.Map<DbModels.Task, Task>)
+                .ToList();
         }
 
         #region protected

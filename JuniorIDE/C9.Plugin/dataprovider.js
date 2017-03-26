@@ -21,14 +21,37 @@ define(function(require, exports, module) {
             get: function() { return this.visibleItems.length; }
         });
     };
+    
+    function dateTimeToString(date) {
+      var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+      ];
+    
+      var day = date.getDate();
+      var monthIndex = date.getMonth();
+      var year = date.getFullYear();
+      var hour = date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
+    
+      return day + ' '
+            + monthNames[monthIndex] + ' '
+            + year + ' '
+            + hour + ':'
+            + minutes + ':'
+            + seconds;
+    }
+    
     oop.inherits(ListData, Base);
     (function() {
         
         var cache;
         
         this.updateData = function(subset) {
-            this.visibleItems = subset 
-                                || Object.keys(this.tasks);
+            this.visibleItems = subset || this.tasks;
             
             // @TODO Deal with selection
             this._signal("change");
@@ -65,28 +88,31 @@ define(function(require, exports, module) {
         };
     
         this.renderRow = function(row, html, config) {
-            /*var key = this.visibleItems[row];
-            var command = this.commands.commands[key];
-            var name = command.displayName || key;
-            var isSelected = this.isSelected(row);
-            
-            // disabled available check since it breaks most editor commands
-            var available = true; // cache[key];
-            var keys = (command.bindKey || 0)[this.commands.platform] || "";
-            if (apf.isMac) keys = apf.hotkeys.toMacNotation(keys);
-            
-            html.push("<div class='item " + (available && isSelected ? "selected " : "") 
-                + (available && this.getClassName(row))
-                + (available ? "" : " notAvailable")
-                + "' style='height:" + this.innerRowHeight + "px'>"
-                + "<span class='caption'>"
-                + this.replaceStrong(name)
-                + "</span><span class='keys'>" + keys + "</span>"
-                + "<span class='path'>"
-                + ((command.group || "General"))
-                + "</span></div>");*/
             var task = this.visibleItems[row];
-            html.push("<div>"+ task +"</div>")
+            
+            if(!task) return;
+            
+            var isSelected =  this.selectedIndex == row;
+            
+            var deadline = dateTimeToString(new Date(task.deadline));
+            var description = 
+                        isSelected 
+                        ?  "<div class=\"body\">" + 
+                            (task.description == null ? 'no description' : task.description)  
+                          +"</div>" 
+                        : "" ;
+            
+            html.push("<div class='item "
+                    + (isSelected ? "selected " : "") 
+                    + "'>"
+                    + "<span class='caption'>"
+                    + this.replaceStrong(task.name)
+                    + "</span><span class='keys'>" + deadline + "</span>"
+                    + "<span class='path'>"
+                    + task.subjectName
+                    + "</span>"
+                    + description
+                    + "</div>");
         };
         
         /*this.getText = function(node) {

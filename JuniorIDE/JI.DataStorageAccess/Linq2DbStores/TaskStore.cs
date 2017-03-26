@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Linq2DbStores.Base;
 using JI.DataStorageAccess.Models;
@@ -43,6 +41,20 @@ namespace JI.DataStorageAccess.Linq2DbStores
         public override Task FindById(Guid id) => DbConnection.Tasks
             .LoadWith(t => t.Tests)
             .FirstOrDefault(t => t.Id == id);
+
+        public IList<Task> FindByGroup(Guid groupId)
+        {
+            var tasks =
+               (from t in DbConnection.Tasks.LoadWith(t => t.Subject)
+                join sg in DbConnection.SubjectGroups on t.SubjectId equals sg.SubjectId
+                join td in DbConnection.TaskDeadlines.LoadWith(td => td.GroupSubject).Where(td => td.GroupSubject.GroupId == groupId) on t.Id equals td.TaskId
+                where sg.GroupId == groupId
+                select new { Task = t, Deadline = td})
+                .ToList();
+
+            tasks.ForEach(t => t.Task.Deadlines = new List<TaskDeadline> {t.Deadline});
+            return tasks.Select(t => t.Task).ToList();
+        }
 
         #region TestsStore
 

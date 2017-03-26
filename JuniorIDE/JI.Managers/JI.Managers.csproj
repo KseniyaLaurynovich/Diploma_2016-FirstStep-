@@ -106,6 +106,7 @@
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
+    <Compile Include="Models\TaskDeadline.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Subject.cs" />

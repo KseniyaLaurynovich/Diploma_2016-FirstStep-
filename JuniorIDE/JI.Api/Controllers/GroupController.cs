@@ -21,7 +21,7 @@ namespace JI.Api.Controllers
 
         [HttpGet]
         [Route("all")]
-        [Authorize(Roles = "Administrator, Teacher")]
+        [AllowAnonymous]
         public IHttpActionResult GetGroups()
         {
             var groups = _groupManager

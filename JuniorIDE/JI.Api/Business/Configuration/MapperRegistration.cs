@@ -1,4 +1,5 @@
-﻿using ExpressMapper;
+﻿using System.Linq;
+using ExpressMapper;
 using JI.Api.Models;
 using JI.Common.Contracts.Contracts;
 using JI.Managers.Models;
@@ -30,6 +31,13 @@ namespace JI.Api.Business.Configuration
 
             Mapper.Register<Task, TaskModel>();
             Mapper.Register<TaskModel, Task>();
+
+            Mapper.Register<Task, TaskPluginModel>()
+                .After((task, model) =>
+                {
+                    model.SubjectName = task.Subject.Name;
+                    model.Deadline = task.Deadlines.FirstOrDefault()?.Deadline;
+                });
 
             Mapper.Register<Test, TestModel>()
                 .Member(dest => dest.InputFile, src => new FileModel { Id = src.InputFile })

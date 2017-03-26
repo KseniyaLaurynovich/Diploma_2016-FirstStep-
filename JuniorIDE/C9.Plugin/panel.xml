@@ -1,5 +1,5 @@
 <a:application xmlns:a="http://ajax.org/2005/aml">
     <a:codebox id="taskNameFilter" realtime="true" skin="codebox" clearbutton="true"
       focusselect="true" height="27" left="10" top="10" right="10" singleline="true" />
-    <a:bar id="tasksList" style="position:absolute;top:47px;right:10px;left:10px;bottom:0" class="searchresults" />
+    <a:bar id="tasksList" class="searchresults taskssearchresults"  style="position:absolute;top:47px;right:10px;left:10px;bottom:0"/>
 </a:application>

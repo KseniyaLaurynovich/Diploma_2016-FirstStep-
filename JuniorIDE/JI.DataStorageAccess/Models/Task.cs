@@ -43,5 +43,11 @@ namespace JI.DataStorageAccess.Models
 
         [Association(ThisKey = "Id", OtherKey = "TaskId")]
         public ICollection<Test> Tests { get; set; }
+
+        [Association(ThisKey = "SubjectId", OtherKey = "Id")]
+        public Subject Subject { get; set; }
+
+        [Association(ThisKey = "Id", OtherKey = "TaskId")]
+        public IList<TaskDeadline> Deadlines { get; set; }
     }
 }

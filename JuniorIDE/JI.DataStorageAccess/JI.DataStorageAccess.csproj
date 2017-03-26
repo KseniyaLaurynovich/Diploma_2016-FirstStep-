@@ -95,6 +95,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\GroupSubject.cs" />
     <Compile Include="Models\IWithIdentifier.cs" />
     <Compile Include="Models\JuniorDbConnection.cs" />
     <Compile Include="Models\Project.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\SubjectGroup.cs" />
     <Compile Include="Models\Task.cs" />
+    <Compile Include="Models\TaskDeadline.cs" />
     <Compile Include="Models\Test.cs" />
     <Compile Include="Models\Trying.cs" />
     <Compile Include="Models\TryingHistory.cs" />

@@ -1,23 +1,26 @@
 define(function(require, exports, module) {
     "use strict";
     
-    var TasksList = function(http, onReload) {
+    const TASKS_URL = "https://junioride-site.com/tasks/getByGroup/"
+    
+    var TasksList = function(http, group) {
         
         this.tasks = {};
-        this.onReload = onReload;
-        
+        this.onReload = undefined;
         this.http = http;
+        this.group = group;
+        
         this.load();
     };
     
     TasksList.prototype.load = function(){
-        this.http.request(
-            "https://junioride-site.com/tasks/all", this.setTasks.bind(this));
-    };
-    
-    TasksList.prototype.setTasks = function(err, data){
-        this.tasks = { "item1" : "dfsadf", "item2" : "dfsadfasd"};
-        this.onReload();
+        this.http.request(TASKS_URL + this.group, function(err, data){
+            if(err) console.log(err);
+            
+            this.tasks = data;
+            
+            if(this.onReload) this.onReload();
+        }.bind(this));
     };
     
     return TasksList;

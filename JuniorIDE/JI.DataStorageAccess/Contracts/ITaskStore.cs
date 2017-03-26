@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JI.DataStorageAccess.Models;
 
 namespace JI.DataStorageAccess.Contracts
@@ -8,5 +9,6 @@ namespace JI.DataStorageAccess.Contracts
         IList<Test> GetTests(Task task);
         void AddTest(Task task, Test test);
         void RemoveTest(Task task, Test test);
+        IList<Task> FindByGroup(Guid guid);
     }
 }

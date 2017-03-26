@@ -1,0 +1,21 @@
+.taskssearchresults .ace_tree_scroller{
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.taskssearchresults .body{
+    white-space: normal;
+}
+
+.taskssearchresults .item{
+    height: auto !important;
+}
+
+.taskssearchresults .item:hover{
+    background: #fff;
+}
+
+.taskssearchresults img{
+    width: 100% !important;
+    height: auto !important;
+}
