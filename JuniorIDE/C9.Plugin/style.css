@@ -19,3 +19,8 @@
     width: 100% !important;
     height: auto !important;
 }
+
+.warning-message{
+    margin: auto 10px;
+    text-align: center;
+}

@@ -3,13 +3,11 @@ define(function(require, exports, module) {
     
     var oop = require("ace/lib/oop");
     var Base = require("ace_tree/list_data");
+    var utils = require("./utils")
     
     var ListData = function(tasks, tabManager) {
         Base.call(this);
         
-        this.classes = {};
-        
-        // todo compute these automatically
         this.innerRowHeight = 34;
         this.rowHeight = 42;
         
@@ -21,29 +19,6 @@ define(function(require, exports, module) {
             get: function() { return this.visibleItems.length; }
         });
     };
-    
-    function dateTimeToString(date) {
-      var monthNames = [
-        "January", "February", "March",
-        "April", "May", "June", "July",
-        "August", "September", "October",
-        "November", "December"
-      ];
-    
-      var day = date.getDate();
-      var monthIndex = date.getMonth();
-      var year = date.getFullYear();
-      var hour = date.getHours();
-      var minutes = date.getMinutes();
-      var seconds = date.getSeconds();
-    
-      return day + ' '
-            + monthNames[monthIndex] + ' '
-            + year + ' '
-            + hour + ':'
-            + minutes + ':'
-            + seconds;
-    }
     
     oop.inherits(ListData, Base);
     (function() {
@@ -92,9 +67,9 @@ define(function(require, exports, module) {
             
             if(!task) return;
             
-            var isSelected =  this.selectedIndex == row;
+            var isSelected = this.selectedIndex == row;
             
-            var deadline = dateTimeToString(new Date(task.deadline));
+            var deadline = utils.dateTimeToString(new Date(task.deadline));
             var description = 
                         isSelected 
                         ?  "<div class=\"body\">" + 
@@ -113,30 +88,6 @@ define(function(require, exports, module) {
                     + "</span>"
                     + description
                     + "</div>");
-        };
-        
-        /*this.getText = function(node) {
-            var command = this.commands.commands[node.id];
-            if (!command) return "";
-            
-            var keys = (command.bindKey || 0)[this.commands.platform] || "";
-            return (command.group || "General") + ": "
-                + (command.displayName || command.name || node.id)
-                + (command.hint ? "\n" + command.hint : "")
-                + (keys ? "\n" + keys : "")
-                + "\nPress F2 to change keybinding";
-        };*/
-        
-        this.getClassName = function(row) {
-            return this.classes[row] || "";
-        };
-        
-        this.setClass = function(node, className, include) {
-            if (include)
-                this.classes[node.index] = className;
-            else
-                delete this.classes[node.index];
-            this._signal("changeClass");
         };
         
     }).call(ListData.prototype);

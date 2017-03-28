@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     "use strict";
     
-    const TASKS_URL = "https://junioride-site.com/tasks/getByGroup/"
+    const TASKS_URL = "https://junioride-site.com/tasks/getByGroup/";
     
     var TasksList = function(http, group) {
         
@@ -9,8 +9,6 @@ define(function(require, exports, module) {
         this.onReload = undefined;
         this.http = http;
         this.group = group;
-        
-        this.load();
     };
     
     TasksList.prototype.load = function(){
@@ -18,8 +16,8 @@ define(function(require, exports, module) {
             if(err) console.log(err);
             
             this.tasks = data;
-            
             if(this.onReload) this.onReload();
+            
         }.bind(this));
     };
     
