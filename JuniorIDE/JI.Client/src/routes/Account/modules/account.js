@@ -15,16 +15,6 @@ export const SET_VALIDATION_STATE           = 'SET_VALIDATION_STATE'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function increment (value = 1) {
-  return {
-    type    : COUNTER_INCREMENT,
-    payload : value
-  }
-}
-
-/*  This is a thunk, meaning it is a function that immediately
-    returns a function for lazy evaluation. It is incredibly useful for
-    creating async actions, especially when combined with redux-thunk! */
 
 export const onConfirmNewPasswordChange = (event) => {
   return {
@@ -175,7 +165,7 @@ const initialState = {
   changePasswordError     : null,
   isLoading               : false
 }
-export default function counterReducer (state = initialState, action) {
+export default function accountReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state

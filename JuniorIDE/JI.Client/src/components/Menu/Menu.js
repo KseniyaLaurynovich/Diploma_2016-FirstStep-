@@ -23,22 +23,14 @@ var Menu = React.createClass({
   },
   renderAccount(props){
     return (
-      <Nav>
-          <NavItem className='account' onClick={this.toggleAccountMenu}>
-            { props.userInfo != null ? this.getUserFullName(props.userInfo) + ' ' : '' }
-            <span className='caret'></span>
-          </NavItem>
-          {
-            this.state.showAccountMenu
-            ? <NavItem eventKey={4.1} onSelect={props.changePassword}>Change password</NavItem>
-            : ''
+      <NavItem onClick={() => this.navItemClick('/account_settings')}>
+          <Glyphicon className='glypicon-md' glyph='user'/>
+          { 
+            props.userInfo != null 
+            ? this.getUserFullName(props.userInfo)
+            : '' 
           }
-          {
-            this.state.showAccountMenu
-            ? <NavItem eventKey={4.3} onSelect={props.logoutUser}>Logout</NavItem>
-            : ''
-          }
-      </Nav>
+      </NavItem>
     )
   },
   getUserFullName(userInfo){
@@ -63,12 +55,12 @@ var Menu = React.createClass({
         </Navbar.Header>
 
          <Navbar.Collapse>
-           {
-             this.props.isAuthenticated ? this.renderAccount(this.props) : ''
-           }
            <Nav className='menu-list'>
              {
-               this.props.navItems && this.props.navItems.map(this.renderNavItem)
+                 this.props.isAuthenticated ? this.renderAccount(this.props) : ''
+             }
+             {
+                 this.props.navItems && this.props.navItems.map(this.renderNavItem)
              }
            </Nav>
          </Navbar.Collapse>

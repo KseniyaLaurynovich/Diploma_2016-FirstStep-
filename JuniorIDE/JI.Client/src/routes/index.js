@@ -3,16 +3,15 @@ import CoreLayout from '../layouts/CoreLayout'
 import LoginLayout from '../layouts/LoginLayout'
 
 import Home from './Home'
-import CounterRoute from './Counter'
 import LoginRoute from './Login'
 import RegistrationRoute from './Registration'
-import ChangePasswordRoute from './ChangePassword'
 import UsersGridRoute from './AdminRoutes/UsersGrid'
 import GroupsGridRoute from './AdminRoutes/GroupsGrid'
 import SubjectsGridRoute from './SubjectGrid/'
 import TasksGridRoute from './TaskGrid/'
 import TestsGridRoute from './TestGrid/'
 import TaskRoute from './Task'
+import AccountRoute from './Account'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -22,14 +21,13 @@ export const createRoutes = (store) => ([{
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [
-    CounterRoute(store),
-    ChangePasswordRoute(store),
     UsersGridRoute(store),
     GroupsGridRoute(store),
     SubjectsGridRoute(store),
     TasksGridRoute(store),
     TaskRoute(store),
-    TestsGridRoute(store)
+    TestsGridRoute(store),
+    AccountRoute(store)
   ]
 },
 {

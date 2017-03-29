@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://JuniorIDE-site.com'
+const BASE_URL = 'https://JuniorIDE-site.com'
 
 export function getToken(userData){
   userData.grant_type = 'password';

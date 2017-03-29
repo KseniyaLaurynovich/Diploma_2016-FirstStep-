@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Menu from '../components/Menu'
 import { Nav, NavItem } from 'react-bootstrap'
-import { fetchUserInfo, logoutUser } from '../store/user'
+import { fetchUserInfo } from '../store/user'
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import requests from '../utils/requests'
@@ -49,15 +49,13 @@ const MenuContainer = React.createClass({
         isAuthenticated   = {this.props.isAuthenticated}
         userInfo          = {this.props.userInfo}
         navItems          = {this.getNavItems()}
-        logoutUser        = {this.props.logoutUser}
         changePassword    = {this.changePassword}/>
     )
   }
 })
 
 const mapDispatchToProps = {
-  getUserInfo: fetchUserInfo,
-  logoutUser
+  getUserInfo: fetchUserInfo
 }
 
 const mapStateToProps = (state) => ({
