@@ -12,8 +12,24 @@ namespace JI.Api.Controllers
     public class AccountApiController : BaseApiController
     {
         [HttpPost]
+        [Route("changeusername")]
+        public IHttpActionResult ChangeUsername(string username)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = UserManager.Value.ChangeUsername(User.Identity.GetUserId(), username);
+
+            return !result.Succeeded
+                ? GetErrorResult(result)
+                : Ok();
+        }
+
+        [HttpPost]
         [Route("changepassword")]
-        public IHttpActionResult ChangePassword(ChangePasswordModel model)
+        public IHttpActionResult ChangePassword(ChangePasswordModel passwordModel)
         {
             if (!ModelState.IsValid)
             {
@@ -21,7 +37,7 @@ namespace JI.Api.Controllers
             }
 
             var result = UserManager.Value.ChangePassword(
-                User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+                User.Identity.GetUserId(), passwordModel.OldPassword, passwordModel.NewPassword);
 
             return !result.Succeeded 
                 ? GetErrorResult(result) 

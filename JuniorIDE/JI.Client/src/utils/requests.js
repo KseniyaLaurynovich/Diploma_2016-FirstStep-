@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'https://JuniorIDE-site.com'
+const BASE_URL = 'http://JuniorIDE-site.com'
 
 export function getToken(userData){
   userData.grant_type = 'password';
@@ -178,6 +178,15 @@ export function deleteTask(token, taskId){
   })
 }
 
+export function changeUsername(token, username){
+  return axios({
+    method  : 'post',
+    url     : BASE_URL + '/account/changepassword',
+    data    : username,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
 const requests = {
   getToken,
   registerUser,
@@ -198,7 +207,8 @@ const requests = {
   fetchTask,
   toggleTaskVisibility,
   saveTaskTest,
-  deleteTask
+  deleteTask,
+  changeUsername
 }
 
 export default requests

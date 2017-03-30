@@ -1,16 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { actions } from '../modules/account'
+import { actions, savePassword, saveUsername } from '../modules/account'
 import { logoutUser } from '../../../store/user'
 
 import AccountView from '../components/AccountView'
 
 const mapDispatchToProps = {
-  submit                          : actions.changePassword,
+  saveUsername                    : saveUsername,
+  savePassword                    : savePassword,
+  handleUsernameChange            : actions.onUsernameChange,
   handleOldPasswordChange         : actions.onOldPasswordChange,
   handleNewPasswordChange         : actions.onNewPasswordChange,
   handleConfirmNewPasswordChange  : actions.onConfirmNewPasswordChange,
-  logoutUser                       
+  logoutUser                      : logoutUser,
+  setDetailsEditMode              : actions.setDetailsEditMode                       
 }
 
 const mapStateToProps = (state) => ({
@@ -18,7 +21,8 @@ const mapStateToProps = (state) => ({
   confirmNewPasswordError     : state.account.confirmNewPasswordError,
   validationState             : state.account.validationState,
   changePasswordError         : state.account.changePasswordError,
-  isLoading                   : state.account.isLoading
+  isLoading                   : state.account.isLoading,
+  isDetailsEditMode           : state.account.isEditDetails
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountView)

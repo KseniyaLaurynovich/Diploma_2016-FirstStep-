@@ -7,7 +7,10 @@ namespace JI.DataStorageAccess.Models
     [Table(Name = "Users")]
     public class User
     {
-        public User() { }
+        public User()
+        {
+            Roles = new List<Role>();
+        }
 
         internal User(User user)
         {
@@ -23,6 +26,7 @@ namespace JI.DataStorageAccess.Models
             SecurityStamp = user.SecurityStamp;
             RegistrationDate = user.RegistrationDate;
             IsActivated = user.IsActivated;
+            Roles = new List<Role>();
         }
 
         [Column(Name = "Id"), PrimaryKey, Identity]

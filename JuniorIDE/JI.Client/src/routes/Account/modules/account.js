@@ -12,6 +12,8 @@ export const SET_IS_CHANGE_PASSWORD_LOADING = 'SET_IS_CHANGE_PASSWORD_LOADING'
 export const SET_IS_CHANGE_PASSWORD_ERROR   = 'SET_IS_CHANGE_PASSWORD_ERROR'
 export const CONFIRM_NEW_PASSWORD_ERROR     = 'CONFIRM_NEW_PASSWORD_ERROR'
 export const SET_VALIDATION_STATE           = 'SET_VALIDATION_STATE'
+export const SET_DETAILS_EDIT_MODE          = 'SET_DETAILS_EDIT_MODE'
+export const USERNAME_CHANGED               = 'USERNAME_CHANGED'
 // ------------------------------------
 // Actions
 // ------------------------------------
@@ -33,6 +35,13 @@ export const onNewPasswordChange = (event) => {
 export const onOldPasswordChange = (event) => {
   return {
     type    : OLD_PASSWORD_CHANGED,
+    payload : event.target.value
+  }
+}
+
+export const onUsernameChange = (event) => {
+  return {
+    type    : USERNAME_CHANGED,
     payload : event.target.value
   }
 }
@@ -71,62 +80,33 @@ export const setValidationState = (state) => {
   }
 }
 
-export function changePassword(event){
-  event.preventDefault();
-
-  return (dispatch, getState) => {
-    dispatch(resetErrors())
-    dispatch(setIsLoading(true))
-
-    var state = getState();
-    var data = {
-      oldPassword       : state.changepassword.oldPassword,
-      newPassword       : state.changepassword.newPassword,
-      confirmPassword   : state.changepassword.confirmNewPassword
-    }
-
-    if(validateModel(dispatch, data)){
-
-      requests.changePassword(state.user.credentials.access_token, data).then(function(response){
-      dispatch(setValidationState(validationStates.success))
-      dispatch(setIsLoading(false))
-
-      //go to information page
-
-      }, function(error){
-        var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
-
-        dispatch(setValidationState(validationStates.error))
-        dispatch(setChangePasswordError(errorMessage))
-        dispatch(setIsLoading(false))
-      })
-    }
-    dispatch(setIsLoading(false))
+export const setDetailsEditMode = (isEditMode) => {
+  return {
+    type    : SET_DETAILS_EDIT_MODE,
+    payload : isEditMode
   }
 }
 
-function validateModel(dispatch, model){
-  var isValid = true;
 
-  if(model.newPassword != model.confirmPassword){
-    dispatch(setConfirmNewPasswordError("Confirm password doesn't equals new password"))
-    isValid = false
-  }
-
-  return isValid
-}
 
 export const actions = {
-  changePassword,
+  onUsernameChange,
   onOldPasswordChange,
   onNewPasswordChange,
-  onConfirmNewPasswordChange
+  onConfirmNewPasswordChange,
+  setDetailsEditMode
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [SET_DETAILS_EDIT_MODE]           : (state, action) => {
+    return Object.assign({}, state, { isEditDetails: action.payload })
+  },
+  [USERNAME_CHANGED]                : (state, action) => {
+    return Object.assign({}, state, { username: action.payload })
+  },
   [OLD_PASSWORD_CHANGED]            : (state, action) => {
     return Object.assign({}, state, { oldPassword: action.payload })
   },
@@ -157,16 +137,122 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = {
+  username                : null,
   oldPassword             : null,
   newPassword             : null,
   confirmNewPassword      : null,
   confirmNewPasswordError : null,
   validationState         : null,
   changePasswordError     : null,
-  isLoading               : false
+  isEditDetails           : false
 }
+
 export default function accountReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state
+}
+
+export function saveUsername(){
+
+  return (dispatch, getState) => {
+    dispatch(resetErrors())
+    dispatch(setIsLoading(true))
+
+    var state = getState();
+
+    var username = state.account.username;
+    if(!username){
+      dispatch(setUsernameError())
+    }
+    
+    var passwordModel = {
+      oldPassword       : state.account.oldPassword,
+      newPassword       : state.account.newPassword,
+      confirmPassword   : state.account.confirmNewPassword
+    }
+
+    if(passwordModel.oldPassword 
+        || passwordModel.newPassword 
+        || passwordModel.confirmPassword){
+
+      if(validateModel(dispatch, passwordModel)){
+
+        requests.changePassword(state.user.credentials.access_token, passwordModel).then(function(response){
+        dispatch(setDetailsEditMode(false))
+
+        //go to information page
+
+        }, function(error){
+          var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
+          dispatch(setChangePasswordError(errorMessage))
+        })
+      }
+      dispatch(setIsLoading(false))
+    }
+  }
+}
+
+export function savePassword(){
+
+  return (dispatch, getState) => {
+    dispatch(resetErrors())
+    dispatch(setIsLoading(true))
+
+    var state = getState();
+
+    var username = state.account.username;
+    if(username){
+      //todo change username
+    }
+    
+    var passwordModel = {
+      oldPassword       : state.account.oldPassword,
+      newPassword       : state.account.newPassword,
+      confirmPassword   : state.account.confirmNewPassword
+    }
+
+    if(passwordModel.oldPassword 
+        || passwordModel.newPassword 
+        || passwordModel.confirmPassword){
+
+      if(validateModel(dispatch, passwordModel)){
+
+        requests.changePassword(state.user.credentials.access_token, passwordModel).then(function(response){
+        dispatch(setDetailsEditMode(false))
+
+        //go to information page
+
+        }, function(error){
+          var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
+          dispatch(setChangePasswordError(errorMessage))
+        })
+      }
+      dispatch(setIsLoading(false))
+    }
+  }
+}
+
+function validateModel(dispatch, model){
+  if(!model.oldPassword){
+    dispatch(setChangePasswordError("'Old password' is empty"))
+    return false
+  }
+
+  if(!model.oldPassword){
+    dispatch(setChangePasswordError("'New password' is empty"))
+    return false
+  }
+
+  if(!model.oldPassword){
+    dispatch(setChangePasswordError("'Confirm password' is empty"))
+    return false
+  }
+
+  if(model.newPassword != model.confirmPassword){
+    dispatch(setChangePasswordError("Confirm password doesn't equals new password"))
+    return false
+  }
+
+  return true
 }

@@ -90,5 +90,21 @@ namespace JI.Managers.Managers.Identity
                 return IdentityResult.Failed("Server error");
             }
         }
+
+        public IdentityResult ChangeUsername(string userId, string username)
+        {
+            var user = FindByIdAsync(userId).Result;
+            if (user != null)
+            {
+                user.UserName = username;
+                var validationResult = UserValidator.ValidateAsync(user).Result;
+                if (validationResult.Succeeded)
+                {
+                    return UpdateAsync(user).Result;
+                }
+                return validationResult;
+            }
+            return new IdentityResult("User was not found.");
+        }
     }
 }
