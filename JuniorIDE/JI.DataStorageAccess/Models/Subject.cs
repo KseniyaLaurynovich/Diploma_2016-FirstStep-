@@ -30,7 +30,7 @@ namespace JI.DataStorageAccess.Models
         public IList<Task> Tasks { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "SubjectId")]
-        public IList<SubjectGroup> SubjectGroups { get; set; }
+        public IList<GroupSubject> SubjectGroups { get; set; }
 
         public IList<Group> Groups { get; set; }
     }

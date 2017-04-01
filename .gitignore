@@ -71,5 +71,6 @@ packages/
 App_Data/*.mdf
 App_Data/*.ldf
 
-FirstStep/packages/
-FirstStep/Database/FirstStep_Database.dbmdl
+# Db design files
+*.dbmdl
+*.jfm

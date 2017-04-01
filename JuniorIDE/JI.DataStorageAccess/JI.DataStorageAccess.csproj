@@ -91,7 +91,6 @@
     <Compile Include="Linq2DbStores\TaskTestsFolderStore.cs" />
     <Compile Include="Linq2DbStores\TaskStore.cs" />
     <Compile Include="Linq2DbStores\TestStore.cs" />
-    <Compile Include="Models\AssignRule.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Group.cs" />
@@ -101,7 +100,6 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Subject.cs" />
-    <Compile Include="Models\SubjectGroup.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskDeadline.cs" />
     <Compile Include="Models\Test.cs" />

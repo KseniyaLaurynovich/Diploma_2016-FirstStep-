@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using LinqToDB.Common;
 using LinqToDB.Mapping;
 using Microsoft.SqlServer.Types;
 

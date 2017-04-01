@@ -52,7 +52,7 @@ namespace JI.DataStorageAccess.Linq2DbStores
 
         public void AddToGroup(Subject subject, Guid groupId)
         {
-            DbConnection.Insert(new SubjectGroup()
+            DbConnection.Insert(new GroupSubject()
             {
                 SubjectId = subject.Id,
                 GroupId = groupId
@@ -61,7 +61,7 @@ namespace JI.DataStorageAccess.Linq2DbStores
 
         public void RemoveFromGroup(Subject subject, Guid groupId)
         {
-            var userGroup = DbConnection.SubjectGroups
+            var userGroup = DbConnection.GroupSubjects
                 .FirstOrDefault(sg =>
                     sg.SubjectId.Equals(subject.Id) && sg.GroupId.Equals(groupId));
 

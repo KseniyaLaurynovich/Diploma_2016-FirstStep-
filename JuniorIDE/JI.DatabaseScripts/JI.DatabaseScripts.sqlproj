@@ -72,7 +72,6 @@
     <Build Include="dbo\Tables\Projects.sql" />
     <Build Include="dbo\Tables\Subjects.sql" />
     <Build Include="dbo\Tables\Tasks.sql" />
-    <Build Include="dbo\Tables\AssignRules.sql" />
     <Build Include="dbo\Tables\Tests.sql" />
     <Build Include="dbo\Tables\TryingsHistory.sql" />
     <Build Include="dbo\Tables\Tryings.sql" />
@@ -85,6 +84,8 @@
     <Build Include="dbo\Tables\Users.sql" />
     <Build Include="dbo\Tables\Roles.sql" />
     <Build Include="dbo\Tables\UserRoles.sql" />
+    <Build Include="dbo\Tables\TaskDeadlines.sql" />
+    <Build Include="dbo\StorageProcedures\InsertIntoFileTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <PreDeploy Include="Scripts\PreDeployment.sql" />

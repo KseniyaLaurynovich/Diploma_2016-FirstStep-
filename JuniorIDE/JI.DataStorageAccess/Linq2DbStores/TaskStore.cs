@@ -46,7 +46,7 @@ namespace JI.DataStorageAccess.Linq2DbStores
         {
             var tasks =
                (from t in DbConnection.Tasks.LoadWith(t => t.Subject)
-                join sg in DbConnection.SubjectGroups on t.SubjectId equals sg.SubjectId
+                join sg in DbConnection.GroupSubjects on t.SubjectId equals sg.SubjectId
                 join td in DbConnection.TaskDeadlines.LoadWith(td => td.GroupSubject).Where(td => td.GroupSubject.GroupId == groupId) on t.Id equals td.TaskId
                 where sg.GroupId == groupId
                 select new { Task = t, Deadline = td})
