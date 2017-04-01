@@ -1,30 +1,25 @@
 import React  from 'react'
 import './AccountView.scss'
 
-import { Row, Form, FormGroup, Col, FormControl, Checkbox, Button, ControlLabel, HelpBlock, ButtonToolbar } from 'react-bootstrap'
+import { Row, Form, FormGroup, Col, FormControl, Checkbox, Button, ControlLabel, HelpBlock, ButtonToolbar, Alert } from 'react-bootstrap'
 
 function renderDetailsEditMode(props){
     return(
-        <div className='changePasswordForm' onSubmit={props.submit}>
-            <Row>
-                <Col md={6}>
-                    <label className='label-left'>Username</label>
-                    <FormControl type="text" 
-                                required 
-                                onChange={props.handleUsernameChange}
-                                defaultValue={props.userInfo.userName}/>
-                    <FormGroup className='text-right'>
-                        <ButtonToolbar>
-                            <Button onClick={() => props.setDetailsEditMode(false)}>
-                                Cancel
-                            </Button>
-                            <Button className='success' onClick={props.saveUsername} disabled={ props.isLoading }>
-                                {props.isLoading ? 'Loading...' : 'Save'}
-                            </Button>
-                        </ButtonToolbar>
-                    </FormGroup>
+        <div className='changePasswordForm'>
+            <Row hidden={props.saveError == null}>
+                <Col md={12}>
+                    <Alert bsStyle="danger">
+                        <p>{props.saveError}</p>
+                    </Alert>
                 </Col>
-                <Col md={6}>
+            </Row>
+            <Row>
+                <Col md={5}>
+                    <label className='label-left'>Username</label>
+                    <FormControl type="text" onChange={props.handleUsernameChange}
+                                defaultValue={props.userInfo.userName}/>
+                </Col>
+                <Col md={5}>
                     <FormGroup controlId="formHorizontalOldPassword">
                         <label className='label-left'>Old password</label>
                         <FormControl type="password" onChange={props.handleOldPasswordChange}/>
@@ -35,20 +30,18 @@ function renderDetailsEditMode(props){
                         <FormControl type="password" onChange={props.handleNewPasswordChange}/>
                     </FormGroup>
 
-                    <FormGroup controlId="formHorizontalConfirmPassword"
-                                validationState={props.confirmNewPasswordError != null ? 'error' : null}>
+                    <FormGroup controlId="formHorizontalConfirmPassword">
                         <label className='label-left'>Confirm password</label>
                         <FormControl type="password" onChange={props.handleConfirmNewPasswordChange}/>
                     </FormGroup>
-                    <FormGroup controlId="formHorizontalError" validationState='error'>
-                         <HelpBlock>{props.changePasswordError}</HelpBlock>
-                    </FormGroup>
-                    <FormGroup className='text-right'>
+                </Col>
+                <Col md={2}>
+                    <FormGroup className='pull-right'>
                         <ButtonToolbar>
                             <Button onClick={() => props.setDetailsEditMode(false)}>
                                 Cancel
                             </Button>
-                            <Button className='success' onClick={props.savePassword}>
+                            <Button className='success' onClick={props.save}>
                                 Save
                             </Button>
                         </ButtonToolbar>
@@ -71,7 +64,7 @@ function renderDetailsViewModel(props){
                 <p>••••••••</p>
             </Col>
             <Col md={2}>
-                <Button onClick={() => props.setDetailsEditMode(true)}>Edit</Button>
+                <Button className='pull-right' onClick={() => props.setDetailsEditMode(true)}>Edit</Button>
             </Col>
         </Row>
     )
@@ -81,7 +74,7 @@ const AccountView = (props) => (
 <div className='accountPage'>
     <Row>
         <Col md={2} mdOffset={10}>
-            <Button onClick={props.logoutUser}>Logout</Button>
+            <Button className='pull-right' onClick={props.logoutUser}>Logout</Button>
         </Col>
     </Row>
     <hr/>

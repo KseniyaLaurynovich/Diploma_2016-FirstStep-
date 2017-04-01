@@ -13,14 +13,14 @@ namespace JI.Api.Controllers
     {
         [HttpPost]
         [Route("changeusername")]
-        public IHttpActionResult ChangeUsername(string username)
+        public IHttpActionResult ChangeUsername(UsernameModel usernameModel)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = UserManager.Value.ChangeUsername(User.Identity.GetUserId(), username);
+            var result = UserManager.Value.ChangeUsername(User.Identity.GetUserId(), usernameModel.Username);
 
             return !result.Succeeded
                 ? GetErrorResult(result)
@@ -66,14 +66,14 @@ namespace JI.Api.Controllers
         [Route("info")]
         public IHttpActionResult FetchAccountInfo()
         {
-            var username = User?.Identity?.Name;
+            var userId = User?.Identity?.GetUserId<string>();
 
-            if (string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(userId))
             {
                 return BadRequest();
             }
 
-            var user = UserManager.Value.FindByName(username);
+            var user = UserManager.Value.FindById(userId);
 
             if (user != null)
             {

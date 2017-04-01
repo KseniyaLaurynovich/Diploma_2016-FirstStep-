@@ -181,9 +181,9 @@ export function deleteTask(token, taskId){
 export function changeUsername(token, username){
   return axios({
     method  : 'post',
-    url     : BASE_URL + '/account/changepassword',
-    data    : username,
-    headers : {"Authorization": "Bearer " + token }
+    url     : BASE_URL + '/account/changeusername',
+    data    : JSON.stringify(username),
+    headers : {"Authorization": "Bearer " + token, "Content-Type"  : "application/json" }
   })
 }
 
