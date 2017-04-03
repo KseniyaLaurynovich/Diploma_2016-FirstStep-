@@ -1,21 +1,21 @@
-.taskssearchresults .ace_tree_scroller{
+.task-searchresults .ace_tree_scroller{
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.taskssearchresults .body{
+.task-searchresults .body{
     white-space: normal;
 }
 
-.taskssearchresults .item{
+.task-searchresults .item{
     height: auto !important;
 }
 
-.taskssearchresults .item:hover{
+.task-searchresults .item:hover{
     background: #fff;
 }
 
-.taskssearchresults img{
+.task-searchresults img{
     width: 100% !important;
     height: auto !important;
 }
@@ -23,4 +23,27 @@
 .warning-message{
     margin: auto 10px;
     text-align: center;
+}
+
+.task-searchresults{
+    position:absolute;
+    top:47px;
+    right:10px;
+    left:10px;
+    bottom:35px
+}
+
+.task-actions{
+    position:absolute;
+    bottom:0;
+    height:35px;
+    right:10px;
+    left:10px;
+}
+
+.task-upload{
+    width:80px;
+    margin-top:3px;
+    margin-bottom:3px;
+    visibility:hidden;
 }

@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     main.consumes = [
         "Panel", "ui", "menus", "panels", "tabManager", "commands", "layout",
-        "settings", "http", "preferences"
+        "settings", "http", "preferences", "info", "vfs"
     ];
     main.provides = ["tasks.panel"];
     return main;
@@ -15,6 +15,8 @@ define(function(require, exports, module) {
         var commands = imports.commands;
         var http = imports.http;
         var prefs = imports.preferences;
+        var info = imports.info;
+        var vfs = imports.vfs;
         
         var markup = require("text!./panel.xml");
         var noAuth = require("text!./not_authorized.html");
@@ -27,6 +29,8 @@ define(function(require, exports, module) {
         var GroupsProvider = require("./groups");
         var AuthSettings = require("./auth");
         
+         var Path = require("path");
+        
         /***** Initialization *****/
         
         var plugin = new Panel("Junior IDE", main.consumes, {
@@ -37,7 +41,7 @@ define(function(require, exports, module) {
             where: options.where || "right"
         });
         
-        var taskNameFilter, tree, ldSearch, tasksProvider, groupsProvider, authSettings;
+        var taskNameFilter, tree, ldSearch, tasksProvider, groupsProvider, authSettings, taskUpload;
         var lastSearch;
         
         authSettings = new AuthSettings(settings);
@@ -77,6 +81,7 @@ define(function(require, exports, module) {
             
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
+            taskUpload = plugin.getElement("uploadTask");
 
             // Initialize task provider
             tasksProvider = new TasksProvider(http, group);
@@ -109,9 +114,74 @@ define(function(require, exports, module) {
                 filter(val);
                 settings.set("state/tasksPanel/@value", val);
             });
+            
+            taskUpload.addEventListener("click", function(e) {
+                upload(["/"], makeArchiveFilename(info.getWorkspace().name));
+            }, false);
         }
         
         /***** Methods *****/
+    
+        function upload(paths, filenameHeader){
+            
+            var executable = "zip";
+            var args = ["-r", "-", "--"];
+            var contentType = "application/zip";
+            
+            var cwd = null;
+                paths.forEach(function (path) {
+                    if (!path) return;
+                    var dir = Path.dirname(path);
+                    if (!cwd) {
+                        cwd = dir;
+                    }
+                    else {
+                        var relative = Path.relative(cwd, dir).split(Path.sep);
+                        var i = 0;
+                        while (relative[i] === '..') {
+                            cwd = Path.resolve(cwd, '..');
+                            i++;
+                        }
+                    }
+                });
+                paths.forEach(function(path) {
+                    if (!path) return;
+                    path = Path.relative(cwd, path);
+                    args.push(path);
+                });
+                
+                vfs.spawn(executable, {
+                    args: args,
+                    cwd: cwd,
+                    windowsVerbatimArguments: true 
+                }, function(err, stdout, stderr) {
+                    if (err) return console.error(err);
+                
+                    var data = new FormData();
+                    data.append("file", stdout.process.stdout, "file");
+                    var post_options = {
+                      host: 'https://junioride-site.com',
+                      path: '/project/upload',
+                      method: 'POST',
+                      contentType: "multipart/form-data",
+                      body: data
+                    };
+                    
+                    var post_req = http.request('https://junioride-site.com/project/upload', post_options, function(res) {
+                        res.on('data', function (chunk) {
+                          console.log('Response: ');
+                        });
+                    });
+                });
+        }
+    
+         function makeArchiveFilename(filename) {
+            return filename + getArchiveFileExtension();
+        }
+    
+        function getArchiveFileExtension(){
+            return ".zip";
+        }
     
         function onDataReload(){
             ldSearch.tasks = tasksProvider.tasks;
@@ -129,8 +199,10 @@ define(function(require, exports, module) {
                 
                 if(ldSearch.selectedIndex != undefined){
                     ldSearch.selectedIndex = undefined;
+                    hideTaskActions();
                 }else{
                     ldSearch.selectedIndex = selectedIndex;
+                    showTaskActions();
                 }
                 
                 tree.selection.clearSelection();
@@ -160,6 +232,14 @@ define(function(require, exports, module) {
                     }
                 }
             }, plugin);
+        }
+    
+        function showTaskActions(){
+            document.getElementsByClassName("task-upload")[0].style.visibility='visible';
+        }
+        
+        function hideTaskActions(){
+            document.getElementsByClassName("task-upload")[0].style.visibility='hidden';
         }
     
         /**

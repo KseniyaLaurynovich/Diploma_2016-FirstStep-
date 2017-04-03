@@ -62,6 +62,10 @@ define(function(require, exports, module) {
             return result.join("");
         };
     
+        this.expand = function(node, deep, silent){
+          alert("expand")  
+        };
+    
         this.renderRow = function(row, html, config) {
             var task = this.visibleItems[row];
             

@@ -33,8 +33,6 @@ namespace JI.Api.Controllers
         [AllowAnonymous]
         public IHttpActionResult GetForGroup(string groupId)
         {
-            //todo filter by group
-            //E597D6D8-B345-42AE-B4A0-26D537DD16AB
             return Ok(_taskManager
                 .GetByGroup(groupId)
                 .Select(Mapper.Map<Task, TaskPluginModel>)
@@ -43,7 +41,6 @@ namespace JI.Api.Controllers
 
         [HttpPost]
         [Route("saveTest/{taskId}")]
-        [AllowAnonymous]
         public IHttpActionResult SaveTestFile(string taskId)
         {
             if (!Request.Content.IsMimeMultipartContent())
