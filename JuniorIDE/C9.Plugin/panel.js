@@ -18,6 +18,7 @@ define(function(require, exports, module) {
         var info = imports.info;
         var vfs = imports.vfs;
         
+        
         var markup = require("text!./panel.xml");
         var noAuth = require("text!./not_authorized.html");
         
@@ -124,9 +125,14 @@ define(function(require, exports, module) {
     
         function upload(paths, filenameHeader){
             
+            paths = paths.map(function(path) {
+                return Path.join("/home/ubuntu/workspace", Path.normalize(unescape(path).replace(/^(\/?\.\.)?\/?/, "")));
+            });
+            var path = paths[0];
+            var name = Path.basename(path);
+            
             var executable = "zip";
             var args = ["-r", "-", "--"];
-            var contentType = "application/zip";
             
             var cwd = null;
                 paths.forEach(function (path) {
@@ -150,28 +156,28 @@ define(function(require, exports, module) {
                     args.push(path);
                 });
                 
-                vfs.spawn(executable, {
+                var commandm = vfs.spawn(executable, {
                     args: args,
                     cwd: cwd,
                     windowsVerbatimArguments: true 
-                }, function(err, stdout, stderr) {
-                    if (err) return console.error(err);
-                
-                    var data = new FormData();
-                    data.append("file", stdout.process.stdout, "file");
-                    var post_options = {
-                      host: 'https://junioride-site.com',
-                      path: '/project/upload',
-                      method: 'POST',
-                      contentType: "multipart/form-data",
-                      body: data
-                    };
+                }, function(err, meta){
+                    var proc = meta.process;
                     
-                    var post_req = http.request('https://junioride-site.com/project/upload', post_options, function(res) {
-                        res.on('data', function (chunk) {
-                          console.log('Response: ');
-                        });
-                    });
+                    var decoder = new TextDecoder('utf8');
+                    var decodedBuffer = '';
+                    
+                    proc.stdout.on('data', function(chunk){
+                        var buffer = new Uint8Array(chunk.data).buffer;
+                        decodedBuffer = buffer;
+                    })
+                    
+                    proc.stdout.on('end', function(){
+                    
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'https://junioride-site.com/project/upload');
+                        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                        xhr.send(decodedBuffer);
+                    })
                 });
         }
     

@@ -1,7 +1,11 @@
-﻿using System.Net;
+﻿using System.IO;
+using System.IO.Compression;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
+using JI.Api.Business.Helpers;
 using JI.Api.Controllers.Base;
 
 namespace JI.Api.Controllers
@@ -13,16 +17,25 @@ namespace JI.Api.Controllers
         [Route("upload")]
         public IHttpActionResult UploadProject()
         {
-            if (!Request.Content.IsMimeMultipartContent())
+            using(var s = Request.Content.ReadAsStreamAsync().Result)
             {
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+                using (var fs = File.Create("D:/1.txt"))
+                {
+                    s.CopyTo(fs);
+                }
             }
 
-            var file = HttpContext.Current.Request.Files.Count > 0
-                ? HttpContext.Current.Request.Files[0]
-                : null;
-
             return Ok();
+        }
+
+        public static Stream GenerateStreamFromString(string s)
+        {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
         }
     }
 }
