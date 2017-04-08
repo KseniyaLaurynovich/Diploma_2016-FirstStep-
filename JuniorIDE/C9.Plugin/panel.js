@@ -18,20 +18,18 @@ define(function(require, exports, module) {
         var info = imports.info;
         var vfs = imports.vfs;
         
-        
         var markup = require("text!./panel.xml");
         var noAuth = require("text!./not_authorized.html");
         
-        var search = require('./search');
         var Tree = require("ace_tree/tree");
+        
+        var search = require('./search');
         var ListData = require("./dataprovider");
-        
-        var TasksProvider = require("./tasks");
-        var GroupsProvider = require("./groups");
         var AuthSettings = require("./auth");
+        var DownloadManager = require("./download");
+        var JuniorServer = require("./juniorServerApi");
         
-         var Path = require("path");
-        
+        var juniorServer = new JuniorServer(http);
         /***** Initialization *****/
         
         var plugin = new Panel("Junior IDE", main.consumes, {
@@ -42,7 +40,7 @@ define(function(require, exports, module) {
             where: options.where || "right"
         });
         
-        var taskNameFilter, tree, ldSearch, tasksProvider, groupsProvider, authSettings, taskUpload;
+        var taskNameFilter, tree, ldSearch, authSettings, taskUpload;
         var lastSearch;
         
         authSettings = new AuthSettings(settings);
@@ -58,9 +56,7 @@ define(function(require, exports, module) {
                 command: "tasks" 
             }), 300, plugin);
             
-            groupsProvider = new GroupsProvider(http)
-            groupsProvider.onReload = onGroupsReload.bind(this);
-            groupsProvider.load();
+            juniorServer.getGroups(onGroupsReload.bind(this));
         }
         
         var drawn = false;
@@ -68,7 +64,6 @@ define(function(require, exports, module) {
             if (drawn) return;
             drawn = true;
             
-            // Import CSS
             ui.insertCss(require("text!./style.css"), plugin);
             
             var group = authSettings.getGroup();
@@ -77,19 +72,14 @@ define(function(require, exports, module) {
                 return;
             }
             
-            // Create UI elements
             ui.insertMarkup(options.aml, markup, plugin);
             
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
             taskUpload = plugin.getElement("uploadTask");
-
-            // Initialize task provider
-            tasksProvider = new TasksProvider(http, group);
-            tasksProvider.onReload = onDataReload.bind(this);
-            tasksProvider.load();
             
-            // Initialize the Ace Tree
+            juniorServer.getTasks(group, onDataReload.bind(this));
+            
             tree = new Tree(treeParent.$int);
             tree.on("click", onTaskClicked.bind(this));
             
@@ -98,7 +88,6 @@ define(function(require, exports, module) {
             
             tree.renderer.setScrollMargin(0, 10);
 
-            //set filter input placeholder
             var key = commands.getPrettyHotkey("tasks");
             taskNameFilter.setAttribute("initial-message", key);
             tree.textInput = taskNameFilter.ace.textInput;
@@ -125,79 +114,36 @@ define(function(require, exports, module) {
     
         function upload(paths, filenameHeader){
             
-            paths = paths.map(function(path) {
-                return Path.join("/home/ubuntu/workspace", Path.normalize(unescape(path).replace(/^(\/?\.\.)?\/?/, "")));
-            });
-            var path = paths[0];
-            var name = Path.basename(path);
-            
-            var executable = "zip";
-            var args = ["-r", "-", "--"];
-            
-            var cwd = null;
-                paths.forEach(function (path) {
-                    if (!path) return;
-                    var dir = Path.dirname(path);
-                    if (!cwd) {
-                        cwd = dir;
-                    }
-                    else {
-                        var relative = Path.relative(cwd, dir).split(Path.sep);
-                        var i = 0;
-                        while (relative[i] === '..') {
-                            cwd = Path.resolve(cwd, '..');
-                            i++;
-                        }
-                    }
-                });
-                paths.forEach(function(path) {
-                    if (!path) return;
-                    path = Path.relative(cwd, path);
-                    args.push(path);
-                });
-                
-                var commandm = vfs.spawn(executable, {
-                    args: args,
-                    cwd: cwd,
-                    windowsVerbatimArguments: true 
-                }, function(err, meta){
-                    var proc = meta.process;
-                    
-                    var decoder = new TextDecoder('utf8');
-                    var decodedBuffer = '';
-                    
-                    proc.stdout.on('data', function(chunk){
-                        var buffer = new Uint8Array(chunk.data).buffer;
-                        decodedBuffer = buffer;
-                    })
-                    
-                    proc.stdout.on('end', function(){
-                    
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('POST', 'https://junioride-site.com/project/upload');
-                        xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-                        xhr.send(decodedBuffer);
-                    })
-                });
+            var downloadManager = new DownloadManager(vfs);
+            downloadManager.downloadAsZip(paths, onProjectUpload.bind(this));
         }
     
-         function makeArchiveFilename(filename) {
+        function makeArchiveFilename(filename) {
+             
             return filename + getArchiveFileExtension();
         }
     
         function getArchiveFileExtension(){
+            
             return ".zip";
         }
     
-        function onDataReload(){
-            ldSearch.tasks = tasksProvider.tasks;
+        function onDataReload(tasks){
+            
+            ldSearch.tasks = tasks;
             ldSearch.updateData();
             
             tree.setDataProvider(ldSearch);
             tree.selection.$wrapAround = true;
         }
     
+        function onProjectUpload(stream){
+            
+            juniorServer.uploadProject("", stream, function(){alert("upload");});
+        };
+    
         function onTaskClicked(ev){
+            
             var e = ev.domEvent;
             if (!e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey)
             if (tree.selection.getSelectedNodes().length === 1){
@@ -215,9 +161,9 @@ define(function(require, exports, module) {
             }
         }
     
-        function onGroupsReload(){
+        function onGroupsReload(groups){
             
-            var items = groupsProvider.groups.map(function(group){
+            var items = groups.map(function(group){
                 return {
                     value: group.id, caption: group.name
                 }
@@ -241,10 +187,12 @@ define(function(require, exports, module) {
         }
     
         function showTaskActions(){
+            
             document.getElementsByClassName("task-upload")[0].style.visibility='visible';
         }
         
         function hideTaskActions(){
+            
             document.getElementsByClassName("task-upload")[0].style.visibility='hidden';
         }
     
@@ -253,12 +201,13 @@ define(function(require, exports, module) {
          *
          */
         function filter(keyword, nosel) {
+            
             keyword = keyword.replace(/\*/g, "");
     
             // Needed for highlighting
             ldSearch.keyword = keyword;
             
-            var names = tasksProvider.tasks.map(function(task){
+            var names = ldSearch.tasks.map(function(task){
                 return { 
                     displayName: task.name + ' ' + task.subjectName, 
                     id: task.id 
@@ -277,7 +226,7 @@ define(function(require, exports, module) {
             lastSearch = keyword;
     
             if (searchResults){
-                var filteredTasks = tasksProvider.tasks.filter(function(task){
+                var filteredTasks = ldSearch.tasks.filter(function(task){
                     return searchResults.find(function (element, index, array) {
                       return element.id == task.id;
                     });
