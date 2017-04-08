@@ -1,6 +1,4 @@
-﻿using System;
-using System.Data.Common;
-using System.Data.SqlTypes;
+﻿using System.Data.SqlTypes;
 using System.Linq;
 using JI.DataStorageAccess.Models;
 using LinqToDB.Data;
@@ -27,6 +25,18 @@ namespace JI.DataStorageAccess.Business
                 .FirstOrDefault();
 
             return fileId;
+        }
+
+        public static string GetPhysicalPath(DataConnection connection, SqlHierarchyId fileId)
+        {
+            var fileIdParam = new DataParameter("fileId", fileId);
+
+            var path = connection.QueryProc<string>(
+                    "GetPhysicalPath",
+                    fileIdParam)
+                .FirstOrDefault();
+
+            return path;
         }
     }
 }

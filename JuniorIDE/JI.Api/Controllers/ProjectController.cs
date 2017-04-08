@@ -1,41 +1,42 @@
 ﻿using System.IO;
-using System.IO.Compression;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web;
 using System.Web.Http;
-using JI.Api.Business.Helpers;
 using JI.Api.Controllers.Base;
+using JI.Managers.Contracts;
 
 namespace JI.Api.Controllers
 {
     [RoutePrefix("project")]
+    //TODO authorize user through plugin
     [AllowAnonymous]
     public class ProjectController : BaseApiController
     {
+        private readonly IProjectManager _projectManager;
+
+        public ProjectController(IProjectManager projectManager)
+        {
+            _projectManager = projectManager;
+        }
+
         [Route("upload")]
         public IHttpActionResult UploadProject()
         {
-            using(var s = Request.Content.ReadAsStreamAsync().Result)
-            {
-                using (var fs = File.Create("D:/1.txt"))
-                {
-                    s.CopyTo(fs);
-                }
-            }
+            var userId = "70cb531d-130b-408a-83c5-d72fe712cc46";
+            var taskId = "b61fbd43-395c-478a-addb-f0243ff20a41";
 
-            return Ok();
-        }
+            var projectStream = File.OpenRead("D:/1.zip");//Request.Content.ReadAsStreamAsync().Result;
+            var result = _projectManager.CreateProjectByStream(projectStream, userId, taskId);
 
-        public static Stream GenerateStreamFromString(string s)
-        {
-            MemoryStream stream = new MemoryStream();
-            StreamWriter writer = new StreamWriter(stream);
-            writer.Write(s);
-            writer.Flush();
-            stream.Position = 0;
-            return stream;
+            //using(var s = Request.Content.ReadAsStreamAsync().Result)
+            //{
+            //    using (var fs = File.Create("D:/1.zip"))
+            //    {
+            //        s.CopyTo(fs);
+            //    }
+            //}
+
+            return result.Succeeded 
+                ? Ok()
+                : GetErrorResult(result.Errors);
         }
     }
 }

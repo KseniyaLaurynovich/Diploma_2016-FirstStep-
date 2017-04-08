@@ -8,5 +8,6 @@ namespace JI.DataStorageAccess.Contracts
         where T : class, IWithIdentifier
     {
         SqlHierarchyId SaveFile(Guid objId, File file);
+        SqlHierarchyId CreateSpecificObjFolder(T obj);
     }
 }

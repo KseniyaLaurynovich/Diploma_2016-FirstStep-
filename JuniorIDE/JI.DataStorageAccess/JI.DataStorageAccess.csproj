@@ -73,6 +73,7 @@
     <Compile Include="Business\Extensions\SqlHierarchyIdExtensions.cs" />
     <Compile Include="Contracts\IGroupStore.cs" />
     <Compile Include="Contracts\IObjectSpecifiedFolderStore.cs" />
+    <Compile Include="Contracts\IProjectStore.cs" />
     <Compile Include="Contracts\IStore.cs" />
     <Compile Include="Contracts\IAdvancedUserStore.cs" />
     <Compile Include="Contracts\ITaskStore.cs" />
@@ -88,6 +89,8 @@
     <Compile Include="Linq2DbStores\Identity\ApplicationRoleStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationUserStore.cs" />
     <Compile Include="Business\FileTableStoredProcedures.cs" />
+    <Compile Include="Linq2DbStores\ProjectFolderStore.cs" />
+    <Compile Include="Linq2DbStores\ProjectStore.cs" />
     <Compile Include="Linq2DbStores\TaskTestsFolderStore.cs" />
     <Compile Include="Linq2DbStores\TaskStore.cs" />
     <Compile Include="Linq2DbStores\TestStore.cs" />

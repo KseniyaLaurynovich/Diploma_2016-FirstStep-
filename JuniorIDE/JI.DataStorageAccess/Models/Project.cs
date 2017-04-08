@@ -1,5 +1,6 @@
 ﻿using System;
 using LinqToDB.Mapping;
+using Microsoft.SqlServer.Types;
 
 namespace JI.DataStorageAccess.Models
 {
@@ -10,13 +11,13 @@ namespace JI.DataStorageAccess.Models
         public Guid Id { get; set; }
 
         [Column(Name = "TaskId"), NotNull]
-        public string TaskId { get; set; }
+        public Guid TaskId { get; set; }
 
         [Column(Name = "UserId"), NotNull]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
-        [Column(Name = "ProjectFolder"), NotNull]
-        public string ProjectFolder { get; set; }
+        [Column(Name = "ProjectFolder")]
+        public SqlHierarchyId ProjectFolder { get; set; }
 
         [Column(Name = "CreationDate"), NotNull]
         public DateTime CreationDate { get; set; }

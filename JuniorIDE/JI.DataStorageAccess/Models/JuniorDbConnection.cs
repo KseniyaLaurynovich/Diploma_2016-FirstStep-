@@ -17,6 +17,7 @@ namespace JI.DataStorageAccess.Models
         public ITable<Task> Tasks => GetTable<Task>();
         public ITable<File> Files => GetTable<File>();
         public ITable<Test> Tests => GetTable<Test>();
+        public ITable<Project> Projects => GetTable<Project>();
         public ITable<TaskDeadline> TaskDeadlines => GetTable<TaskDeadline>();
         public ITable<GroupSubject> GroupSubjects => GetTable<GroupSubject>();
     }

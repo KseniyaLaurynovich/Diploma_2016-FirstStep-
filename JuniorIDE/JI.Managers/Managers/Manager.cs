@@ -20,16 +20,16 @@ namespace JI.Managers.Managers
             Store = store;
         }
 
-        public virtual ServiceResult<T> Save(T obj)
+        public virtual ServiceResult<T> Save(T project)
         {
-            var validationResult = Validate(obj);
+            var validationResult = Validate(project);
             if (validationResult.Succeeded)
             {
-                var storageObj = Map(obj);
+                var storageObj = Map(project);
                 try
                 {
                     storageObj.Id = Store.Save(storageObj);
-                    return ServiceResult<T>.Success(storageObj.Map(obj));
+                    return ServiceResult<T>.Success(storageObj.Map(project));
                 }
                 catch (Exception ex)
                 {

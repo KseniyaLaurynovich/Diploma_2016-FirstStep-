@@ -11,6 +11,8 @@ namespace JI.Managers.Infrastructure
     {
         public void Register()
         {
+            #region File
+
             Mapper.Register<File, Models.File>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.ParentId, 
@@ -33,6 +35,10 @@ namespace JI.Managers.Infrastructure
                     }
                 });
 
+            #endregion
+
+            #region Task
+
             Mapper.Register<Task, Models.Task>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.SubjectId, src => src.SubjectId.ToString());
@@ -52,6 +58,10 @@ namespace JI.Managers.Infrastructure
                         task.SubjectId = new Guid(appTask.SubjectId);
                     }
                 });
+
+            #endregion
+
+            #region Test
 
             Mapper.Register<Test, Models.Test>()
                .Member(dest => dest.Id, src => src.Id.ToString())
@@ -88,6 +98,10 @@ namespace JI.Managers.Infrastructure
                     }
                 });
 
+            #endregion
+
+            #region Subject
+
             Mapper.Register<Subject, Models.Subject>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.UserId, src => src.UserId.ToString());
@@ -106,6 +120,10 @@ namespace JI.Managers.Infrastructure
                     }
                 });
 
+            #endregion
+
+            #region Group
+
             Mapper.Register<Group, Models.Group>()
                 .Member(dest => dest.Id, src => src.Id.ToString());
             Mapper.Register<Models.Group, Group>()
@@ -117,6 +135,10 @@ namespace JI.Managers.Infrastructure
                         user.Id = new Guid(appUser.Id);
                     }
                 });
+
+            #endregion
+
+            #region TaskDeadline
 
             Mapper.Register<TaskDeadline, Models.TaskDeadline>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
@@ -141,6 +163,48 @@ namespace JI.Managers.Infrastructure
                         deadline.TaskId = new Guid(appDeadline.TaskId);
                     }
                 });
+
+            #endregion
+
+            #region Project
+
+            Mapper.Register<Project, Models.Project>()
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.UserId, src => src.UserId.ToString())
+                .Member(dest => dest.TaskId, src => src.TaskId.ToString())
+                .Member(dest => dest.ProjectFolder, src => src.ProjectFolder.ToString());
+
+            Mapper.Register<Models.Project, Project>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.UserId)
+                .Ignore(dest => dest.TaskId)
+                .Ignore(dest => dest.ProjectFolder)
+                .After((appProject, project) =>
+                {
+                    if (appProject.Id != null)
+                    {
+                        project.Id = new Guid(appProject.Id);
+                    }
+
+                    if (appProject.TaskId != null)
+                    {
+                        project.TaskId = new Guid(appProject.TaskId);
+                    }
+
+                    if (appProject.UserId != null)
+                    {
+                        project.UserId = new Guid(appProject.UserId);
+                    }
+
+                    if (appProject.ProjectFolder != null)
+                    {
+                        project.ProjectFolder = appProject.ProjectFolder == null
+                            ? SqlHierarchyId.Null
+                            : SqlHierarchyId.Parse(appProject.ProjectFolder);
+                    }
+                });
+
+            #endregion
         }
     }
 }

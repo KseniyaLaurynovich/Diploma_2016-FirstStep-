@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace JI.Managers.Models
+﻿namespace JI.Managers.Models
 {
     public class File
     {

@@ -39,7 +39,7 @@ namespace JI.DataStorageAccess.Linq2DbStores.Base
             return FileTableStoredProcedures.InsertFile(DbConnection, file);
         }
 
-        protected SqlHierarchyId CreateSpecificObjFolder(T obj)
+        public SqlHierarchyId CreateSpecificObjFolder(T obj)
         {
             using (var transaction = new TransactionScope())
             {

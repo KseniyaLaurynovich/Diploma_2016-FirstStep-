@@ -1,5 +1,4 @@
-﻿using System;
-using JI.DataStorageAccess.Models;
+﻿using JI.DataStorageAccess.Models;
 
 namespace JI.DataStorageAccess.Contracts
 {

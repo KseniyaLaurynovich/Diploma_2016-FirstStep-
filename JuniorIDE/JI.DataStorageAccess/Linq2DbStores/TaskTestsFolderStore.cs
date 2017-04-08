@@ -4,6 +4,7 @@ using Microsoft.SqlServer.Types;
 
 namespace JI.DataStorageAccess.Linq2DbStores
 {
+    //TODO make disposable
     internal class TaskTestsFolderStore : ObjectSpecifiedFolderStore<Task>
     {
         protected override string GetObjSpecificFolderName(Task obj) => $"task_{obj.Id}_tests";

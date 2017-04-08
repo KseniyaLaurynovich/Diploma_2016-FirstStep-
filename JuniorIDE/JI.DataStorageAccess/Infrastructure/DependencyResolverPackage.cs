@@ -14,7 +14,9 @@ namespace JI.DataStorageAccess.Infrastructure
             container.Register(typeof(ISubjectStore), typeof(SubjectStore), Lifestyle.Scoped);
             container.Register(typeof(ITaskStore), typeof(TaskStore), Lifestyle.Scoped);
             container.Register(typeof(ITestStore), typeof(TestStore), Lifestyle.Scoped);
+            container.Register(typeof(IProjectStore), typeof(ProjectStore), Lifestyle.Scoped);
             container.Register(typeof(IObjectSpecifiedFolderStore<Task>), typeof(TaskTestsFolderStore), Lifestyle.Scoped);
+            container.Register(typeof(IObjectSpecifiedFolderStore<Project>), typeof(ProjectFolderStore), Lifestyle.Scoped);
         }
     }
 }

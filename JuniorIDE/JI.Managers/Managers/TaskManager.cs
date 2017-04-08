@@ -22,16 +22,16 @@ namespace JI.Managers.Managers
             TaskTestsFolderStore = taskTestsFolderStore;
         }
 
-        public override ServiceResult<Task> Save(Task obj)
+        public override ServiceResult<Task> Save(Task project)
         {
             var now = DateTime.Now;
-            if (string.IsNullOrWhiteSpace(obj.Id))
+            if (string.IsNullOrWhiteSpace(project.Id))
             {
-                obj.CreationDate = now;
+                project.CreationDate = now;
             }
-            obj.LastModified = now;
+            project.LastModified = now;
 
-            return base.Save(obj);
+            return base.Save(project);
         }
 
         public ServiceResult SetVisibility(string taskId, bool isVisible)
