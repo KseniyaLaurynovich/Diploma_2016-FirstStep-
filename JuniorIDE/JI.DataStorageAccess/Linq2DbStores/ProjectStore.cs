@@ -5,6 +5,7 @@ using JI.DataStorageAccess.Business;
 using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Linq2DbStores.Base;
 using JI.DataStorageAccess.Models;
+using System.IO.Compression;
 
 namespace JI.DataStorageAccess.Linq2DbStores
 {
@@ -19,18 +20,20 @@ namespace JI.DataStorageAccess.Linq2DbStores
         public void LoadStream(Guid projectId, Stream projectStream)
         {
             var folder = FindById(projectId)?.ProjectFolder;
+            var tempZipName = $"D:/Temp/{Guid.NewGuid()}.zip";
 
             if (folder.HasValue)
             {
-                var path = FileTableStoredProcedures.GetPhysicalPath(DbConnection, folder.Value);
-
                 using (projectStream)
                 {
-                    using (var file = System.IO.File.Create($"{path}/{Guid.NewGuid()}.zip"))
+                    using (var file = System.IO.File.Create(tempZipName))
                     {
                         projectStream.CopyTo(file);
                     }
                 }
+
+                var path = FileTableStoredProcedures.GetPhysicalPath(DbConnection, folder.Value);
+                ZipFile.ExtractToDirectory(tempZipName, path);
             }
         }
     }
