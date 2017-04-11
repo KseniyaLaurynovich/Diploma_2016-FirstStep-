@@ -6,6 +6,7 @@ using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Linq2DbStores.Base;
 using JI.DataStorageAccess.Models;
 using System.IO.Compression;
+using Ionic.Zip;
 
 namespace JI.DataStorageAccess.Linq2DbStores
 {
@@ -20,20 +21,15 @@ namespace JI.DataStorageAccess.Linq2DbStores
         public void LoadStream(Guid projectId, Stream projectStream)
         {
             var folder = FindById(projectId)?.ProjectFolder;
-            var tempZipName = $"D:/Temp/{Guid.NewGuid()}.zip";
 
             if (folder.HasValue)
             {
-                using (projectStream)
-                {
-                    using (var file = System.IO.File.Create(tempZipName))
-                    {
-                        projectStream.CopyTo(file);
-                    }
-                }
-
                 var path = FileTableStoredProcedures.GetPhysicalPath(DbConnection, folder.Value);
-                ZipFile.ExtractToDirectory(tempZipName, path);
+
+                using (var zip = Ionic.Zip.ZipFile.Read(projectStream))
+                {
+                    zip.ExtractAll(path);
+                }
             }
         }
     }

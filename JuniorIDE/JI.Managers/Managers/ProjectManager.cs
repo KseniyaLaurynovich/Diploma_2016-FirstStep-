@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Contracts;
 using JI.Managers.Business.Models;
