@@ -19,6 +19,7 @@ namespace JI.Api.Controllers
         [Route("upload")]
         public IHttpActionResult UploadProject()
         {
+            //TODO add url params
             var userId = "70cb531d-130b-408a-83c5-d72fe712cc46";
             var taskId = "b61fbd43-395c-478a-addb-f0243ff20a41";
 
