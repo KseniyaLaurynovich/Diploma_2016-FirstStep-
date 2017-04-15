@@ -10,6 +10,7 @@ namespace JI.DataStorageAccess.Infrastructure
     {
         public void RegisterServices(Container container)
         {
+            container.Register(typeof(ITryingHistoryStore), typeof(TryingHistoryStore), Lifestyle.Scoped);
             container.Register(typeof(IGroupStore), typeof(GroupStore), Lifestyle.Scoped);
             container.Register(typeof(ISubjectStore), typeof(SubjectStore), Lifestyle.Scoped);
             container.Register(typeof(ITaskStore), typeof(TaskStore), Lifestyle.Scoped);

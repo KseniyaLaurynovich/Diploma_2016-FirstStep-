@@ -8,6 +8,7 @@ namespace JI.DataStorageAccess.Contracts
     {
         Project FindByTask(Guid userId, Guid taskId);
         void LoadStream(Guid projectId, Stream projectStream);
-        string GetProjectPath(string userId, string taskId);
+        string GetProjectPath(Guid userId, Guid taskId);
+        Project FindByTaskAndUser(Guid userId, Guid taskId);
     }
 }

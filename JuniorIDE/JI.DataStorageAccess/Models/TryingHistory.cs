@@ -13,13 +13,13 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "ProjectId"), NotNull]
         public string ProjectId { get; set; }
 
-        [Column(Name = "DateTime"), NotNull]
+        [Column(Name = "Date"), NotNull]
         public DateTime DateTime { get; set; }
 
         [Column(Name = "Compiled"), NotNull]
         public bool Compiled { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "TryingHistoryId")]
-        public ICollection<TryingHistory> Items { get; set; }
+        public ICollection<Trying> Items { get; set; }
     }
 }

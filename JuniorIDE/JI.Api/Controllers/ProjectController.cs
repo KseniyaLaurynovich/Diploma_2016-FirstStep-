@@ -10,10 +10,13 @@ namespace JI.Api.Controllers
     public class ProjectController : BaseApiController
     {
         private readonly IProjectManager _projectManager;
+        private readonly IAutoTestedManager _testManager;
 
-        public ProjectController(IProjectManager projectManager)
+        public ProjectController(
+            IProjectManager projectManager, IAutoTestedManager testManager)
         {
             _projectManager = projectManager;
+            _testManager = testManager;
         }
 
         [Route("upload")]
@@ -25,6 +28,11 @@ namespace JI.Api.Controllers
 
             var projectStream = Request.Content.ReadAsStreamAsync().Result;
             var result = _projectManager.CreateProjectByStream(projectStream, userId, taskId);
+
+            if (result.Succeeded)
+            {
+                var testResult = _testManager.Test(userId, taskId);
+            }
 
             return result.Succeeded 
                 ? Ok()

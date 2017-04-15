@@ -84,6 +84,7 @@
     <Compile Include="Contracts\IAdvancedUserStore.cs" />
     <Compile Include="Contracts\ITaskStore.cs" />
     <Compile Include="Contracts\ITestStore.cs" />
+    <Compile Include="Contracts\ITryingHistoryStore.cs" />
     <Compile Include="Contracts\IUserGroupStore.cs" />
     <Compile Include="Helpers\IdentityHelper.cs" />
     <Compile Include="Infrastructure\Configuration.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Linq2DbStores\TaskTestsFolderStore.cs" />
     <Compile Include="Linq2DbStores\TaskStore.cs" />
     <Compile Include="Linq2DbStores\TestStore.cs" />
+    <Compile Include="Linq2DbStores\TryingHistoryStore.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Group.cs" />

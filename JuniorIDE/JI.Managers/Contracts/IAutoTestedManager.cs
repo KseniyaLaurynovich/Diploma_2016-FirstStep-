@@ -2,7 +2,7 @@
 
 namespace JI.Managers.Contracts
 {
-    public interface IAutoTestedService
+    public interface IAutoTestedManager
     {
         ServiceResult Test(string userId, string taskId);
     }
