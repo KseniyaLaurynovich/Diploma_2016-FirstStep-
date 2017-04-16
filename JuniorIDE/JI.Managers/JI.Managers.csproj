@@ -93,15 +93,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\ApplicationUserValidator.cs" />
+    <Compile Include="Business\Extensions\StringExtensions.cs" />
     <Compile Include="Business\Models\ServiceResult.cs" />
     <Compile Include="Business\Models\ServiceResultExtentions.cs" />
     <Compile Include="Contracts\IAutoTestedManager.cs" />
     <Compile Include="Contracts\ICompilator.cs" />
+    <Compile Include="Contracts\IFileEquatable.cs" />
     <Compile Include="Contracts\IManager.cs" />
     <Compile Include="Contracts\IProjectManager.cs" />
     <Compile Include="Contracts\ISubjectManager.cs" />
     <Compile Include="Contracts\ITaskManager.cs" />
-    <Compile Include="Contracts\ITestManager.cs" />
+    <Compile Include="Contracts\ITestExecutor.cs" />
     <Compile Include="Infrastructure\AppBuilderExtensions.cs" />
     <Compile Include="Infrastructure\DependencyResolverPackage.cs" />
     <Compile Include="Infrastructure\MapperRegistration.cs" />
@@ -115,7 +117,8 @@
     <Compile Include="Managers\ProjectManager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
-    <Compile Include="Managers\TestManager.cs" />
+    <Compile Include="Tools\FileEquatable.cs" />
+    <Compile Include="Tools\TestExecutor.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\TaskDeadline.cs" />
     <Compile Include="Models\File.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\TestResult.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

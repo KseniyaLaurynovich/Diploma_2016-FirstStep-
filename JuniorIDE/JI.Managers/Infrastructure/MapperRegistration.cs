@@ -3,7 +3,15 @@ using ExpressMapper;
 using JI.Common.Contracts.Contracts;
 using JI.DataStorageAccess.Business.Extensions;
 using JI.DataStorageAccess.Models;
+using JI.Managers.Models;
 using Microsoft.SqlServer.Types;
+using File = JI.DataStorageAccess.Models.File;
+using Group = JI.DataStorageAccess.Models.Group;
+using Project = JI.DataStorageAccess.Models.Project;
+using Subject = JI.DataStorageAccess.Models.Subject;
+using Task = JI.DataStorageAccess.Models.Task;
+using TaskDeadline = JI.DataStorageAccess.Models.TaskDeadline;
+using Test = JI.DataStorageAccess.Models.Test;
 
 namespace JI.Managers.Infrastructure
 {
@@ -203,6 +211,31 @@ namespace JI.Managers.Infrastructure
                             : SqlHierarchyId.Parse(appProject.ProjectFolder);
                     }
                 });
+
+            #endregion
+
+            #region TestResult
+
+            Mapper.Register<TryingHistory, TestResult>()
+                .Member(dest => dest.Id, src => src.Id.ToString())
+                .Member(dest => dest.ProjectId, src => src.ProjectId.ToString());
+
+            Mapper.Register<TestResult, TryingHistory>()
+                .Ignore(dest => dest.Id)
+                .Ignore(dest => dest.ProjectId)
+                .After((testResult, tryingHistory) =>
+                {
+                    if (testResult.Id != null)
+                    {
+                        tryingHistory.Id = new Guid(testResult.Id);
+                    }
+
+                    if (testResult.ProjectId != null)
+                    {
+                        tryingHistory.ProjectId = new Guid(testResult.ProjectId);
+                    }
+                });
+
 
             #endregion
         }

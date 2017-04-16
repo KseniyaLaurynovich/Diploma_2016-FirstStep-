@@ -20,5 +20,7 @@ namespace JI.DataStorageAccess.Models
         public ITable<Project> Projects => GetTable<Project>();
         public ITable<TaskDeadline> TaskDeadlines => GetTable<TaskDeadline>();
         public ITable<GroupSubject> GroupSubjects => GetTable<GroupSubject>();
+        public ITable<Trying> Tryings => GetTable<Trying>();
+        public ITable<TryingHistory> TryingHistory => GetTable<TryingHistory>();
     }
 }

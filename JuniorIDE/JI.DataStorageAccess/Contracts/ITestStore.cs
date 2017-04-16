@@ -6,6 +6,6 @@ namespace JI.DataStorageAccess.Contracts
 {
     public interface ITestStore : IStore<Test>
     {
-        IList<Test> FindByTask(Guid taskId);
+        IList<TestPaths> GetPaths(Guid taskId);
     }
 }

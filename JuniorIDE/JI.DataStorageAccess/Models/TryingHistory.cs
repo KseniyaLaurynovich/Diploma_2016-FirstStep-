@@ -11,7 +11,7 @@ namespace JI.DataStorageAccess.Models
         public Guid Id { get; set; }
 
         [Column(Name = "ProjectId"), NotNull]
-        public string ProjectId { get; set; }
+        public Guid ProjectId { get; set; }
 
         [Column(Name = "Date"), NotNull]
         public DateTime DateTime { get; set; }

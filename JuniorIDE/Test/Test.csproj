@@ -55,6 +55,14 @@
       <Project>{a1dcdc3d-0abe-43e0-835e-0a0d57dc1c45}</Project>
       <Name>CmdWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JI.Common.Mapper\JI.Common.Contracts.csproj">
+      <Project>{a091cf6f-140d-4d30-aaa0-326592d0f5fd}</Project>
+      <Name>JI.Common.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JI.Managers\JI.Managers.csproj">
+      <Project>{363d889b-fc33-42cf-8ee6-bc635907fa24}</Project>
+      <Name>JI.Managers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,33 +1,34 @@
 ﻿using System;
+using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Models;
 using JI.Managers.Business.Models;
 using JI.Managers.Contracts;
+using JI.Managers.Models;
 
 namespace JI.Managers.Managers
 {
     internal class AutoTestedManager : IAutoTestedManager
     {
-        private readonly ITestManager _testManager;
+        private readonly ITestExecutor _testExecutor;
         private readonly ICompilator _compilator;
-
         private readonly IProjectStore _projectStore;
         private readonly ITestStore _testStore;
         private readonly ITryingHistoryStore _tryingHistoryStore;
 
         public AutoTestedManager(
-            ITestManager testManager, ICompilator compilator, 
+            ITestExecutor testExecutor, ICompilator compilator, 
             IProjectStore projectStore, ITestStore testStore,
             ITryingHistoryStore tryingHistoryStore)
         {
-            _testManager = testManager;
+            _testExecutor = testExecutor;
             _compilator = compilator;
             _projectStore = projectStore;
             _testStore = testStore;
             _tryingHistoryStore = tryingHistoryStore;
         }
 
-        public ServiceResult Test(string userId, string taskId)
+        public ServiceResult<TestResult> Test(string userId, string taskId)
         {
             var taskValidationResult = ValidateTask(taskId);
 
@@ -41,8 +42,7 @@ namespace JI.Managers.Managers
                     {
                         ProjectId = _projectStore
                             .FindByTaskAndUser(new Guid(userId), new Guid(taskId))
-                            .Id
-                            .ToString(),
+                            .Id,
                         DateTime = DateTime.Now
                     };
 
@@ -50,21 +50,21 @@ namespace JI.Managers.Managers
                     if (compilationResult.Succeeded)
                     {
                         trying.Compiled = true;
-                        //var exePath = compilationResult.Result;
-                        //var tests = _testStore.FindByTask(new Guid(taskId));
 
-                        //foreach (var test in tests)
-                        //{
-                        //    var testResult = _testManager.Test(exePath, "", "");
-                        //    //TODO save testresult
-                        //    if (!testResult.Succeeded)
-                        //    {
-                        //        return testResult;
-                        //    }
-                        //}
+                        var exePath = compilationResult.Result;
+                        var tests = _testStore.GetPaths(new Guid(taskId));
 
-                        //TODO save success result
-                        //TODO return 
+                        foreach (var test in tests)
+                        {
+                            var testResult = _testExecutor.Test(exePath, test.InputPath, test.OutputPath);
+
+                            trying.Items.Add(new Trying
+                            {
+                                TestId = test.Id,
+                                Pass = testResult.Succeeded,
+                                Errors = string.Join(";", testResult.Errors)
+                            });
+                        }
                     }
                     else
                     {
@@ -72,14 +72,16 @@ namespace JI.Managers.Managers
                     }
 
                     trying.Id = _tryingHistoryStore.Save(trying);
-                    return compilationResult;
+
+                    return ServiceResult<TestResult>.Success(
+                        trying.Map<TryingHistory, TestResult>());
                 }
 
                 //TODO move to resources
-                return ServiceResult.Failed("No uploaded project for this task");
+                return ServiceResult<TestResult>.Failed("No uploaded project for this task");
             }
 
-            return taskValidationResult;
+            return taskValidationResult.Convert<TestResult>();
         }
 
         #region protected

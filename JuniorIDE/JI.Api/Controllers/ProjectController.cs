@@ -19,6 +19,7 @@ namespace JI.Api.Controllers
             _testManager = testManager;
         }
 
+        [HttpPost]
         [Route("upload")]
         public IHttpActionResult UploadProject()
         {
@@ -26,17 +27,19 @@ namespace JI.Api.Controllers
             var userId = "70cb531d-130b-408a-83c5-d72fe712cc46";
             var taskId = "b61fbd43-395c-478a-addb-f0243ff20a41";
 
-            var projectStream = Request.Content.ReadAsStreamAsync().Result;
+            var projectStream = System.IO.File.OpenRead("D:/1.zip");//Request.Content.ReadAsStreamAsync().Result;
             var result = _projectManager.CreateProjectByStream(projectStream, userId, taskId);
 
             if (result.Succeeded)
             {
                 var testResult = _testManager.Test(userId, taskId);
+
+                return testResult.Succeeded
+                ? Ok(testResult.Result)
+                : GetErrorResult(testResult.Errors);
             }
 
-            return result.Succeeded 
-                ? Ok()
-                : GetErrorResult(result.Errors);
+            return GetErrorResult(result.Errors);
         }
     }
 }

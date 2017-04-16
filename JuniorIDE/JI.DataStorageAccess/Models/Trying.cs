@@ -10,13 +10,16 @@ namespace JI.DataStorageAccess.Models
         public Guid Id { get; set; }
 
         [Column(Name = "TryingHistoryId"), NotNull]
-        public string TryingHistoryId { get; set; }
+        public Guid TryingHistoryId { get; set; }
 
         [Column(Name = "TestId"), NotNull]
-        public string TestId { get; set; }
+        public Guid TestId { get; set; }
 
         [Column(Name = "Pass"), NotNull]
         public bool Pass { get; set; }
+
+        [Column(Name = "Errors"), Nullable]
+        public string Errors { get; set; }
 
         [Association(ThisKey = "TryingHistoryId", OtherKey = "Id")]
         public TryingHistory TryingHistory { get; set; }

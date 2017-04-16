@@ -114,6 +114,7 @@
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\TaskDeadline.cs" />
     <Compile Include="Models\Test.cs" />
+    <Compile Include="Models\TestPaths.cs" />
     <Compile Include="Models\Trying.cs" />
     <Compile Include="Models\TryingHistory.cs" />
     <Compile Include="Models\User.cs" />
