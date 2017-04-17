@@ -5,6 +5,6 @@ namespace JI.Managers.Contracts
 {
     public interface IAutoTestedManager
     {
-        ServiceResult<TestResult> Test(string userId, string taskId);
+        ServiceResult<TryingHistory> Test(string userId, string taskId);
     }
 }

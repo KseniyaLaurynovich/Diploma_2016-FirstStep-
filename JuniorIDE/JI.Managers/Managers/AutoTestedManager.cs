@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Contracts;
-using JI.DataStorageAccess.Models;
 using JI.Managers.Business.Models;
 using JI.Managers.Contracts;
-using JI.Managers.Models;
+using Trying = JI.DataStorageAccess.Models.Trying;
 
 namespace JI.Managers.Managers
 {
@@ -28,7 +28,7 @@ namespace JI.Managers.Managers
             _tryingHistoryStore = tryingHistoryStore;
         }
 
-        public ServiceResult<TestResult> Test(string userId, string taskId)
+        public ServiceResult<Models.TryingHistory> Test(string userId, string taskId)
         {
             var taskValidationResult = ValidateTask(taskId);
 
@@ -38,7 +38,7 @@ namespace JI.Managers.Managers
 
                 if (!string.IsNullOrEmpty(projectPath))
                 {
-                    var trying = new TryingHistory
+                    var trying = new DataStorageAccess.Models.TryingHistory
                     {
                         ProjectId = _projectStore
                             .FindByTaskAndUser(new Guid(userId), new Guid(taskId))
@@ -50,13 +50,15 @@ namespace JI.Managers.Managers
                     if (compilationResult.Succeeded)
                     {
                         trying.Compiled = true;
+                        trying.Items = new List<Trying>();
 
                         var exePath = compilationResult.Result;
                         var tests = _testStore.GetPaths(new Guid(taskId));
 
                         foreach (var test in tests)
                         {
-                            var testResult = _testExecutor.Test(exePath, test.InputPath, test.OutputPath);
+                            var testResult = _testExecutor
+                                .Test(exePath, test.InputPath, test.OutputPath);
 
                             trying.Items.Add(new Trying
                             {
@@ -73,15 +75,15 @@ namespace JI.Managers.Managers
 
                     trying.Id = _tryingHistoryStore.Save(trying);
 
-                    return ServiceResult<TestResult>.Success(
-                        trying.Map<TryingHistory, TestResult>());
+                    return ServiceResult<Models.TryingHistory>.Success(
+                        trying.Map<DataStorageAccess.Models.TryingHistory, Models.TryingHistory>());
                 }
 
                 //TODO move to resources
-                return ServiceResult<TestResult>.Failed("No uploaded project for this task");
+                return ServiceResult<Models.TryingHistory>.Failed("No uploaded project for this task");
             }
 
-            return taskValidationResult.Convert<TestResult>();
+            return taskValidationResult.Convert<Models.TryingHistory>();
         }
 
         #region protected

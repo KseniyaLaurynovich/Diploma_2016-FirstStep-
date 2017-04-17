@@ -15,44 +15,37 @@ namespace JI.Managers.Tools
     {
         public ServiceResult<string> Compile(string projectPath)
         {
-            var tempDirectory = TempDirectory(projectPath);
+            var outputFilePath = new FileInfo(ExePath(Guid.NewGuid()));
 
-            if (!Directory.Exists(tempDirectory))
-                Directory.CreateDirectory(tempDirectory);
+            if(!File.Exists(CppCompilerPath))
+                throw new ConfigurationErrorsException("Cpp compiler not found");
 
-            var sourceFiles = GetFilesForCompilation(WorkDirectory(projectPath))
+            if (!Directory.Exists(outputFilePath.DirectoryName))
+                Directory.CreateDirectory(outputFilePath.DirectoryName);
+
+            var sourceFiles = GetFilesForCompilation(projectPath)
                 .Select(fullPath => fullPath.GetRelativePath(projectPath));
 
             var cmd = new Cmd();
-            var outputFilePath = ExePath(projectPath).GetRelativePath(projectPath);
-            var arguments = GetArgumentsString(outputFilePath, sourceFiles.ToArray());
+            
+            var arguments = GetArgumentsString(outputFilePath.FullName, sourceFiles.ToArray());
             var result = cmd.Run(projectPath, arguments, CppCompilerPath);
 
             return result.Status == ExecutionStatus.OK
-                ? ServiceResult<string>.Success(ExePath(projectPath)) 
+                ? ServiceResult<string>.Success(outputFilePath.FullName) 
                 : ServiceResult<string>.Failed(result.Errors);
         }
 
         #region const
 
-        protected string CppCompilerPath = $"{ConfigurationManager.AppSettings["cpp:compiler"]}\\g++.exe";
+        protected string CppCompilerPath = $@"{ConfigurationManager.AppSettings["cpp:compiler"]}\g++.exe";
 
         protected string[] FileExtens =
         {
             ".cpp"
         };
 
-        protected string ExePath = "Argv.exe";
-
-        protected string WorkDirectory(string projectPath)
-        {
-            return $"{projectPath}\\workspace";
-        }
-
-        protected string TempDirectory(string projectPath)
-        {
-            return $"D:\\JuniorTemp\\{Guid.NewGuid()}\\Temp";
-        }
+        protected string ExePath(Guid guid) => $@"D:\JuniorTemp\{ guid }\Argv.exe";
 
         #endregion
 

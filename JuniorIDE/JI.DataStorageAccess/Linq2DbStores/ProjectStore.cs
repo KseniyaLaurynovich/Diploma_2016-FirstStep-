@@ -24,6 +24,9 @@ namespace JI.DataStorageAccess.Linq2DbStores
             {
                 var path = FileTableStoredProcedures.GetPhysicalPath(DbConnection, folder.Value);
 
+                Array.ForEach(Directory.GetFiles(path), System.IO.File.Delete);
+                Array.ForEach(Directory.GetDirectories(path), p => Directory.Delete(p, true));
+
                 using (var zip = Ionic.Zip.ZipFile.Read(projectStream))
                 {
                     zip.ExtractAll(path);

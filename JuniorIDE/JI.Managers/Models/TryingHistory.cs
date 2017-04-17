@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace JI.Managers.Models
 {
-    public class TestResult
+    public class TryingHistory
     {
         public string Id { get; set; }
 
@@ -12,6 +13,6 @@ namespace JI.Managers.Models
 
         public bool Compiled { get; set; }
 
-        //TODO add tryings
+        public IList<Trying> Items { get; set; }
     }
 }

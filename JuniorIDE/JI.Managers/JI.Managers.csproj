@@ -117,6 +117,7 @@
     <Compile Include="Managers\ProjectManager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
+    <Compile Include="Models\Trying.cs" />
     <Compile Include="Tools\FileEquatable.cs" />
     <Compile Include="Tools\TestExecutor.cs" />
     <Compile Include="Models\Project.cs" />
@@ -126,7 +127,7 @@
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Test.cs" />
-    <Compile Include="Models\TestResult.cs" />
+    <Compile Include="Models\TryingHistory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

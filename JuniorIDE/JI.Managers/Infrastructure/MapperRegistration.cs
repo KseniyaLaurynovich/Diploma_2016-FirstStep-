@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ExpressMapper;
 using JI.Common.Contracts.Contracts;
 using JI.DataStorageAccess.Business.Extensions;
@@ -12,6 +13,7 @@ using Subject = JI.DataStorageAccess.Models.Subject;
 using Task = JI.DataStorageAccess.Models.Task;
 using TaskDeadline = JI.DataStorageAccess.Models.TaskDeadline;
 using Test = JI.DataStorageAccess.Models.Test;
+using Trying = JI.Managers.Models.Trying;
 
 namespace JI.Managers.Infrastructure
 {
@@ -214,13 +216,13 @@ namespace JI.Managers.Infrastructure
 
             #endregion
 
-            #region TestResult
+            #region TryingHistory
 
-            Mapper.Register<TryingHistory, TestResult>()
+            Mapper.Register<DataStorageAccess.Models.TryingHistory, Models.TryingHistory>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.ProjectId, src => src.ProjectId.ToString());
 
-            Mapper.Register<TestResult, TryingHistory>()
+            Mapper.Register<Models.TryingHistory, DataStorageAccess.Models.TryingHistory>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.ProjectId)
                 .After((testResult, tryingHistory) =>
@@ -236,6 +238,22 @@ namespace JI.Managers.Infrastructure
                     }
                 });
 
+            #endregion
+
+            #region TestResult
+
+            Mapper.Register<DataStorageAccess.Models.Trying, Trying>()
+                .Member(dest => dest.TestId, src => src.TestId.ToString());
+
+            Mapper.Register<Trying, DataStorageAccess.Models.Trying>()
+                .Ignore(dest => dest.TestId)
+                .After((testResult, trying) =>
+                {
+                    if (testResult.TestId != null)
+                    {
+                        trying.TestId = new Guid(testResult.TestId);
+                    }
+                });
 
             #endregion
         }

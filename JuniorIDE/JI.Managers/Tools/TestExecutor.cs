@@ -24,7 +24,7 @@ namespace JI.Managers.Tools
 
             var workingDirectory = fileInfo.DirectoryName;
 
-            var runResult = cmd.Run(workingDirectory, "", fileInfo.Name);
+            var runResult = cmd.Run(workingDirectory, "", fileInfo.FullName);
 
             if (runResult.Status == ExecutionStatus.OK)
             {
