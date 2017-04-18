@@ -1,0 +1,6 @@
+<a:application xmlns:a="http://ajax.org/2005/aml">
+    <a:bar id="tasksActions" class="warning-message">
+      <p><b>You are not authorized to JuniorIDE.</b></p>
+      <p>Please, provide your credentials in preferences, and reload IDE.</p>
+    </a:bar>
+</a:application>

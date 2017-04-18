@@ -11,6 +11,7 @@ using SimpleInjector;
 using SimpleInjector.Extensions.ExecutionContextScoping;
 using SimpleInjector.Integration.WebApi;
 using JI.Managers.Providers;
+using Microsoft.Owin.Cors;
 
 [assembly: OwinStartup(typeof(Startup))]
 namespace JI.Api
@@ -51,8 +52,7 @@ namespace JI.Api
                 TokenEndpointPath = new PathString("/token"),
                 Provider = new ApplicationOAuthProvider(),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true
+                AllowInsecureHttp = false
             };
             app.UseApplicationIdentity();
             app.UseOAuthBearerTokens(oAuthOptions);

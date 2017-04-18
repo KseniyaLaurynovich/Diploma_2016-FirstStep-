@@ -4,6 +4,7 @@ define(function(require, exports, module) {
     const BASE_URL = "https://junioride-site.com/";
     const GET_TASKS = "tasks/getByGroup/";
     const GET_GROUPS = "groups/all/";
+    const GET_TOKEN = "token";
     const UPLOAD_PROJECT = "project/upload/";
 
     var JuniorServerApi = function(http) {
@@ -32,6 +33,25 @@ define(function(require, exports, module) {
             if(callback) callback(data);
             
         }.bind(this));
+    };
+    
+    JuniorServerApi.prototype.getToken = function(login, password, callback){
+        var url = "https://junioride-site.com/token"; 
+        var params = "grant_type=password&username=" + login + "&password=" + password;
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function(e)
+        {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                var response = JSON.parse(xhr.responseText);
+                if(callback) callback(response);
+            }
+        }; 
+        
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        xhr.send(params);
     };
     
     JuniorServerApi.prototype.uploadProject = function(taskId, stream, callback){

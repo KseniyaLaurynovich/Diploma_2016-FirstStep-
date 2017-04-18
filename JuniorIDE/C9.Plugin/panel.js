@@ -18,8 +18,8 @@ define(function(require, exports, module) {
         var info = imports.info;
         var vfs = imports.vfs;
         
-        var markup = require("text!./panel.xml");
-        var noAuth = require("text!./not_authorized.html");
+        var panelMarkup = require("text!./markup/panel.xml");
+        var noAuthMarkup = require("text!./markup/not_authorized.xml");
         
         var Tree = require("ace_tree/tree");
         
@@ -30,6 +30,8 @@ define(function(require, exports, module) {
         var JuniorServer = require("./juniorServerApi");
         
         var juniorServer = new JuniorServer(http);
+        var authSettings = new AuthSettings(juniorServer, settings);
+        
         /***** Initialization *****/
         
         var plugin = new Panel("Junior IDE", main.consumes, {
@@ -40,10 +42,8 @@ define(function(require, exports, module) {
             where: options.where || "right"
         });
         
-        var taskNameFilter, tree, ldSearch, authSettings, taskUpload;
+        var taskNameFilter, tree, ldSearch, taskUpload;
         var lastSearch;
-        
-        authSettings = new AuthSettings(settings);
         
         function load() {
             plugin.setCommand({
@@ -55,24 +55,26 @@ define(function(require, exports, module) {
             menus.addItemByPath("Goto/Goto task...", new ui.item({ 
                 command: "tasks" 
             }), 300, plugin);
-            
-            juniorServer.getGroups(onGroupsReload.bind(this));
         }
         
         var drawn = false;
         function draw(options) {
             if (drawn) return;
             drawn = true;
+            initSettings();
             
             ui.insertCss(require("text!./style.css"), plugin);
             
-            var group = authSettings.getGroup();
-            if(!group){
-                options.html.innerHTML = noAuth;
+            var token = authSettings.tryAuth();
+            
+            if(!token){
+                ui.insertMarkup(options.aml, noAuthMarkup, plugin);
                 return;
             }
             
-            ui.insertMarkup(options.aml, markup, plugin);
+            var group = authSettings.getGroup();
+            
+            ui.insertMarkup(options.aml, panelMarkup, plugin);
             
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
@@ -161,25 +163,23 @@ define(function(require, exports, module) {
             }
         }
     
-        function onGroupsReload(groups){
-            
-            var items = groups.map(function(group){
-                return {
-                    value: group.id, caption: group.name
-                }
-            });
-            
+        function initSettings(groups){
             prefs.add({
                 "Junior IDE" : {
                     position: 450,
                     "Junior IDE plugin settings" : {
                         position: 100,
-                        "Group": {
-                            type: "dropdown",
-                            setting: authSettings.groupKey,
+                        "Login": {
+                            type: "textbox",
+                            setting: authSettings.loginKey,
                             width: "185",
-                            position: 200,
-                            items: items
+                            position: 100
+                        },
+                        "Password": {
+                            type: "password",
+                            setting: authSettings.passwordKey,
+                            width: "185",
+                            position: 200
                         }
                     }
                 }

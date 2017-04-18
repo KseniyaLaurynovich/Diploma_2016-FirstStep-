@@ -17,7 +17,7 @@ namespace JI.Api
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "*");
+            HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", HttpContext.Current.Request.UrlReferrer.GetLeftPart(UriPartial.Authority));
 
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
             {
