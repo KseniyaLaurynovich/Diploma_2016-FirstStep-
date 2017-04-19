@@ -13,7 +13,6 @@ define(function(require, exports, module) {
         var menus = imports.menus;
         var settings = imports.settings;
         var commands = imports.commands;
-        var http = imports.http;
         var prefs = imports.preferences;
         var info = imports.info;
         var vfs = imports.vfs;
@@ -25,12 +24,9 @@ define(function(require, exports, module) {
         
         var search = require('./search');
         var ListData = require("./dataprovider");
-        var AuthSettings = require("./auth");
+        var JuniorSettings = new (require("./settings"))(settings);
         var DownloadManager = require("./download");
-        var JuniorServer = require("./juniorServerApi");
-        
-        var juniorServer = new JuniorServer(http);
-        var authSettings = new AuthSettings(juniorServer, settings);
+        var JuniorServer = new (require("./juniorServerApi"))();
         
         /***** Initialization *****/
         
@@ -42,7 +38,7 @@ define(function(require, exports, module) {
             where: options.where || "right"
         });
         
-        var taskNameFilter, tree, ldSearch, taskUpload;
+        var taskNameFilter, tree, ldSearch, taskUpload, options;
         var lastSearch;
         
         function load() {
@@ -55,32 +51,55 @@ define(function(require, exports, module) {
             menus.addItemByPath("Goto/Goto task...", new ui.item({ 
                 command: "tasks" 
             }), 300, plugin);
+            
+            initSettings();
         }
         
         var drawn = false;
         function draw(options) {
             if (drawn) return;
+            
             drawn = true;
-            initSettings();
+            options = options;
             
             ui.insertCss(require("text!./style.css"), plugin);
             
-            var token = authSettings.tryAuth();
+            authorizeCurrentUser(options, loadTasksMarkup, loadUnauthorizeMarkup);
+        }
+        
+        /***** Methods *****/
+    
+        function authorizeCurrentUser(options, callbackOnSuccess, callbackOnError){
+            var username = JuniorSettings.getUsername();
+            var password = JuniorSettings.getPassword();
             
-            if(!token){
-                ui.insertMarkup(options.aml, noAuthMarkup, plugin);
-                return;
-            }
+            if(!username || !password)
+                callbackOnError();
             
-            var group = authSettings.getGroup();
-            
+            JuniorServer.getToken(username, password, function(error, userData){
+                if(error){
+                    callbackOnError(options, error);
+                    return;
+                }
+                
+                JuniorServer.setToken(userData.access_token); 
+                callbackOnSuccess(options);
+            });
+        }
+    
+        function loadUnauthorizeMarkup(options, error){
+            ui.insertMarkup(options.aml, noAuthMarkup, plugin);
+            showError(error);
+        }
+        
+        function loadTasksMarkup(options){
             ui.insertMarkup(options.aml, panelMarkup, plugin);
             
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
             taskUpload = plugin.getElement("uploadTask");
             
-            juniorServer.getTasks(group, onDataReload.bind(this));
+            JuniorServer.getTasks(onDataReload.bind(this));
             
             tree = new Tree(treeParent.$int);
             tree.on("click", onTaskClicked.bind(this));
@@ -111,8 +130,6 @@ define(function(require, exports, module) {
                 upload(["/"], makeArchiveFilename(info.getWorkspace().name));
             }, false);
         }
-        
-        /***** Methods *****/
     
         function upload(paths, filenameHeader){
             
@@ -130,10 +147,13 @@ define(function(require, exports, module) {
             return ".zip";
         }
     
-        function onDataReload(tasks){
-            
-            ldSearch.tasks = tasks;
-            ldSearch.updateData();
+        function onDataReload(error, tasks){
+            if(!error){
+                ldSearch.tasks = tasks;
+                ldSearch.updateData();
+            }else{
+                ldSearch.warnMessage = error;
+            }
             
             tree.setDataProvider(ldSearch);
             tree.selection.$wrapAround = true;
@@ -141,7 +161,7 @@ define(function(require, exports, module) {
     
         function onProjectUpload(stream){
             
-            juniorServer.uploadProject("", stream, function(){alert("upload");});
+            JuniorServer.uploadProject("", stream, function(){alert("upload");});
         };
     
         function onTaskClicked(ev){
@@ -171,13 +191,13 @@ define(function(require, exports, module) {
                         position: 100,
                         "Login": {
                             type: "textbox",
-                            setting: authSettings.loginKey,
+                            setting: JuniorSettings.loginKey,
                             width: "185",
                             position: 100
                         },
                         "Password": {
                             type: "password",
-                            setting: authSettings.passwordKey,
+                            setting: JuniorSettings.passwordKey,
                             width: "185",
                             position: 200
                         }
@@ -194,6 +214,10 @@ define(function(require, exports, module) {
         function hideTaskActions(){
             
             document.getElementsByClassName("task-upload")[0].style.visibility='hidden';
+        }
+    
+        function showError(error){
+            document.getElementById("error").innerHTML = error;
         }
     
         /**

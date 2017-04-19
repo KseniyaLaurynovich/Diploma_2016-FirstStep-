@@ -6,7 +6,7 @@ namespace JI.Managers.Contracts
 {
     public interface ITaskManager : IManager<Task>
     {
-        IList<Task> GetByGroup(string groupId);
+        IList<Task> GetByGroups(IList<Group> groups);
         ServiceResult SetVisibility(string taskId, bool isVisible);
         ServiceResult<File> AssociateTestFile(string taskId, File file);
     }

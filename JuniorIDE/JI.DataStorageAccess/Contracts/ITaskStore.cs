@@ -9,6 +9,6 @@ namespace JI.DataStorageAccess.Contracts
         IList<Test> GetTests(Task task);
         void AddTest(Task task, Test test);
         void RemoveTest(Task task, Test test);
-        IList<Task> FindByGroup(Guid guid);
+        IList<Task> FindByGroups(Guid[] groupIds);
     }
 }

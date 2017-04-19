@@ -12,6 +12,7 @@ using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using JI.Managers.Contracts;
 using JI.Managers.Models;
+using Microsoft.AspNet.Identity;
 using File = JI.Managers.Models.File;
 
 namespace JI.Api.Controllers
@@ -29,12 +30,18 @@ namespace JI.Api.Controllers
         }
 
         [HttpGet]
-        [Route("getByGroup/{groupId}")]
-        [AllowAnonymous]
-        public IHttpActionResult GetForGroup(string groupId)
+        [Route("get")]
+        public IHttpActionResult Get()
         {
+            var currentUserId = User.Identity.GetUserId();
+            var groups = UserManager.Value.GetGroups(currentUserId);
+
+            //TODO mode to resources
+            if(!groups.Any())
+                return BadRequest("You are not assigned to any group. Contact with our administrator.");
+
             return Ok(_taskManager
-                .GetByGroup(groupId)
+                .GetByGroups(groups)
                 .Select(Mapper.Map<Task, TaskPluginModel>)
                 .ToList());
         }

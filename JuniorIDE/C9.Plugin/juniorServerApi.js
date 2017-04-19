@@ -2,52 +2,61 @@ define(function(require, exports, module) {
     "use strict";
     
     const BASE_URL = "https://junioride-site.com/";
-    const GET_TASKS = "tasks/getByGroup/";
+    const GET_TASKS = "tasks/get/";
     const GET_GROUPS = "groups/all/";
     const GET_TOKEN = "token";
     const UPLOAD_PROJECT = "project/upload/";
 
-    var JuniorServerApi = function(http) {
-        this.http = http;
+    var JuniorServerApi = function() {
+        this.token = null;
     };
     
-    JuniorServerApi.prototype.getTasks = function(group, callback){
-        var url = BASE_URL + GET_TASKS + group; 
-        
-        this.http.request(url, function(err, data){
-            //todo handle err
-            if(err) console.log(err);
-            
-            if(callback) callback(data);
-            
-        }.bind(this));
+    JuniorServerApi.prototype.setToken = function(token){
+        this.token = token;
     };
     
-    JuniorServerApi.prototype.getGroups = function(callback){
-        var url = BASE_URL + GET_GROUPS; 
+    JuniorServerApi.prototype.getTasks = function(callback){
+        var url = BASE_URL + GET_TASKS; 
         
-        this.http.request(url, function(err, data){
-            //todo handle err
-            if(err) console.log(err);
-            
-            if(callback) callback(data);
-            
-        }.bind(this));
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function() {
+            if (this.readyState != 4) return;
+        
+            if (this.status != 200) {
+                if(callback) callback(JSON.parse(xhr.responseText).Message);
+                return;
+            }
+        
+            var response = JSON.parse(xhr.responseText);
+                
+            if(callback) callback(null, response);
+        }
+        
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + this.token);
+        
+        xhr.send();
     };
     
     JuniorServerApi.prototype.getToken = function(login, password, callback){
-        var url = "https://junioride-site.com/token"; 
+        var url = BASE_URL + GET_TOKEN; 
         var params = "grant_type=password&username=" + login + "&password=" + password;
         
         var xhr = new XMLHttpRequest();
         
-        xhr.onreadystatechange = function(e)
-        {
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                var response = JSON.parse(xhr.responseText);
-                if(callback) callback(response);
+        xhr.onreadystatechange = function() {
+            if (this.readyState != 4) return;
+        
+            if (this.status != 200) {
+                if(callback) callback(JSON.parse(xhr.responseText).error_description);
+                return;
             }
-        }; 
+        
+            var response = JSON.parse(xhr.responseText);
+                
+            if(callback) callback(null, response);
+        }
         
         xhr.open("POST", url, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');

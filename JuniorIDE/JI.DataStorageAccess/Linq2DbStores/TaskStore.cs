@@ -42,13 +42,13 @@ namespace JI.DataStorageAccess.Linq2DbStores
             .LoadWith(t => t.Tests)
             .FirstOrDefault(t => t.Id == id);
 
-        public IList<Task> FindByGroup(Guid groupId)
+        public IList<Task> FindByGroups(Guid[] groupIds)
         {
             var tasks =
                (from t in DbConnection.Tasks.LoadWith(t => t.Subject)
                 join sg in DbConnection.GroupSubjects on t.SubjectId equals sg.SubjectId
-                join td in DbConnection.TaskDeadlines.LoadWith(td => td.GroupSubject).Where(td => td.GroupSubject.GroupId == groupId) on t.Id equals td.TaskId
-                where sg.GroupId == groupId
+                join td in DbConnection.TaskDeadlines.LoadWith(td => td.GroupSubject).Where(td => groupIds.Contains(td.GroupSubject.GroupId)) on t.Id equals td.TaskId
+                where groupIds.Contains(sg.GroupId)
                 select new { Task = t, Deadline = td})
                 .ToList();
 

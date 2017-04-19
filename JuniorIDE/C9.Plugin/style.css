@@ -47,3 +47,7 @@
     margin-bottom:3px;
     visibility:hidden;
 }
+
+#error{
+    color: red;
+}

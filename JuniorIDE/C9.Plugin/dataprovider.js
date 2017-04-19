@@ -11,6 +11,8 @@ define(function(require, exports, module) {
         this.innerRowHeight = 34;
         this.rowHeight = 42;
         
+        this.warnMessage = null;
+        
         this.tasks = tasks;
         this.tabManager = tabManager;
         this.updateData();
@@ -33,6 +35,9 @@ define(function(require, exports, module) {
         };
         
         this.getEmptyMessage = function() {
+            if(this.warnMessage)
+                return this.warnMessage;
+            
             if (!this.keyword)
                 return "Loading tasks list. One moment please...";
             else

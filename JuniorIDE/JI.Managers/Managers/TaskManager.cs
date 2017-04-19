@@ -57,10 +57,10 @@ namespace JI.Managers.Managers
             return ServiceResult<File>.Success(file);
         }
 
-        public IList<Task> GetByGroup(string groupId)
+        public IList<Task> GetByGroups(IList<Group> groups)
         {
             return (Store as ITaskStore)
-                .FindByGroup(new Guid(groupId))
+                .FindByGroups(groups.Select(g => new Guid(g.Id)).ToArray())
                 .Select(Mapper.Map<DbModels.Task, Task>)
                 .ToList();
         }
