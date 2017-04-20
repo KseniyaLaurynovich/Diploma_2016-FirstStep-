@@ -1,14 +1,9 @@
 .task-searchresults .ace_tree_scroller{
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .task-searchresults .body{
     white-space: normal;
-}
-
-.task-searchresults .item{
-    height: auto !important;
 }
 
 .task-searchresults .item:hover{
@@ -30,22 +25,7 @@
     top:47px;
     right:10px;
     left:10px;
-    bottom:35px
-}
-
-.task-actions{
-    position:absolute;
-    bottom:0;
-    height:35px;
-    right:10px;
-    left:10px;
-}
-
-.task-upload{
-    width:80px;
-    margin-top:3px;
-    margin-bottom:3px;
-    visibility:hidden;
+    bottom:0px
 }
 
 #error{

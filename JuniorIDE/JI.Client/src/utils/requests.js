@@ -165,7 +165,7 @@ export function saveTaskTest(token, taskId, file){
     method : 'post',
     url    :  BASE_URL + '/tasks/saveTest/' + taskId,
     contentType: false,
-    headers : {"Content-Type": "multipart/form-data"},
+    headers : {"Content-Type": "multipart/form-data", "Authorization": "Bearer " + token },
     data   :  data
   })
 }

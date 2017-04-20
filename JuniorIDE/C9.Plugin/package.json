@@ -14,7 +14,8 @@
     "url": ""
   },
   "plugins": {
-    "panel": {}
+    "panel": {},
+    "taskTab": {}
   },
   "categories": ["miscellaneous"],
   "licenses": []

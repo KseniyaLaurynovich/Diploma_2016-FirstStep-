@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     main.consumes = [
         "Panel", "ui", "menus", "panels", "tabManager", "commands", "layout",
-        "settings", "http", "preferences", "info", "vfs"
+        "settings", "http", "preferences", "info", "vfs", "editors"
     ];
     main.provides = ["tasks.panel"];
     return main;
@@ -16,6 +16,7 @@ define(function(require, exports, module) {
         var prefs = imports.preferences;
         var info = imports.info;
         var vfs = imports.vfs;
+        var editors = imports.editors;
         
         var panelMarkup = require("text!./markup/panel.xml");
         var noAuthMarkup = require("text!./markup/not_authorized.xml");
@@ -97,7 +98,6 @@ define(function(require, exports, module) {
             
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
-            taskUpload = plugin.getElement("uploadTask");
             
             JuniorServer.getTasks(onDataReload.bind(this));
             
@@ -126,12 +126,12 @@ define(function(require, exports, module) {
                 settings.set("state/tasksPanel/@value", val);
             });
             
-            taskUpload.addEventListener("click", function(e) {
+            /*taskUpload.addEventListener("click", function(e) {
                 upload(["/"], makeArchiveFilename(info.getWorkspace().name));
-            }, false);
+            }, false);*/
         }
     
-        function upload(paths, filenameHeader){
+        /*function upload(paths, filenameHeader){
             
             var downloadManager = new DownloadManager(vfs);
             downloadManager.downloadAsZip(paths, onProjectUpload.bind(this));
@@ -145,7 +145,7 @@ define(function(require, exports, module) {
         function getArchiveFileExtension(){
             
             return ".zip";
-        }
+        }*/
     
         function onDataReload(error, tasks){
             if(!error){
@@ -166,20 +166,32 @@ define(function(require, exports, module) {
     
         function onTaskClicked(ev){
             
-            var e = ev.domEvent;
-            if (!e.shiftKey && !e.metaKey && !e.ctrlKey && !e.altKey)
             if (tree.selection.getSelectedNodes().length === 1){
                 var selectedIndex = tree.selection.getSelectedNodes()[0].index;
-                
-                if(ldSearch.selectedIndex != undefined){
-                    ldSearch.selectedIndex = undefined;
-                    hideTaskActions();
-                }else{
-                    ldSearch.selectedIndex = selectedIndex;
-                    showTaskActions();
-                }
+                ldSearch.selectedIndex = selectedIndex;
                 
                 tree.selection.clearSelection();
+                openTaskTab();
+            }
+        }
+    
+        function openTaskTab(){
+            var task = ldSearch.tasks[ldSearch.selectedIndex];
+            JuniorSettings.setCurrentTask(task);
+            
+            closeTaskTab();
+            tabs.open({
+                editorType: "juniorTask",
+                active: true
+            });
+        }
+    
+        function closeTaskTab() {
+            var pages = tabs.getTabs();
+            for (var i = 0, tab = pages[i]; tab; tab = pages[i++]) {
+                if (tab.editorType == "juniorTask") {
+                    tab.close();
+                }
             }
         }
     
@@ -204,16 +216,6 @@ define(function(require, exports, module) {
                     }
                 }
             }, plugin);
-        }
-    
-        function showTaskActions(){
-            
-            document.getElementsByClassName("task-upload")[0].style.visibility='visible';
-        }
-        
-        function hideTaskActions(){
-            
-            document.getElementsByClassName("task-upload")[0].style.visibility='hidden';
         }
     
         function showError(error){

@@ -8,7 +8,7 @@ define(function(require, exports, module) {
     var ListData = function(tasks, tabManager) {
         Base.call(this);
         
-        this.innerRowHeight = 34;
+        this.innerRowHeight = 38;
         this.rowHeight = 42;
         
         this.warnMessage = null;
@@ -77,14 +77,7 @@ define(function(require, exports, module) {
             if(!task) return;
             
             var isSelected = this.selectedIndex == row;
-            
             var deadline = utils.dateTimeToString(new Date(task.deadline));
-            var description = 
-                        isSelected 
-                        ?  "<div class=\"body\">" + 
-                            (task.description == null ? 'no description' : task.description)  
-                          +"</div>" 
-                        : "" ;
             
             html.push("<div class='item "
                     + (isSelected ? "selected " : "") 
@@ -95,7 +88,6 @@ define(function(require, exports, module) {
                     + "<span class='path'>"
                     + task.subjectName
                     + "</span>"
-                    + description
                     + "</div>");
         };
         

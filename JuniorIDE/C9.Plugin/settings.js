@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     
     Settings.prototype.loginKey = JUNIOR_SETTINGS + "@login";
     Settings.prototype.passwordKey = JUNIOR_SETTINGS + "@password";
+    Settings.prototype.currentTask = JUNIOR_SETTINGS + "@currentTask";
     
     Settings.prototype.getUsername = function(){
         return this.settings.get(this.loginKey);
@@ -16,6 +17,14 @@ define(function(require, exports, module) {
     
     Settings.prototype.getPassword = function(){
         return this.settings.get(this.passwordKey);
+    }
+    
+    Settings.prototype.setCurrentTask = function(taskId){
+        return this.settings.set(this.currentTask, taskId);
+    }
+    
+    Settings.prototype.getCurrentTask = function(){
+        return this.settings.get(this.currentTask);
     }
     
     return Settings;
