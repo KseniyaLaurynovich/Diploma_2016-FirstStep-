@@ -31,3 +31,117 @@
 #error{
     color: red;
 }
+
+.task-tab{
+    height: 100%;
+}
+
+.bar-task{
+    overflow-y:auto; 
+    overflow-x:hidden;
+    width: 170px;
+    display: block;
+    left: 0px;
+    top: 0px;
+    bottom: 30px;
+}
+
+.bar-task--btn{
+    cursor: pointer;
+}
+
+.bar-task--btn:hover{
+     background-color: #f1f1f1;
+}
+
+.bar-task--btn.active {
+    background-color: #0e7f44;
+}
+
+.bar-task--btn.active .lbl:after{
+    background-image: url(https://static.c9.io/nc-3.1.3555-410c301c/static/plugins/c9.ide.theme.flat/images/tree_close_arrow_small_flat_light.png);
+    background-repeat: no-repeat;
+    content: "";
+    position: absolute;
+    left: 13px;
+    width: 9px;
+    height: 13px;
+    top: 11px;
+    opacity: 0.7;
+}
+
+.bar-task--btn .right{
+    background-image: none;
+}
+
+.bar-task--btn .left{
+    background-image: none;
+}
+
+.bar-task--btn.active .lbl{
+    color: #fff;
+}
+
+.bar-task--btn .lbl{
+    background-image: none;
+    text-shadow: none;
+}
+
+.bar-content{
+    visibility: hidden;
+}
+
+.bar-content img{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.bar-content.active{
+    visibility: visible;
+}
+
+.tab-container{
+    display: block;
+    position: absolute;
+    left: 180px;
+    right: 0px;
+    top: 30px;
+    bottom: 0px;
+    overflow-y: scroll;
+}
+
+.logo{
+    width: 170px;
+    margin: 5px;
+}
+
+.logo img{
+    width: 100%;
+}
+
+.taskName{
+    left: 180px;
+    position: absolute;
+}
+
+.header{
+    height: 35px;
+}
+
+.header .basic{
+    display: inline-block;
+    top: -10px;
+}
+
+.add-tab{
+    position: absolute;
+    width: 170px;
+    bottom: 0px;
+    height: 70px;
+}
+
+#deadlineIcon{
+    width: 15%;
+    float: left;
+    margin-left: 5px;
+}

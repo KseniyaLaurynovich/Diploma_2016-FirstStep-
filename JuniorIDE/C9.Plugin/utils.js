@@ -23,4 +23,24 @@ define(function(require, exports, module) {
             + minutes + ':'
             + seconds;
     }
+    
+    module.exports.dateTimeToDateString = function(date) {
+      var day = date.getDate();
+      var monthIndex = date.getMonth();
+      var year = date.getFullYear();
+    
+      return day + ' '
+            + monthNames[monthIndex] + ' '
+            + year;
+    }
+    
+    module.exports.dateTimeToTimeString = function(date) {
+      var hour = date.getHours();
+      var minutes = date.getMinutes();
+      var seconds = date.getSeconds();
+    
+      return hour + ':'
+            + minutes + ':'
+            + seconds;
+    }
 });
