@@ -20,7 +20,6 @@
             </a:bar>
         </a:bar>
         <a:bar class="add-tab">
-            <a:button id="upload">Upload and tesk</a:button>
             <img id="deadlineIcon" src="#"/>
             <div>
                 <a:label id="deadlineDate" class="deadline">
@@ -28,6 +27,7 @@
                 <a:label id="deadlineTime" class="deadline">
                 </a:label>
             </div>
+            <a:button id="upload" class="btn-default">Upload and test</a:button>
         </a:bar>
     </div>
 </a:application>

@@ -8,8 +8,8 @@ define(function(require, exports, module) {
     var ListData = function(tasks, tabManager) {
         Base.call(this);
         
-        this.innerRowHeight = 38;
-        this.rowHeight = 42;
+        this.innerRowHeight = 57;   
+        this.rowHeight = 57;
         
         this.warnMessage = null;
         
@@ -78,6 +78,8 @@ define(function(require, exports, module) {
             
             var isSelected = this.selectedIndex == row;
             var deadline = utils.dateTimeToString(new Date(task.deadline));
+            var tags = utils.getTagsHtml(task);
+            
             
             html.push("<div class='item "
                     + (isSelected ? "selected " : "") 
@@ -87,6 +89,8 @@ define(function(require, exports, module) {
                     + "</span><span class='keys'>" + deadline + "</span>"
                     + "<span class='path'>"
                     + task.subjectName
+                    + "</span>"
+                    + tags
                     + "</span>"
                     + "</div>");
         };

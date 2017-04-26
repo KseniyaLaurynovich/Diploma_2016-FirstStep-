@@ -19,5 +19,17 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "deadline")]
         public DateTime? Deadline { get; set; }
+
+        [JsonProperty(PropertyName = "isShared")]
+        public bool IsShared { get; set; }
+
+        [JsonProperty(PropertyName = "isClosed")]
+        public bool IsClosed => Deadline.HasValue && Deadline.Value <= DateTime.Now;
+
+        [JsonProperty(PropertyName = "isPassed")]
+        public bool IsPassed { get; set; }
+
+        [JsonProperty(PropertyName = "isDeadlineSoon")]
+        public bool IsDeadlineSoon => Deadline.HasValue && Deadline.Value.AddDays(2) >= DateTime.Now;
     }
 }

@@ -119,8 +119,9 @@ define(function(require, exports, module) {
                 descriptionDiv.$html.innerHTML = task.description;
                 
                 //insert name
+                var tags = utils.getTagsHtml(task);
                 var taskNameHeader = handle.getElement("taskName");
-                taskNameHeader.$html.innerHTML = task.name;
+                taskNameHeader.$html.innerHTML = task.name + ' ' + tags;
                 
                 //insert deadline
                 var deadlineDate = handle.getElement("deadlineDate");
