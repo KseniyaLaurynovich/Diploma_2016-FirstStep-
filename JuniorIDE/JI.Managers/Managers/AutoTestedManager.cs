@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Contracts;
 using JI.Managers.Business.Models;
@@ -71,6 +72,8 @@ namespace JI.Managers.Managers
                     else
                     {
                         trying.Compiled = false;
+                        trying.Id = _tryingHistoryStore.Save(trying);
+                        return ServiceResult<Models.TryingHistory>.Failed(compilationResult.Errors.ToArray());
                     }
 
                     trying.Id = _tryingHistoryStore.Save(trying);

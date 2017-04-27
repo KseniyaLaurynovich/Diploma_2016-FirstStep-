@@ -7,6 +7,11 @@ namespace JI.DataStorageAccess.Models
     [Table(Name = "TryingsHistory")]
     public class TryingHistory : IWithIdentifier
     {
+        public TryingHistory()
+        {
+            Items = new List<Trying>();
+        }
+
         [Column(Name = "Id"), PrimaryKey, Identity]
         public Guid Id { get; set; }
 

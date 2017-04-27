@@ -126,8 +126,6 @@
 
 .header{
     height: 45px;
-    border-bottom: solid 1px #d2cece;
-    box-shadow: 0 4px 5px 0px rgba(0,0,0,0.5);
 }
 
 .header .basic{

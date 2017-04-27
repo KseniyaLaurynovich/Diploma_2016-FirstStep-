@@ -55,12 +55,10 @@ define(function(require, exports, module) {
             var decodedBuffer = '';
             
             proc.stdout.once('data', function(chunk){
-                
                 decodedBuffer = new Uint8Array(chunk.data).buffer;
             })
             
             proc.stdout.on('end', function(){
-            
                 if(callback) callback(decodedBuffer);
             })
         });

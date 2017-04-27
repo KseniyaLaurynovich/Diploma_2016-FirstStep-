@@ -65,7 +65,8 @@ namespace JI.Managers.Tools
                 }
                 else
                 {
-                    files.AddRange(GetFilesForCompilation(systemObj.FullName));
+                    if(systemObj.Name != ".c9")
+                        files.AddRange(GetFilesForCompilation(systemObj.FullName));
                 }
             }
 

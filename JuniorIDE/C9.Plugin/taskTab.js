@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     main.consumes = [
-        "Editor", "editors", "ui", "commands", "menus", "layout", 
-        "tabManager", "util", "settings"
+        "Editor", "editors", "ui", "commands", "menus", "layout", "info",
+        "tabManager", "util", "settings", "vfs"
     ];
     main.provides = ["juniorTask"];
     return main;
@@ -15,9 +15,13 @@ define(function(require, exports, module) {
         var menus = imports.menus;
         var util = imports.util;
         var layout = imports.layout;
+        var info = imports.info;
         var ui = imports.ui;
+        var vfs = imports.vfs;
         
         var JuniorSettings = new (require("./settings"))(settings);
+        var JuniorServer = new (require("./juniorServerApi"))();
+        var DownloadManager = new (require("./download"))(vfs);
         
         var taskMarkup = require("text!./markup/task.xml");
         var utils = require("./utils");
@@ -70,6 +74,31 @@ define(function(require, exports, module) {
             
             var deadLine = handle.getElement("deadlineIcon");
             deadLine.setAttribute("src", options.staticPrefix + "/images/calendar.png");
+            
+            var uploadButton = handle.getElement("upload");
+            uploadButton.addEventListener("click", uploadWorkspace);
+        }
+        
+        function uploadWorkspace(){
+             upload(["/"], makeArchiveFilename(info.getWorkspace().name));
+        }
+        
+        function upload(paths, filenameHeader){
+            DownloadManager.downloadAsZip(paths, onProjectUpload.bind(this));
+        }
+    
+        function makeArchiveFilename(filename) {
+             
+            return filename + getArchiveFileExtension();
+        }
+    
+        function getArchiveFileExtension(){
+            
+            return ".zip";
+        }
+        
+        function onProjectUpload(stream){
+            JuniorServer.uploadProject("", stream, function(){alert("upload");});
         }
         
         function changeActiveTab(tabName){
@@ -128,6 +157,16 @@ define(function(require, exports, module) {
                 deadlineDate.$html.innerHTML = utils.dateTimeToDateString(new Date(task.deadline));
                 var deadlineTime = handle.getElement("deadlineTime");
                 deadlineTime.$html.innerHTML = utils.dateTimeToTimeString(new Date(task.deadline));
+                
+                //check if upload available
+                var isVisibleUploadButton = !task.isShared && !task.isClosed;
+                var uploadButtonText = task.autoTested ? "Upload and test" : "Upload";
+                var uploadButton = handle.getElement("upload");
+                
+                /*if(isVisibleUploadButton)
+                    uploadButton.show();
+                uploadButton.hide();*/
+                uploadButton.setAttribute("caption", uploadButtonText);
                 
             });
             

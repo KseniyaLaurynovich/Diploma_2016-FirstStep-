@@ -14,9 +14,6 @@ define(function(require, exports, module) {
         var settings = imports.settings;
         var commands = imports.commands;
         var prefs = imports.preferences;
-        var info = imports.info;
-        var vfs = imports.vfs;
-        var editors = imports.editors;
         
         var panelMarkup = require("text!./markup/panel.xml");
         var noAuthMarkup = require("text!./markup/not_authorized.xml");
@@ -26,7 +23,6 @@ define(function(require, exports, module) {
         var search = require('./search');
         var ListData = require("./dataprovider");
         var JuniorSettings = new (require("./settings"))(settings);
-        var DownloadManager = require("./download");
         var JuniorServer = new (require("./juniorServerApi"))();
         
         /***** Initialization *****/
@@ -125,27 +121,7 @@ define(function(require, exports, module) {
                 filter(val);
                 settings.set("state/tasksPanel/@value", val);
             });
-            
-            /*taskUpload.addEventListener("click", function(e) {
-                upload(["/"], makeArchiveFilename(info.getWorkspace().name));
-            }, false);*/
         }
-    
-        /*function upload(paths, filenameHeader){
-            
-            var downloadManager = new DownloadManager(vfs);
-            downloadManager.downloadAsZip(paths, onProjectUpload.bind(this));
-        }
-    
-        function makeArchiveFilename(filename) {
-             
-            return filename + getArchiveFileExtension();
-        }
-    
-        function getArchiveFileExtension(){
-            
-            return ".zip";
-        }*/
     
         function onDataReload(error, tasks){
             if(!error){
@@ -158,11 +134,6 @@ define(function(require, exports, module) {
             tree.setDataProvider(ldSearch);
             tree.selection.$wrapAround = true;
         }
-    
-        function onProjectUpload(stream){
-            
-            JuniorServer.uploadProject("", stream, function(){alert("upload");});
-        };
     
         function onTaskClicked(ev){
             

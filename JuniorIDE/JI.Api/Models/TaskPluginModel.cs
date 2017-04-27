@@ -31,5 +31,8 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "isDeadlineSoon")]
         public bool IsDeadlineSoon => Deadline.HasValue && Deadline.Value.AddDays(2) >= DateTime.Now;
+
+        [JsonProperty(PropertyName = "autoTested")]
+        public bool AutoTested { get; set; }
     }
 }
