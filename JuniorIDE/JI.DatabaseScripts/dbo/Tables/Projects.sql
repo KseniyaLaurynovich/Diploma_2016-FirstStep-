@@ -8,6 +8,7 @@
     [Mark]				INT						NULL,
     [UserId]			UNIQUEIDENTIFIER		NULL,
     [FolderName]		VARBINARY(100)			NULL, 
+    [Testing] BIT NOT NULL DEFAULT ((0)), 
     CONSTRAINT [Project_Task] FOREIGN KEY ([TaskId]) REFERENCES [dbo].[Tasks] ([Id]) ON DELETE SET NULL,
 	CONSTRAINT [Project_User] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id]) ON DELETE SET NULL,
 	CONSTRAINT [Project_Folder] FOREIGN KEY ([ProjectFolderId]) REFERENCES [dbo].[ProjectsFiles] (path_locator) ON DELETE CASCADE

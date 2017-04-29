@@ -19,5 +19,7 @@ namespace JI.Managers.Models
         public bool Closed { get; set; }
 
         public int? Mark { get; set; }
+
+        public bool Testing { get; set; }
     }
 }

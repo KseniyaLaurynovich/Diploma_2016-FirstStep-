@@ -31,7 +31,11 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "Mark"), Nullable]
         public int? Mark { get; set; }
 
+        [Column(Name = "Testing")]
+        public bool Testing { get; set; }
+
         [Association(ThisKey = "TaskId", OtherKey = "Id")]
         public Task Task { get; set; }
+
     }
 }

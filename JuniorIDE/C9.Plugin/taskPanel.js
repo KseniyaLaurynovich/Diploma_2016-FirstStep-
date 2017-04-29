@@ -21,9 +21,9 @@ define(function(require, exports, module) {
         var Tree = require("ace_tree/tree");
         
         var search = require('./search');
-        var ListData = require("./dataprovider");
+        var ListData = require("./dataProviders/taskdp");
         var JuniorSettings = new (require("./settings"))(settings);
-        var JuniorServer = new (require("./juniorServerApi"))();
+        var JuniorServer = new (require("./juniorServerApi"))(JuniorSettings);
         
         /***** Initialization *****/
         
@@ -79,7 +79,7 @@ define(function(require, exports, module) {
                     return;
                 }
                 
-                JuniorServer.setToken(userData.access_token); 
+                JuniorSettings.setToken(userData.access_token); 
                 callbackOnSuccess(options);
             });
         }

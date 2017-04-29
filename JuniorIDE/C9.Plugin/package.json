@@ -14,7 +14,7 @@
     "url": ""
   },
   "plugins": {
-    "panel": {},
+    "taskPanel": {},
     "taskTab": {}
   },
   "categories": ["miscellaneous"],

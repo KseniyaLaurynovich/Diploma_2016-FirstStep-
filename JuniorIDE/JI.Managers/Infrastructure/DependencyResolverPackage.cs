@@ -18,6 +18,7 @@ namespace JI.Managers.Infrastructure
             container.Register(typeof(ICompilator), typeof(CppCompiler), Lifestyle.Scoped);
             container.Register(typeof(IAutoTestedManager), typeof(AutoTestedManager), Lifestyle.Scoped);
             container.Register(typeof(IFileEquatable), typeof(FileEquatable), Lifestyle.Scoped);
+            container.Register(typeof(IStatisticManager), typeof(StatisticManager), Lifestyle.Scoped);
         }
     }
 }

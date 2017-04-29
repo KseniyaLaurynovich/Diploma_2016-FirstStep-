@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     
     var oop = require("ace/lib/oop");
     var Base = require("ace_tree/list_data");
-    var utils = require("./utils")
+    var utils = require("../utils")
     
     var ListData = function(tasks, tabManager) {
         Base.call(this);

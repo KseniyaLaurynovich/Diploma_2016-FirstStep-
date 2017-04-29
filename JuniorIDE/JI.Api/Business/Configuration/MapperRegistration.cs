@@ -32,6 +32,12 @@ namespace JI.Api.Business.Configuration
             Mapper.Register<Task, TaskModel>();
             Mapper.Register<TaskModel, Task>();
 
+            Mapper.Register<TryingHistory, TryingHistoryModel>();
+            Mapper.Register<TryingHistoryModel, TryingHistory>();
+
+            Mapper.Register<Trying, TryingModel>();
+            Mapper.Register<TryingModel, Trying>();
+
             Mapper.Register<Task, TaskPluginModel>()
                 .After((task, model) =>
                 {

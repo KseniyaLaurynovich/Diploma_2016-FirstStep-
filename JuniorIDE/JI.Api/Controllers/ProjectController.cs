@@ -5,8 +5,7 @@ using JI.Managers.Contracts;
 namespace JI.Api.Controllers
 {
     [RoutePrefix("project")]
-    //TODO authorize user through plugin
-    [AllowAnonymous]
+    [Authorize]
     public class ProjectController : BaseApiController
     {
         private readonly IProjectManager _projectManager;
@@ -27,6 +26,8 @@ namespace JI.Api.Controllers
             var userId = "70cb531d-130b-408a-83c5-d72fe712cc46";
             var taskId = "b61fbd43-395c-478a-addb-f0243ff20a41";
 
+
+            //TODO check if valid & check if auto tested
             var projectStream = Request.Content.ReadAsStreamAsync().Result;
             var result = _projectManager.CreateProjectByStream(projectStream, userId, taskId);
 

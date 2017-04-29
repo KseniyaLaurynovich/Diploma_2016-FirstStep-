@@ -101,6 +101,7 @@
     <Compile Include="Contracts\IFileEquatable.cs" />
     <Compile Include="Contracts\IManager.cs" />
     <Compile Include="Contracts\IProjectManager.cs" />
+    <Compile Include="Contracts\IStatisticManager.cs" />
     <Compile Include="Contracts\ISubjectManager.cs" />
     <Compile Include="Contracts\ITaskManager.cs" />
     <Compile Include="Contracts\ITestExecutor.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Managers\Identity\ApplicationUserManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\ProjectManager.cs" />
+    <Compile Include="Managers\StatisticManager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
     <Compile Include="Models\Trying.cs" />

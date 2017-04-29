@@ -55,7 +55,7 @@
 }
 
 .bar-task--btn.active {
-    background-color: #0e7f44;
+    background-color: #63acff;
 }
 
 .bar-task--btn.active .lbl:after{
@@ -87,19 +87,6 @@
     text-shadow: none;
 }
 
-.bar-content{
-    visibility: hidden;
-}
-
-.bar-content img{
-    width: 100% !important;
-    height: 100% !important;
-}
-
-.bar-content.active{
-    visibility: visible;
-}
-
 .tab-container{
     display: block;
     position: absolute;
@@ -108,6 +95,10 @@
     top: 55px;
     bottom: 0px;
     overflow-y: scroll;
+}
+
+.tab-container .ace_tree_cells{
+    height: 100% !important;
 }
 
 .logo{
@@ -122,6 +113,7 @@
 .taskName{
     left: 180px;
     position: absolute;
+    top: -10px;
 }
 
 .header{
@@ -135,7 +127,7 @@
 .add-tab{
     position: absolute;
     width: 170px;
-    bottom: 0px;
+    bottom: 3px;
     height: 70px;
 }
 
@@ -143,6 +135,10 @@
     width: 15%;
     float: left;
     margin-left: 5px;
+}
+
+.deadline{
+    font-weight: bold;
 }
 
 .btn-default{
@@ -170,4 +166,54 @@
 
 .tag--green{
     background-color: #3dc469;
+}
+
+.bar-content{
+    height: 99%;
+    overflow-y: scroll;
+}
+
+.bar-content .tree-row{
+    font-family: Arial;
+    font-size: 14px;
+}
+
+.bar-content .tree-row.caption.odd{
+    background: rgba(99, 172, 255, 0.1);
+}
+
+.bar-content .tree-row.hover{
+    background: rgba(99, 172, 255, 0.5) !important;
+}
+
+.align-right{
+    float: right;
+}
+
+.btn-custom{
+    border: solid 2px rgb(99, 172,255);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn-custom:hover{
+    background: rgb(99, 172,255);
+    
+}
+
+.btn-custom .lbl:hover{
+    color: #fff;
+}
+
+.btn-custom .right{
+    background-image: none;
+}
+
+.btn-custom .left{
+    background-image: none;
+}
+
+.btn-custom .lbl{
+    background-image: none;
+    text-shadow: none;
 }

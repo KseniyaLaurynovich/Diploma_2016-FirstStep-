@@ -1,47 +1,38 @@
 define(function(require, exports, module) {
     
-    const monthNames = [
-      "January", "February", "March",
-      "April", "May", "June", "July",
-      "August", "September", "October",
-      "November", "December"
-    ];
+    var dateTimeOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    };
+    
+     var timeOptions = {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    };
+    
+    var dateOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    };
     
     module.exports.dateTimeToString = function(date) {
-      
-      var day = date.getDate();
-      var monthIndex = date.getMonth();
-      var year = date.getFullYear();
-      var hour = date.getHours();
-      var minutes = date.getMinutes();
-      var seconds = date.getSeconds();
-    
-      return day + ' '
-            + monthNames[monthIndex] + ' '
-            + year + ' '
-            + hour + ':'
-            + minutes + ':'
-            + seconds;
+      return date.toLocaleString("en-US", dateTimeOptions);
     }
     
     module.exports.dateTimeToDateString = function(date) {
-      var day = date.getDate();
-      var monthIndex = date.getMonth();
-      var year = date.getFullYear();
-    
-      return day + ' '
-            + monthNames[monthIndex] + ' '
-            + year;
+      return date.toLocaleString("en-US", dateOptions);
     }
     
     module.exports.dateTimeToTimeString = function(date) {
-      var hour = date.getHours();
-      var minutes = date.getMinutes();
-      var seconds = date.getSeconds();
-    
-      return hour + ':'
-            + minutes + ':'
-            + seconds;
+      return date.toLocaleString("en-US", timeOptions);
     }
     
     module.exports.getTagsHtml = function(task) {

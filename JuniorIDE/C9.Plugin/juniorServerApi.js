@@ -6,13 +6,37 @@ define(function(require, exports, module) {
     const GET_GROUPS = "groups/all/";
     const GET_TOKEN = "token";
     const UPLOAD_PROJECT = "project/upload/";
+    const TASK_STATISTIC = "statistic/getByTask";
 
-    var JuniorServerApi = function() {
-        this.token = null;
+    var JuniorServerApi = function(juniorSettings) {
+        this.juniorSettings = juniorSettings;
+        this._token = function(){
+            return this.juniorSettings.getToken();
+        }
     };
     
-    JuniorServerApi.prototype.setToken = function(token){
-        this.token = token;
+    JuniorServerApi.prototype.getTaskStatistic = function(callback){
+        var url = BASE_URL + TASK_STATISTIC;
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function() {
+            if (this.readyState != 4) return;
+        
+            if (this.status != 200) {
+                if(callback) callback(JSON.parse(xhr.responseText).Message);
+                return;
+            }
+        
+            var response = JSON.parse(xhr.responseText);
+            
+            if(callback) callback(null, response);
+        }
+        
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + this._token());
+        
+        xhr.send();
     };
     
     JuniorServerApi.prototype.getTasks = function(callback){
@@ -34,7 +58,7 @@ define(function(require, exports, module) {
         }
         
         xhr.open("GET", url, true);
-        xhr.setRequestHeader('Authorization', 'Bearer ' + this.token);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + this._token());
         
         xhr.send();
     };

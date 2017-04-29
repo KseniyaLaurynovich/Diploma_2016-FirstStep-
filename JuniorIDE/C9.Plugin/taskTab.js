@@ -9,29 +9,31 @@ define(function(require, exports, module) {
     function main(options, imports, register) {
         var Editor = imports.Editor;
         var editors = imports.editors;
-        var tabs = imports.tabManager;
-        var commands = imports.commands;
         var settings = imports.settings;
-        var menus = imports.menus;
-        var util = imports.util;
-        var layout = imports.layout;
         var info = imports.info;
         var ui = imports.ui;
         var vfs = imports.vfs;
         
-        var JuniorSettings = new (require("./settings"))(settings);
-        var JuniorServer = new (require("./juniorServerApi"))();
-        var DownloadManager = new (require("./download"))(vfs);
+        var Tree = require("ace_tree/tree");
         
-        var taskMarkup = require("text!./markup/task.xml");
+        var StatisticDP = new (require("./dataProviders/statisticdp"))();
+        var JuniorSettings = new (require("./settings"))(settings);
+        var JuniorServer = new (require("./juniorServerApi"))(JuniorSettings);
+        var DownloadManager = new (require("./download"))(vfs);
+
         var utils = require("./utils");
+        
+        var markup = require("text!./markup/task.xml");
+        var css = require("text!./style.css");
+        
+        var membersTree;
         
         /***** Initialization *****/
         
         var extensions = [];
         
-        var handle = editors.register("juniorTask", "Junior task", 
-                                      JuniorTask, extensions);
+        var handle = editors.register(
+            "juniorTask", "Junior task", JuniorTask, extensions);
                                       
         var emit = handle.getEmitter();
         emit.setMaxListeners(1000);
@@ -43,10 +45,11 @@ define(function(require, exports, module) {
             if (drawn) return;
             drawn = true;
             
-            var css = require("text!./style.css");
             ui.insertCss(css, options.staticPrefix, handle);
-            ui.insertMarkup(e.tab.editor.aml, taskMarkup, handle);
+            ui.insertMarkup(e.tab.editor.aml, markup, handle);
             
+            openDescription();
+            initTabContainer();
             initEvents();
             
             emit("draw");
@@ -54,12 +57,48 @@ define(function(require, exports, module) {
         
         /***** Methods *****/
 
+        function initTabContainer(){
+            membersTree = new Tree(handle.getElement("barStatistic").$int);
+            membersTree.setDataProvider(StatisticDP);
+        }
+
         function openDescription(e){
             changeActiveTab("Description");
         }
        
+        function loadStatistic(){
+            JuniorServer.getTaskStatistic(function(error, result){
+                if(error){
+                    StatisticDP.setError(error);
+                    return;
+                }
+                
+                result.sort(function(th1, th2) { 
+                    return new Date(th2.dateTime).getTime() - new Date(th1.dateTime).getTime();
+                });
+                
+                var root = StatisticDP.root;
+                root.children = result.map(function(th){
+                    return {
+                        dateTime: utils.dateTimeToString(new Date(th.dateTime)),
+                        compiled: th.compiled,
+                        pass: th.items.every(function(i){ return i.pass; }),
+                        allTests: th.items.length,
+                        passed: th.items.filter(function(i){ return i.pass; }).length,
+                        children: th.items.map(function(t, i){ return { index: i + 1, pass: t.pass, isSubItem: true, errors: t.errors } }),
+                        noSelect: true,
+                        clickAction: "toggle",
+                        className: "caption",
+                        isOpen: false
+                    }
+                });
+                StatisticDP.setRoot(root);
+            }.bind(this));
+        }
+       
         function openStatistic(e){
             changeActiveTab("Statistic");
+            loadStatistic();
         }
         
         function initEvents(){
@@ -112,11 +151,11 @@ define(function(require, exports, module) {
             
             var contentBar = handle.getElement("content");
             contentBar.childNodes.forEach(function(bar){
-                bar.setAttribute("class", "bar-content");
+                bar.hide();
             });
             
             var activeTab = handle.getElement("bar" + tabName);
-            activeTab.setAttribute("class", activeTab.class + " active");
+            activeTab.show();
         }
         
         /***** Editor *****/
@@ -143,6 +182,8 @@ define(function(require, exports, module) {
                 doc.title = task.name;
                 doc.value = task;
                 
+                openDescription();
+                
                 //insert description
                 var descriptionDiv = handle.getElement("barDescription");
                 descriptionDiv.$html.innerHTML = task.description;
@@ -168,6 +209,8 @@ define(function(require, exports, module) {
                 uploadButton.hide();*/
                 uploadButton.setAttribute("caption", uploadButtonText);
                 
+                //load statistic
+                loadStatistic();
             });
             
             plugin.on("documentActivate", function(e) {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Transactions;
 using JI.DataStorageAccess.Contracts;
 using JI.DataStorageAccess.Linq2DbStores.Base;
@@ -24,6 +26,13 @@ namespace JI.DataStorageAccess.Linq2DbStores
 
                 return id;
             }
+        }
+
+        public IEnumerable<TryingHistory> FindByProject(Guid projectId)
+        {
+            return DbConnection.TryingHistory
+                .LoadWith(th => th.Items)
+                .Where(i => i.ProjectId.Equals(projectId));
         }
     }
 }
