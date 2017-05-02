@@ -35,15 +35,16 @@ namespace JI.Managers.Managers
 
             if (taskValidationResult.Succeeded)
             {
-                var projectPath = _projectStore.GetProjectPath(new Guid(userId), new Guid(taskId));
+                var existingProject = _projectStore.FindByTaskAndUser(new Guid(userId), new Guid(taskId));
+                _projectStore.SetTestingMode(existingProject.Id, true);
+
+                var projectPath = _projectStore.GetProjectPath(existingProject.Id);
 
                 if (!string.IsNullOrEmpty(projectPath))
                 {
                     var trying = new DataStorageAccess.Models.TryingHistory
                     {
-                        ProjectId = _projectStore
-                            .FindByTaskAndUser(new Guid(userId), new Guid(taskId))
-                            .Id,
+                        ProjectId = existingProject.Id,
                         DateTime = DateTime.Now
                     };
 
@@ -78,12 +79,13 @@ namespace JI.Managers.Managers
 
                     trying.Id = _tryingHistoryStore.Save(trying);
 
+                    _projectStore.SetTestingMode(existingProject.Id, false);
                     return ServiceResult<Models.TryingHistory>.Success(
                         trying.Map<DataStorageAccess.Models.TryingHistory, Models.TryingHistory>());
                 }
 
-                //TODO move to resources
-                return ServiceResult<Models.TryingHistory>.Failed("No uploaded project for this task");
+                _projectStore.SetTestingMode(existingProject.Id, false);
+                return ServiceResult<Models.TryingHistory>.Failed(Resources.Resources.NoProjectExists);
             }
 
             return taskValidationResult.Convert<Models.TryingHistory>();

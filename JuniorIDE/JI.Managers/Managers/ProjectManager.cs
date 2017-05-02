@@ -23,7 +23,19 @@ namespace JI.Managers.Managers
         public ServiceResult CreateProjectByStream(Stream projectStream, string userId, string taskId)
         {
             var existingProject = GetOrCreate(userId, taskId);
-            (Store as IProjectStore).LoadStream(new Guid(existingProject.Id), projectStream);
+            var projectStore = Store as IProjectStore;
+
+            projectStore.SetTestingMode(new Guid(existingProject.Id), true);
+
+            try
+            {
+                projectStore.LoadStream(new Guid(existingProject.Id), projectStream);
+            }
+            catch (Exception ex)
+            {
+                //TODO log error
+                projectStore.SetTestingMode(new Guid(existingProject.Id), false);
+            }
 
             return ServiceResult.Success;
         }

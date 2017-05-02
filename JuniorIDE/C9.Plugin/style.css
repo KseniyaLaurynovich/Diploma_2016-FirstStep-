@@ -1,5 +1,5 @@
 .task-searchresults .ace_tree_scroller{
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
 
 .task-searchresults .body{
@@ -8,11 +8,6 @@
 
 .task-searchresults .item:hover{
     background: #fff;
-}
-
-.task-searchresults img{
-    width: 100% !important;
-    height: auto !important;
 }
 
 .warning-message{
@@ -33,7 +28,7 @@
 }
 
 .task-tab{
-    height: 100%;
+    /*height: 100%;*/
 }
 
 .bar-task{
@@ -178,6 +173,10 @@
     font-size: 14px;
 }
 
+.bar-content .ace_tree_cells{
+    bottom: 0;
+}
+
 .bar-content .tree-row.caption.odd{
     background: rgba(99, 172, 255, 0.1);
 }
@@ -196,12 +195,12 @@
     cursor: pointer;
 }
 
-.btn-custom:hover{
+.btn-custom:not(.loading):hover{
     background: rgb(99, 172,255);
     
 }
 
-.btn-custom .lbl:hover{
+.btn-custom:not(.loading) .lbl:hover{
     color: #fff;
 }
 
@@ -216,4 +215,12 @@
 .btn-custom .lbl{
     background-image: none;
     text-shadow: none;
+}
+
+.loading{
+    cursor: wait; 
+    background-repeat:no-repeat; 
+    background-position: left;
+    background-position-x: 20px;
+    background-size: contain;
 }

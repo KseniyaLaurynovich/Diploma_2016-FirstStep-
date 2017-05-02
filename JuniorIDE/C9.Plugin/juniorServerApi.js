@@ -15,8 +15,8 @@ define(function(require, exports, module) {
         }
     };
     
-    JuniorServerApi.prototype.getTaskStatistic = function(callback){
-        var url = BASE_URL + TASK_STATISTIC;
+    JuniorServerApi.prototype.getTaskStatistic = function(taskId, callback){
+        var url = BASE_URL + TASK_STATISTIC + "?taskId=" + taskId;
         
         var xhr = new XMLHttpRequest();
         
@@ -24,7 +24,14 @@ define(function(require, exports, module) {
             if (this.readyState != 4) return;
         
             if (this.status != 200) {
-                if(callback) callback(JSON.parse(xhr.responseText).Message);
+                var error = JSON.parse(xhr.responseText);
+                var errorMsg = error.Message;
+                
+                if(error.ModelState){
+                    errorMsg = Object.values(error.ModelState).join("/n");
+                }
+                
+                if(callback) callback(errorMsg);
                 return;
             }
         
@@ -88,20 +95,22 @@ define(function(require, exports, module) {
     };
     
     JuniorServerApi.prototype.uploadProject = function(taskId, stream, callback){
-        //todo add task id impl
-        var url = BASE_URL + UPLOAD_PROJECT; 
+        var url = BASE_URL + UPLOAD_PROJECT + "?taskId=" + taskId;
         
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function()
         {
-            if (xhr.readyState == 4 && xhr.status == 200)
+            if (xhr.readyState == 4)
             {
                 if(callback) callback(); 
             }
         }; 
         
         xhr.open('POST', url);
+        
         xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + this._token());
+        
         xhr.send(stream);
     };
     

@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using JI.Api.Controllers.Base;
 using JI.Managers.Contracts;
+using Microsoft.AspNet.Identity;
 
 namespace JI.Api.Controllers
 {
@@ -20,12 +21,9 @@ namespace JI.Api.Controllers
 
         [HttpPost]
         [Route("upload")]
-        public IHttpActionResult UploadProject()
+        public IHttpActionResult UploadProject([FromUri]string taskId)
         {
-            //TODO add url params
-            var userId = "70cb531d-130b-408a-83c5-d72fe712cc46";
-            var taskId = "b61fbd43-395c-478a-addb-f0243ff20a41";
-
+            var userId = User.Identity.GetUserId();
 
             //TODO check if valid & check if auto tested
             var projectStream = Request.Content.ReadAsStreamAsync().Result;

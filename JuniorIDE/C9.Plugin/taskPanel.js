@@ -148,6 +148,10 @@ define(function(require, exports, module) {
     
         function openTaskTab(){
             var task = ldSearch.tasks[ldSearch.selectedIndex];
+            
+            if(!task)
+                return;
+                
             JuniorSettings.setCurrentTask(task);
             
             closeTaskTab();

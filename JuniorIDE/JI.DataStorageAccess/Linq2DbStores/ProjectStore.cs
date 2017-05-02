@@ -34,9 +34,9 @@ namespace JI.DataStorageAccess.Linq2DbStores
             }
         }
 
-        public string GetProjectPath(Guid userId, Guid taskId)
+        public string GetProjectPath(Guid projectId)
         {
-            var project = FindByTaskAndUser(userId, taskId);
+            var project = FindById(projectId);
 
             return project != null 
                 ? FileTableStoredProcedures.GetPhysicalPath(DbConnection, project.ProjectFolder)
@@ -47,6 +47,16 @@ namespace JI.DataStorageAccess.Linq2DbStores
         {
             return DbConnection.Projects
                 .FirstOrDefault(p => p.UserId == userId && p.TaskId == taskId);
+        }
+
+        public void SetTestingMode(Guid existingProjectId, bool testing)
+        {
+            var project = FindById(existingProjectId);
+
+            if (project == null) return;
+
+            project.Testing = testing;
+            Save(project);
         }
     }
 }

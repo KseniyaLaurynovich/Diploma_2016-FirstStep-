@@ -66,32 +66,67 @@ define(function(require, exports, module) {
             changeActiveTab("Description");
         }
        
-        function loadStatistic(){
-            JuniorServer.getTaskStatistic(function(error, result){
-                if(error){
-                    StatisticDP.setError(error);
-                    return;
+        function setUploadButton(task){
+                var isVisibleUploadButton = !task.isShared && !task.isClosed;
+                
+                var uploadButtonText = task.autoTested ? "Upload and test" : "Upload";
+                var buttonText = task.testing ? ( task.autoTested ? "Testing..." : "Uploading..." ) : uploadButtonText;
+                
+                var uploadButton = handle.getElement("upload");
+                
+                /*if(isVisibleUploadButton)
+                    uploadButton.show();
+                uploadButton.hide();*/
+                
+                uploadButton.setAttribute("caption", buttonText);
+                
+                if(task.testing){
+                    uploadButton.setAttribute("class", "btn-custom loading");
+                    uploadButton.setAttribute("disabled", "true");
+                    uploadButton.setAttribute("style", "background-image: url(" + options.staticPrefix + "/images/loading.gif" + ")");
+                }else{
+                    uploadButton.setAttribute("class", "btn-custom");
+                    uploadButton.setAttribute("disabled", "false");
+                    uploadButton.setAttribute("style", "");
                 }
                 
-                result.sort(function(th1, th2) { 
-                    return new Date(th2.dateTime).getTime() - new Date(th1.dateTime).getTime();
-                });
+        }
+       
+        function loadStatistic(){
+            var task = JuniorSettings.getCurrentTask();
+            
+            if(!task)
+                return;
                 
-                var root = StatisticDP.root;
-                root.children = result.map(function(th){
-                    return {
-                        dateTime: utils.dateTimeToString(new Date(th.dateTime)),
-                        compiled: th.compiled,
-                        pass: th.items.every(function(i){ return i.pass; }),
-                        allTests: th.items.length,
-                        passed: th.items.filter(function(i){ return i.pass; }).length,
-                        children: th.items.map(function(t, i){ return { index: i + 1, pass: t.pass, isSubItem: true, errors: t.errors } }),
-                        noSelect: true,
-                        clickAction: "toggle",
-                        className: "caption",
-                        isOpen: false
-                    }
-                });
+            var root = StatisticDP.root;
+            
+            JuniorServer.getTaskStatistic(task.id, function(error, result){
+                if(error){
+                    StatisticDP.setError(error);
+                    root.children = [];
+                    
+                }else{
+                
+                    result.sort(function(th1, th2) { 
+                        return new Date(th2.dateTime).getTime() - new Date(th1.dateTime).getTime();
+                    });
+                    
+                    root.children = result.map(function(th){
+                        return {
+                            dateTime: utils.dateTimeToString(new Date(th.dateTime)),
+                            compiled: th.compiled,
+                            pass: th.items.every(function(i){ return i.pass; }),
+                            allTests: th.items.length,
+                            passed: th.items.filter(function(i){ return i.pass; }).length,
+                            children: th.items.map(function(t, i){ return { index: i + 1, pass: t.pass, isSubItem: true, errors: t.errors } }),
+                            noSelect: true,
+                            clickAction: "toggle",
+                            className: "caption",
+                            isOpen: false
+                        }
+                    });
+                }
+                
                 StatisticDP.setRoot(root);
             }.bind(this));
         }
@@ -115,7 +150,13 @@ define(function(require, exports, module) {
             deadLine.setAttribute("src", options.staticPrefix + "/images/calendar.png");
             
             var uploadButton = handle.getElement("upload");
-            uploadButton.addEventListener("click", uploadWorkspace);
+            uploadButton.addEventListener("click", function(){
+                var task = JuniorSettings.getCurrentTask();
+                task.testing = true;
+                setUploadButton(task);
+                
+                uploadWorkspace();
+            });
         }
         
         function uploadWorkspace(){
@@ -137,7 +178,17 @@ define(function(require, exports, module) {
         }
         
         function onProjectUpload(stream){
-            JuniorServer.uploadProject("", stream, function(){alert("upload");});
+            var task = JuniorSettings.getCurrentTask();
+            
+            if(!task)
+                return;
+            
+            JuniorServer.uploadProject(task.id, stream, function(){
+                openStatistic();
+                
+                task.testing = false;
+                setUploadButton(task);
+            });
         }
         
         function changeActiveTab(tabName){
@@ -199,18 +250,9 @@ define(function(require, exports, module) {
                 var deadlineTime = handle.getElement("deadlineTime");
                 deadlineTime.$html.innerHTML = utils.dateTimeToTimeString(new Date(task.deadline));
                 
-                //check if upload available
-                var isVisibleUploadButton = !task.isShared && !task.isClosed;
-                var uploadButtonText = task.autoTested ? "Upload and test" : "Upload";
-                var uploadButton = handle.getElement("upload");
-                
-                /*if(isVisibleUploadButton)
-                    uploadButton.show();
-                uploadButton.hide();*/
-                uploadButton.setAttribute("caption", uploadButtonText);
-                
-                //load statistic
-                loadStatistic();
+                //upload button
+                task.testing = false;
+                setUploadButton(task);
             });
             
             plugin.on("documentActivate", function(e) {

@@ -32,5 +32,6 @@ namespace JI.Managers.Resources
         public static string TaskNameDuplicated(string name)
             => string.Format(ResourceManager?.GetString("TaskNameDuplicated", Culture) ?? string.Empty, name);
 
+        public static string NoProjectExists => ResourceManager.GetString("NoProjectExists", Culture);
     }
 }

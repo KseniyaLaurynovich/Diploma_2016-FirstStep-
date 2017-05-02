@@ -126,6 +126,9 @@
   <data name="InvalidRolesSet" xml:space="preserve">
     <value>Users cannot have 'Student' and 'Teacher' roles at one time.</value>
   </data>
+  <data name="NoProjectExists" xml:space="preserve">
+    <value>No uploaded project for this task.</value>
+  </data>
   <data name="SubjectNameDuplicated" xml:space="preserve">
     <value>The subject with '{0}' name already exists.</value>
   </data>

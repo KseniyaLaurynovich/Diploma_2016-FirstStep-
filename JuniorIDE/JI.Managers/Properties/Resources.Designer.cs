@@ -88,6 +88,15 @@ namespace JI.Managers.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No uploaded project for this task..
+        /// </summary>
+        internal static string NoProjectExists {
+            get {
+                return ResourceManager.GetString("NoProjectExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The subject with &apos;{0}&apos; name already exists..
         /// </summary>
         internal static string SubjectNameDuplicated {

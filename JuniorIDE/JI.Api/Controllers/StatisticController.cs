@@ -5,6 +5,7 @@ using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using JI.Managers.Contracts;
 using JI.Managers.Models;
+using Microsoft.AspNet.Identity;
 
 namespace JI.Api.Controllers
 {
@@ -21,11 +22,9 @@ namespace JI.Api.Controllers
 
         [HttpGet]
         [Route("getByTask")]
-        public IHttpActionResult GetByTaskId()
+        public IHttpActionResult GetByTaskId(string taskId)
         {
-            //TODO add url params
-            var userId = "70cb531d-130b-408a-83c5-d72fe712cc46";
-            var taskId = "b61fbd43-395c-478a-addb-f0243ff20a41";
+            var userId = User.Identity.GetUserId();
 
             var result = _statisticManager.Get(userId, taskId);
 

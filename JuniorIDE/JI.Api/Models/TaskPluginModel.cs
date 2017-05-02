@@ -34,5 +34,8 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "autoTested")]
         public bool AutoTested { get; set; }
+
+        [JsonProperty(PropertyName = "testing")]
+        public bool Testing { get; set; }
     }
 }
