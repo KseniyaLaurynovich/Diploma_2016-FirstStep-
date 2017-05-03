@@ -26,7 +26,7 @@ define(function(require, exports, module) {
         var markup = require("text!./markup/task.xml");
         var css = require("text!./style.css");
         
-        var membersTree;
+        var membersTree, doc;
         
         /***** Initialization *****/
         
@@ -157,6 +157,14 @@ define(function(require, exports, module) {
                 
                 uploadWorkspace();
             });
+            
+            var refreshBtn = handle.getElement("refreshTasks");
+            refreshBtn.setAttribute("style", "background-image: url(" + options.staticPrefix + "/images/refresh.png)")
+            refreshBtn.addEventListener("click", function(){
+                
+                var taskId = JuniorSettings.getCurrentTask().id;
+                 refreshTask(taskId, refreshUi);
+            });
         }
         
         function uploadWorkspace(){
@@ -183,12 +191,7 @@ define(function(require, exports, module) {
             if(!task)
                 return;
             
-            JuniorServer.uploadProject(task.id, stream, function(){
-                openStatistic();
-                
-                task.testing = false;
-                setUploadButton(task);
-            });
+            JuniorServer.uploadProject(task.id, stream, function(){});
         }
         
         function changeActiveTab(tabName){
@@ -207,6 +210,44 @@ define(function(require, exports, module) {
             
             var activeTab = handle.getElement("bar" + tabName);
             activeTab.show();
+        }
+        
+        function refreshTask(taskId, callback){
+            JuniorServer.getTask(taskId, function(error, task){
+               
+               if(task)
+                JuniorSettings.setCurrentTask(task);
+                
+               if(callback) callback(error, task);
+            });
+        }
+        
+        function refreshUi(error, task){
+            if(error)
+                console.log(error);
+            
+            doc.title = task.name;
+            doc.value = task;
+            
+            openDescription();
+            
+            //insert description
+            var descriptionDiv = handle.getElement("barDescription");
+            descriptionDiv.$html.innerHTML = task.description;
+            
+            //insert name
+            var tags = utils.getTagsHtml(task);
+            var taskNameHeader = handle.getElement("taskName");
+            taskNameHeader.$html.innerHTML = task.name + ' ' + tags;
+            
+            //insert deadline
+            var deadlineDate = handle.getElement("deadlineDate");
+            deadlineDate.$html.innerHTML = utils.dateTimeToDateString(new Date(task.deadline));
+            var deadlineTime = handle.getElement("deadlineTime");
+            deadlineTime.$html.innerHTML = utils.dateTimeToTimeString(new Date(task.deadline));
+            
+            //upload button
+            setUploadButton(task);
         }
         
         /***** Editor *****/
@@ -228,31 +269,9 @@ define(function(require, exports, module) {
             
             plugin.on("documentLoad", function(e) {
                 var task = JuniorSettings.getCurrentTask();
-                var doc = e.doc;
+                doc = e.doc;
                 
-                doc.title = task.name;
-                doc.value = task;
-                
-                openDescription();
-                
-                //insert description
-                var descriptionDiv = handle.getElement("barDescription");
-                descriptionDiv.$html.innerHTML = task.description;
-                
-                //insert name
-                var tags = utils.getTagsHtml(task);
-                var taskNameHeader = handle.getElement("taskName");
-                taskNameHeader.$html.innerHTML = task.name + ' ' + tags;
-                
-                //insert deadline
-                var deadlineDate = handle.getElement("deadlineDate");
-                deadlineDate.$html.innerHTML = utils.dateTimeToDateString(new Date(task.deadline));
-                var deadlineTime = handle.getElement("deadlineTime");
-                deadlineTime.$html.innerHTML = utils.dateTimeToTimeString(new Date(task.deadline));
-                
-                //upload button
-                task.testing = false;
-                setUploadButton(task);
+                refreshTask(task.id, refreshUi); 
             });
             
             plugin.on("documentActivate", function(e) {

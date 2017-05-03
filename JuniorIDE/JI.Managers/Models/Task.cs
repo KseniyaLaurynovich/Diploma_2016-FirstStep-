@@ -23,6 +23,14 @@ namespace JI.Managers.Models
 
         public bool IsVisible { get; set; }
 
+        public bool Testing { get; set; }
+
+        public int? Mark { get; set; }
+
+        public bool HasUploadedProject { get; set; }
+
+        public bool IsPassed { get; set; }
+
         public Subject Subject { get; set; }
 
         public IList<Test> Tests { get; set; }

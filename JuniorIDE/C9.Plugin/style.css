@@ -224,3 +224,42 @@
     background-position-x: 20px;
     background-size: contain;
 }
+
+.loading-bar{
+    background-repeat: no-repeat;
+    background-size: inherit;
+    background-position-x: center;
+    background-position-y: 50%;
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.refresh-tasks{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-position: left;
+    background-size: 25px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+}
+
+.btn-glyph .right{
+    background-image: none;
+}
+
+.btn-glyph .left{
+    background-image: none;
+}
+
+.btn-glyph .lbl{
+    color: #fff;
+    background-image: none;
+    text-shadow: none;
+}
+
+.basic.actions{
+    position: absolute;
+    right: 15px;
+    width: 40px;
+}

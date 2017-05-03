@@ -1,5 +1,6 @@
 <a:application xmlns:a="http://ajax.org/2005/aml">
     <a:codebox id="taskNameFilter" realtime="true" skin="codebox" clearbutton="true"
-      focusselect="true" height="27" left="10" top="10" right="10" singleline="true" />
+      focusselect="true" height="27" left="10" top="10" right="40" singleline="true" />
+    <a:button id="refreshTasks" class="btn-glyph refresh-tasks"></a:button>
     <a:bar id="tasksList" class="searchresults task-searchresults"/>
 </a:application>

@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Threading.Tasks;
+using System.Web.Http;
 using JI.Api.Controllers.Base;
 using JI.Managers.Contracts;
 using Microsoft.AspNet.Identity;
@@ -27,18 +28,18 @@ namespace JI.Api.Controllers
 
             //TODO check if valid & check if auto tested
             var projectStream = Request.Content.ReadAsStreamAsync().Result;
-            var result = _projectManager.CreateProjectByStream(projectStream, userId, taskId);
 
-            if (result.Succeeded)
+            Task.Run(() =>
             {
-                var testResult = _testManager.Test(userId, taskId);
+                var result = _projectManager.CreateProjectByStream(projectStream, userId, taskId);
 
-                return testResult.Succeeded
-                ? Ok(testResult.Result)
-                : GetErrorResult(testResult.Errors);
-            }
+                if (result.Succeeded)
+                {
+                    var testResult = _testManager.Test(userId, taskId);
+                }
+            });
 
-            return GetErrorResult(result.Errors);
+            return Ok();
         }
     }
 }

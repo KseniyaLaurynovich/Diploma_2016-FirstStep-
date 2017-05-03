@@ -15,6 +15,37 @@ define(function(require, exports, module) {
         }
     };
     
+    JuniorServerApi.prototype.getTask = function(taskId, callback){
+        var url = BASE_URL + GET_TASKS + "?taskId=" + taskId;
+        
+        var xhr = new XMLHttpRequest();
+        
+        xhr.onreadystatechange = function() {
+            if (this.readyState != 4) return;
+        
+            if (this.status != 200) {
+                var error = JSON.parse(xhr.responseText);
+                var errorMsg = error.Message;
+                
+                if(error.ModelState){
+                    errorMsg = Object.values(error.ModelState).join("/n");
+                }
+                
+                if(callback) callback(errorMsg);
+                return;
+            }
+        
+            var response = JSON.parse(xhr.responseText);
+            
+            if(callback) callback(null, response);
+        }
+        
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader('Authorization', 'Bearer ' + this._token());
+        
+        xhr.send();
+    };
+    
     JuniorServerApi.prototype.getTaskStatistic = function(taskId, callback){
         var url = BASE_URL + TASK_STATISTIC + "?taskId=" + taskId;
         

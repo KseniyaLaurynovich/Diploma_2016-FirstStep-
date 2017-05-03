@@ -39,8 +39,27 @@ namespace JI.DataStorageAccess.Linq2DbStores
             .LoadWith(t => t.Tests);
 
         public override Task FindById(Guid id) => DbConnection.Tasks
+            .LoadWith(t => t.Subject)
             .LoadWith(t => t.Tests)
             .FirstOrDefault(t => t.Id == id);
+
+        public Task FindByIdAndGroups(Guid id, Guid[] groupIds)
+        {
+            var result =
+              (from t in DbConnection.Tasks.LoadWith(t => t.Subject)
+               join sg in DbConnection.GroupSubjects on t.SubjectId equals sg.SubjectId
+               join td in DbConnection.TaskDeadlines.LoadWith(td => td.GroupSubject).Where(td => groupIds.Contains(td.GroupSubject.GroupId)) on t.Id equals td.TaskId
+               where groupIds.Contains(sg.GroupId)
+               where t.Id.Equals(id)
+               select new { Task = t, Deadline = td })
+               .FirstOrDefault();
+
+            if (result == null)
+                return null;
+
+            result.Task.Deadlines = new List<TaskDeadline> {result.Deadline};
+            return result.Task;
+        }
 
         public IList<Task> FindByGroups(Guid[] groupIds)
         {

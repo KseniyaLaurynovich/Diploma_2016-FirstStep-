@@ -9,5 +9,6 @@ namespace JI.Managers.Contracts
         IList<Task> GetByGroups(IList<Group> groups);
         ServiceResult SetVisibility(string taskId, bool isVisible);
         ServiceResult<File> AssociateTestFile(string taskId, File file);
+        ServiceResult<Task> GetTaskForUser(string currentUserId, string taskId, IList<Group> groups);
     }
 }

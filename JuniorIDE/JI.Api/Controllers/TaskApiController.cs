@@ -31,12 +31,27 @@ namespace JI.Api.Controllers
 
         [HttpGet]
         [Route("get")]
+        public IHttpActionResult Get(string taskId)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var groups = UserManager.Value.GetGroups(currentUserId);
+
+            var result = _taskManager
+                .GetTaskForUser(currentUserId, taskId, groups);
+
+            return result.Succeeded
+                ? Ok(result.Result.Map<Task, TaskPluginModel>())
+                : GetErrorResult(result.Errors);
+        }
+
+        [HttpGet]
+        [Route("get")]
         public IHttpActionResult Get()
         {
             var currentUserId = User.Identity.GetUserId();
             var groups = UserManager.Value.GetGroups(currentUserId);
 
-            //TODO mode to resources
+            //TODO move to resources
             if(!groups.Any())
                 return BadRequest("You are not assigned to any group. Contact with our administrator.");
 

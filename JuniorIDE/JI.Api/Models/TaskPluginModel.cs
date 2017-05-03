@@ -37,5 +37,14 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "testing")]
         public bool Testing { get; set; }
+
+        [JsonProperty(PropertyName = "waitingForMark")]
+        public bool IsWaitingForMark => !IsShared && IsPassed && Mark == null;
+
+        [JsonProperty(PropertyName = "mark")]
+        public int? Mark { get; set; }
+
+        [JsonProperty(PropertyName = "hasUploadedProject")]
+        public bool HasUploadedProject { get; set; }
     }
 }

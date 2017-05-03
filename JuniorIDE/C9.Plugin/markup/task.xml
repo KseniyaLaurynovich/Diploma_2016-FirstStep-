@@ -7,6 +7,9 @@
             <a:bar class="taskName">
                 <h2 id="taskName"></h2>
             </a:bar>
+            <a:bar class="actions">
+                <a:button id="refreshTasks" class="btn-glyph refresh-tasks"></a:button>
+            </a:bar>
         </a:bar>
         <a:bar id="navigation" class="bar-task">
             <a:button id="btnDescription" class="bar-task--btn active">Description</a:button>

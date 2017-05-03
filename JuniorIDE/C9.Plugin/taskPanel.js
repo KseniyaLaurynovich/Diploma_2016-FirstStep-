@@ -17,6 +17,7 @@ define(function(require, exports, module) {
         
         var panelMarkup = require("text!./markup/panel.xml");
         var noAuthMarkup = require("text!./markup/not_authorized.xml");
+        var loadingMarkup = require("text!./markup/loading.xml");
         
         var Tree = require("ace_tree/tree");
         
@@ -53,15 +54,14 @@ define(function(require, exports, module) {
         }
         
         var drawn = false;
-        function draw(options) {
+        function draw(args) {
             if (drawn) return;
             
             drawn = true;
-            options = options;
             
             ui.insertCss(require("text!./style.css"), plugin);
             
-            authorizeCurrentUser(options, loadTasksMarkup, loadUnauthorizeMarkup);
+            authorizeCurrentUser(args, loadTasksMarkup, loadUnauthorizeMarkup);
         }
         
         /***** Methods *****/
@@ -72,8 +72,12 @@ define(function(require, exports, module) {
             
             if(!username || !password)
                 callbackOnError();
+                
+            loadLoadingMarkup(options);
             
             JuniorServer.getToken(username, password, function(error, userData){
+                setLoading(false);
+                
                 if(error){
                     callbackOnError(options, error);
                     return;
@@ -84,18 +88,41 @@ define(function(require, exports, module) {
             });
         }
     
-        function loadUnauthorizeMarkup(options, error){
-            ui.insertMarkup(options.aml, noAuthMarkup, plugin);
+        function loadLoadingMarkup(args){
+            ui.insertMarkup(args.aml, loadingMarkup, plugin);
+            setLoading(true);
+        }
+    
+        function setLoading(loading){
+             var loadingBar = plugin.getElement("loading");
+             
+            if(loading){
+                loadingBar.setAttribute("style", "background-image: url(" +  options.staticPrefix + "/images/loading.gif)");
+            }else{
+                loadingBar.setAttribute("style", "");
+            }
+        }
+    
+        function loadUnauthorizeMarkup(args, error){
+            ui.insertMarkup(args.aml, noAuthMarkup, plugin);
             showError(error);
         }
         
-        function loadTasksMarkup(options){
-            ui.insertMarkup(options.aml, panelMarkup, plugin);
+        function refreshTasks(){
+            JuniorServer.getTasks(onDataReload.bind(this));
+        }
+        
+        function loadTasksMarkup(args){
+            ui.insertMarkup(args.aml, panelMarkup, plugin);
             
             var treeParent = plugin.getElement("tasksList");
             taskNameFilter = plugin.getElement("taskNameFilter");
             
-            JuniorServer.getTasks(onDataReload.bind(this));
+            refreshTasks();
+            
+            var refreshBtn = plugin.getElement("refreshTasks");
+            refreshBtn.setAttribute("style", "background-image: url(" + options.staticPrefix + "/images/refresh.png)")
+            refreshBtn.addEventListener("click", refreshTasks);
             
             tree = new Tree(treeParent.$int);
             tree.on("click", onTaskClicked.bind(this));

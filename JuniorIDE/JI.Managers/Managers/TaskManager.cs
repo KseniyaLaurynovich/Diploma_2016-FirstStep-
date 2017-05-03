@@ -8,6 +8,8 @@ using System.Linq;
 using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Business.Extensions;
+using JI.Identity.Models;
+using Microsoft.AspNet.Identity;
 using DbModels = JI.DataStorageAccess.Models;
 
 namespace JI.Managers.Managers
@@ -15,11 +17,17 @@ namespace JI.Managers.Managers
     internal class TaskManager : Manager<Task, DbModels.Task>, ITaskManager
     {
         protected readonly IObjectSpecifiedFolderStore<DbModels.Task> TaskTestsFolderStore;
+        protected readonly IProjectStore ProjectStore;
+        protected readonly ITryingHistoryStore TryingHistoryStore;
 
-        public TaskManager(ITaskStore store, IObjectSpecifiedFolderStore<DbModels.Task> taskTestsFolderStore) 
+        public TaskManager(ITaskStore store, 
+            IObjectSpecifiedFolderStore<DbModels.Task> taskTestsFolderStore, 
+            IProjectStore projectStore, ITryingHistoryStore tryingHistoryStore) 
             : base(store)
         {
             TaskTestsFolderStore = taskTestsFolderStore;
+            ProjectStore = projectStore;
+            TryingHistoryStore = tryingHistoryStore;
         }
 
         public override ServiceResult<Task> Save(Task project)
@@ -56,12 +64,37 @@ namespace JI.Managers.Managers
 
             return ServiceResult<File>.Success(file);
         }
+        
+        public ServiceResult<Task> GetTaskForUser(string currentUserId, string taskId, IList<Group> groups)
+        {
+            var task = (Store as ITaskStore).FindByIdAndGroups(new Guid(taskId), groups.Select(g => new Guid(g.Id)).ToArray())
+                .Map<JI.DataStorageAccess.Models.Task, Task>();
+
+            var project = ProjectStore.FindByTaskAndUser(new Guid(currentUserId), new Guid(taskId));
+
+            if (project != null)
+            {
+                task.HasUploadedProject = true;
+                task.Testing = project.Testing;
+                task.Mark = project.Mark;
+
+                var tryingHistory = TryingHistoryStore.FindByProject(project.Id)?.Last();
+                task.IsPassed = tryingHistory != null && tryingHistory.Compiled && tryingHistory.Items.All(i => i.Pass);
+            }
+            else
+            {
+                task.HasUploadedProject = false;
+            }
+
+            return ServiceResult<Task>.Success(task);
+        }
 
         public IList<Task> GetByGroups(IList<Group> groups)
         {
             return (Store as ITaskStore)
                 .FindByGroups(groups.Select(g => new Guid(g.Id)).ToArray())
                 .Select(Mapper.Map<DbModels.Task, Task>)
+                //.Where(t => t.IsVisible)
                 .ToList();
         }
 
