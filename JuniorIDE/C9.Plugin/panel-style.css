@@ -1,0 +1,82 @@
+.task-searchresults{
+    position:absolute;
+    top:47px;
+    right:10px;
+    left:10px;
+    bottom:0px
+}
+
+    .task-searchresults .body{
+        white-space: normal;
+    }
+    
+    .task-searchresults .item:hover{
+        background: #fff;
+    }
+
+.warning-message{
+    margin: auto 10px;
+    text-align: center;
+}
+
+#error{
+    color: red;
+}
+
+.loading-bar{
+    background-repeat: no-repeat;
+    background-size: inherit;
+    background-position-x: center;
+    background-position-y: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    background-image: url("@{image-path}/loading.gif");
+}
+
+.refresh-tasks{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-position: left;
+    background-size: 25px;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-image: url("@{image-path}/refresh.png");
+}
+
+.btn-glyph .right{
+    background-image: none;
+}
+
+.btn-glyph .left{
+    background-image: none;
+}
+
+.btn-glyph .lbl{
+    color: #fff;
+    background-image: none;
+    text-shadow: none;
+}
+
+.tag{
+    border-radius: 2px;
+    padding: 3px;
+    display: inline-block !important;
+    margin: 2px;
+}
+
+    .tag.tag--red{
+        background-color: #d75555;
+    }
+    
+    .tag.tag--orange{
+        background-color: #d99b1e;
+    }
+    
+    .tag.tag--yellow{
+        background-color: #f5e921;
+    }
+    
+    .tag.tag--green{
+        background-color: #3dc469;
+    }

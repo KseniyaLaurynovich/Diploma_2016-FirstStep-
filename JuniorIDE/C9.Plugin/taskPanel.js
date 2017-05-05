@@ -15,9 +15,10 @@ define(function(require, exports, module) {
         var commands = imports.commands;
         var prefs = imports.preferences;
         
-        var panelMarkup = require("text!./markup/panel.xml");
-        var noAuthMarkup = require("text!./markup/not_authorized.xml");
-        var loadingMarkup = require("text!./markup/loading.xml");
+        var panelMarkup = require("text!./markups/panel.xml");
+        var noAuthMarkup = require("text!./markups/not_authorized.xml");
+        var loadingMarkup = require("text!./markups/loading.xml");
+        var css = require("text!./panel-style.css");
         
         var Tree = require("ace_tree/tree");
         
@@ -56,10 +57,9 @@ define(function(require, exports, module) {
         var drawn = false;
         function draw(args) {
             if (drawn) return;
-            
             drawn = true;
             
-            ui.insertCss(require("text!./style.css"), plugin);
+            ui.insertCss(css, options.staticPrefix, plugin);
             
             authorizeCurrentUser(args, loadTasksMarkup, loadUnauthorizeMarkup);
         }
@@ -97,9 +97,9 @@ define(function(require, exports, module) {
              var loadingBar = plugin.getElement("loading");
              
             if(loading){
-                loadingBar.setAttribute("style", "background-image: url(" +  options.staticPrefix + "/images/loading.gif)");
+                loadingBar.show();
             }else{
-                loadingBar.setAttribute("style", "");
+                loadingBar.hide();
             }
         }
     
@@ -121,7 +121,6 @@ define(function(require, exports, module) {
             refreshTasks();
             
             var refreshBtn = plugin.getElement("refreshTasks");
-            refreshBtn.setAttribute("style", "background-image: url(" + options.staticPrefix + "/images/refresh.png)")
             refreshBtn.addEventListener("click", refreshTasks);
             
             tree = new Tree(treeParent.$int);

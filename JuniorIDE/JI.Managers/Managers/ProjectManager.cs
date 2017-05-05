@@ -31,13 +31,18 @@ namespace JI.Managers.Managers
             {
                 projectStore.LoadStream(new Guid(existingProject.Id), projectStream);
             }
-            catch (Exception ex)
+            finally
             {
-                //TODO log error
                 projectStore.SetTestingMode(new Guid(existingProject.Id), false);
             }
 
             return ServiceResult.Success;
+        }
+
+        public string GetPhysicalPath(string userId, string taskId)
+        {
+            var existingProject = GetOrCreate(userId, taskId);
+            return (Store as IProjectStore).GetProjectPath(new Guid(existingProject.Id));
         }
 
         #region protected

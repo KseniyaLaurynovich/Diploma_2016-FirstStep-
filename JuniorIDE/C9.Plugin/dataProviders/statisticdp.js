@@ -35,7 +35,7 @@ define(function(require, exports, module) {
                 : "<span class='tag tag--red'>not passed</span>\n";
             
             if(!datarow.isSubItem){
-                var compiled = datarow.pass
+                var compiled = datarow.compiled
                     ? "<span class='tag tag--green'>compiled</span>\n"
                     : "<span class='tag tag--red'>not compiled</span>\n";
                 var passed = datarow.allTests > 0

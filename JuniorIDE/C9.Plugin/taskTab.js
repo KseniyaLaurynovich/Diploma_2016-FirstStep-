@@ -23,8 +23,8 @@ define(function(require, exports, module) {
 
         var utils = require("./utils");
         
-        var markup = require("text!./markup/task.xml");
-        var css = require("text!./style.css");
+        var markup = require("text!./markups/task.xml");
+        var css = require("text!./tab-style.css");
         
         var membersTree, doc;
         
@@ -83,11 +83,9 @@ define(function(require, exports, module) {
                 if(task.testing){
                     uploadButton.setAttribute("class", "btn-custom loading");
                     uploadButton.setAttribute("disabled", "true");
-                    uploadButton.setAttribute("style", "background-image: url(" + options.staticPrefix + "/images/loading.gif" + ")");
                 }else{
                     uploadButton.setAttribute("class", "btn-custom");
                     uploadButton.setAttribute("disabled", "false");
-                    uploadButton.setAttribute("style", "");
                 }
                 
         }
@@ -143,12 +141,6 @@ define(function(require, exports, module) {
             var btnStatistic = handle.getElement("btnStatistic");
             btnStatistic.addEventListener("click", openStatistic);
             
-            var logo = handle.getElement("logo");
-            logo.setAttribute("src", options.staticPrefix + "/images/logo.png");
-            
-            var deadLine = handle.getElement("deadlineIcon");
-            deadLine.setAttribute("src", options.staticPrefix + "/images/calendar.png");
-            
             var uploadButton = handle.getElement("upload");
             uploadButton.addEventListener("click", function(){
                 var task = JuniorSettings.getCurrentTask();
@@ -159,9 +151,8 @@ define(function(require, exports, module) {
             });
             
             var refreshBtn = handle.getElement("refreshTasks");
-            refreshBtn.setAttribute("style", "background-image: url(" + options.staticPrefix + "/images/refresh.png)")
+            
             refreshBtn.addEventListener("click", function(){
-                
                 var taskId = JuniorSettings.getCurrentTask().id;
                  refreshTask(taskId, refreshUi);
             });
@@ -197,7 +188,7 @@ define(function(require, exports, module) {
         function changeActiveTab(tabName){
             var navigationBar = handle.getElement("navigation");
             navigationBar.childNodes.forEach(function(node){
-                node.setAttribute("class", "bar-task--btn");
+                node.setAttribute("class", "btn-menu");
             });
             
             var activeBtn = handle.getElement("btn" + tabName);
@@ -248,6 +239,16 @@ define(function(require, exports, module) {
             
             //upload button
             setUploadButton(task);
+            
+            //mark
+            var markContainer = handle.getElement("markContainer");
+            
+            if(task.mark){
+                markContainer.show();
+                handle.getElement("mark").setAttribute("caption", task.mark);
+            } else {
+                markContainer.hide();
+            }
         }
         
         /***** Editor *****/
@@ -271,13 +272,23 @@ define(function(require, exports, module) {
                 var task = JuniorSettings.getCurrentTask();
                 doc = e.doc;
                 
-                refreshTask(task.id, refreshUi); 
+                var taskTab = handle.getElement("taskTab");
+                taskTab.hide();
+                
+                var loading = handle.getElement("loading");
+                loading.show();
+                
+                refreshTask(task.id, function(error, task){
+                    refreshUi(error, task);
+                    
+                    loading.hide();
+                    taskTab.show();
+                }); 
             });
             
             plugin.on("documentActivate", function(e) {
                 e.doc.tab.on("unload", function() {
-                    if (parent.parentNode == tab)
-                        tab.removeChild(parent);
+                    tab.removeChild(parent);
                 });
                 
                 tab.appendChild(parent);

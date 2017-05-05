@@ -40,6 +40,9 @@ namespace JI.Managers.Tools
 
         protected string CppCompilerPath = $@"{ConfigurationManager.AppSettings["cpp:compiler"]}\g++.exe";
 
+        protected readonly string[] ExcludeFolders =
+            (ConfigurationManager.AppSettings["cpp:exclude"]??string.Empty).Split(',').Select(f => f.Trim()).ToArray();
+
         protected string[] FileExtens =
         {
             ".cpp"
@@ -65,7 +68,7 @@ namespace JI.Managers.Tools
                 }
                 else
                 {
-                    if(systemObj.Name != ".c9")
+                    if(!ExcludeFolders.Contains(systemObj.Name))
                         files.AddRange(GetFilesForCompilation(systemObj.FullName));
                 }
             }

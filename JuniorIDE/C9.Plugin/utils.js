@@ -48,8 +48,12 @@ define(function(require, exports, module) {
           ? "<span class='tag tag--green'>passed</span>" 
           : "";
           
-      var isDeadlineSoon = task.isPassed 
+      var isDeadlineSoon = task.isDeadlineSoon 
           ? "<span class='tag tag--orange'>deadline soon</span>" 
+          : "";
+          
+      var isWaintingForMark = task.waitingForMark 
+          ? "<span class='tag tag--orange'>waiting for mark</span>" 
           : "";
           
       return isClosed + isShared + isPassed + isDeadlineSoon;

@@ -52,14 +52,15 @@ define(function(require, exports, module) {
             
             var proc = meta.process;
             
-            var decodedBuffer = '';
+            var decodedBuffer = [];
             
-            proc.stdout.once('data', function(chunk){
-                decodedBuffer = new Uint8Array(chunk.data).buffer;
+            proc.stdout.on('data', function(chunk){
+                decodedBuffer = decodedBuffer.concat(chunk.data); 
             })
             
             proc.stdout.on('end', function(){
-                if(callback) callback(decodedBuffer);
+                var buffer = new Uint8Array(decodedBuffer).buffer;
+                if(callback) callback(buffer);
             })
         });
     };
