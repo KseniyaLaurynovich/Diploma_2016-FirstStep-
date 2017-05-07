@@ -8,6 +8,10 @@
 
         public string InputFile { get; set; }
 
+        public string InputFileName { get; set; }
+
         public string OutputFile { get; set; }
+
+        public string OutputFileName { get; set; }
     }
 }

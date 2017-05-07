@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Business\Extensions\QueryExtensions.cs" />
     <Compile Include="Business\Extensions\SqlHierarchyIdExtensions.cs" />
+    <Compile Include="Contracts\IFileStore.cs" />
     <Compile Include="Contracts\IGroupStore.cs" />
     <Compile Include="Contracts\IObjectSpecifiedFolderStore.cs" />
     <Compile Include="Contracts\IProjectStore.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Contracts\ISubjectStore.cs" />
     <Compile Include="Infrastructure\MapperRegistration.cs" />
     <Compile Include="Linq2DbStores\Base\ObjectSpecifiedFolderStore.cs" />
+    <Compile Include="Linq2DbStores\FileStore.cs" />
     <Compile Include="Linq2DbStores\GroupStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationRoleStore.cs" />
     <Compile Include="Linq2DbStores\Identity\ApplicationUserStore.cs" />

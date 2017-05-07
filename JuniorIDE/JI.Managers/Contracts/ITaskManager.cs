@@ -10,5 +10,6 @@ namespace JI.Managers.Contracts
         ServiceResult SetVisibility(string taskId, bool isVisible);
         ServiceResult<File> AssociateTestFile(string taskId, File file);
         ServiceResult<Task> GetTaskForUser(string currentUserId, string taskId, IList<Group> groups);
+        void RemoveExtraFiles(string taskId, string[] filesIds);
     }
 }

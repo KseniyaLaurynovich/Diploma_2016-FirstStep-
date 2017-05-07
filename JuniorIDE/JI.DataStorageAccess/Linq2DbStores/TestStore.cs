@@ -21,8 +21,8 @@ namespace JI.DataStorageAccess.Linq2DbStores
                 result.Add(new TestPaths
                 {
                     Id = test.Id,
-                    InputPath = FileTableStoredProcedures.GetPhysicalPath(DbConnection, test.InputFile),
-                    OutputPath = FileTableStoredProcedures.GetPhysicalPath(DbConnection, test.OutputFile)
+                    InputPath = FileTableStoredProcedures.GetPhysicalPath(DbConnection, test.InputFileId),
+                    OutputPath = FileTableStoredProcedures.GetPhysicalPath(DbConnection, test.OutputFileId)
                 });
             }
 

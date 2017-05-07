@@ -29,6 +29,9 @@ namespace JI.Api.Models
         [JsonProperty(PropertyName = "autoTested")]
         public bool AutoTested { get; set; }
 
+        [JsonProperty(PropertyName = "outputFileName")]
+        public string OutputFileName { get; set; }
+
         [JsonProperty(PropertyName = "isVisible")]
         public bool IsVisible { get; set; }
 

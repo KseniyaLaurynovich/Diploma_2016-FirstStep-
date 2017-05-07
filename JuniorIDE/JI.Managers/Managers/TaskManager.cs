@@ -8,8 +8,7 @@ using System.Linq;
 using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Business.Extensions;
-using JI.Identity.Models;
-using Microsoft.AspNet.Identity;
+using Microsoft.SqlServer.Types;
 using DbModels = JI.DataStorageAccess.Models;
 
 namespace JI.Managers.Managers
@@ -58,6 +57,9 @@ namespace JI.Managers.Managers
 
         public ServiceResult<File> AssociateTestFile(string taskId, File file)
         {
+            if(TaskTestsFolderStore.FileExists(new Guid(taskId), file.Name))
+                return ServiceResult<File>.Failed($"Test file with name '{file.Name}' already exists.");
+
            file.Id = TaskTestsFolderStore
                 .SaveFile(new Guid(taskId), file.Map<File, DbModels.File>())
                 .ToValidString();
@@ -65,6 +67,22 @@ namespace JI.Managers.Managers
             return ServiceResult<File>.Success(file);
         }
         
+        public void RemoveExtraFiles(string taskId, string[] filesIds)
+        {
+            var allFilesIds = TaskTestsFolderStore
+                .GetAllFiles(new Guid(taskId))
+                .Select(f => f.Id).ToList();
+
+            var extraFilesIds = allFilesIds
+                .Except(filesIds.Select(f => SqlHierarchyId.Parse(f)))
+                .ToArray();
+
+            Array.ForEach(extraFilesIds, f =>
+            {
+                TaskTestsFolderStore.RemoveFile(f);
+            });
+        }
+
         public ServiceResult<Task> GetTaskForUser(string currentUserId, string taskId, IList<Group> groups)
         {
             var task = (Store as ITaskStore).FindByIdAndGroups(new Guid(taskId), groups.Select(g => new Guid(g.Id)).ToArray())

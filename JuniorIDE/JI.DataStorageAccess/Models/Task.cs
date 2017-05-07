@@ -39,11 +39,14 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "TaskFolder")]
         public SqlHierarchyId TaskFolder { get; set; }
 
+        [Column(Name = "OutputFileName")]
+        public string OutputFileName { get; set; }
+
         [Column(Name = "TempFolder")]
         public SqlHierarchyId TempFolder { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "TaskId")]
-        public ICollection<Test> Tests { get; set; }
+        public IList<Test> Tests { get; set; }
 
         [Association(ThisKey = "SubjectId", OtherKey = "Id")]
         public Subject Subject { get; set; }

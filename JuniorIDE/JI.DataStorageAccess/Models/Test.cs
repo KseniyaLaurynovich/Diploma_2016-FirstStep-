@@ -13,13 +13,19 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "TaskId"), NotNull]
         public Guid TaskId { get; set; }
 
-        [Column(Name = "InputFile"), Nullable]
-        public SqlHierarchyId InputFile { get; set; }
+        [Column(Name = "InputFile"), NotNull]
+        public SqlHierarchyId InputFileId { get; set; }
 
-        [Column(Name = "OutputFile"), Nullable]
-        public SqlHierarchyId OutputFile { get; set; }
+        [Column(Name = "OutputFile"), NotNull]
+        public SqlHierarchyId OutputFileId { get; set; }
 
         [Association(ThisKey = "TaskId", OtherKey = "Id")]
         public Task Task { get; set; }
+
+        [Association(ThisKey = "InputFileId", OtherKey = "Id")]
+        public File InputFile { get; set; }
+
+        [Association(ThisKey = "OutputFileId", OtherKey = "Id")]
+        public File OutputFile { get; set; }
     }
 }

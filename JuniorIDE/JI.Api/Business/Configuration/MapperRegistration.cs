@@ -49,8 +49,8 @@ namespace JI.Api.Business.Configuration
                 });
 
             Mapper.Register<Test, TestModel>()
-                .Member(dest => dest.InputFile, src => new FileModel { Id = src.InputFile })
-                .Member(dest => dest.OutputFile, src => new FileModel { Id = src.OutputFile });
+                .Member(dest => dest.InputFile, src => new FileModel { Id = src.InputFile, Name = src.InputFileName })
+                .Member(dest => dest.OutputFile, src => new FileModel { Id = src.OutputFile, Name = src.OutputFileName });
             Mapper.Register<TestModel, Test>()
                 .Ignore(dest => dest.OutputFile)
                 .Ignore(dest => dest.InputFile)

@@ -18,6 +18,7 @@ namespace JI.Managers.Models
         public DateTime LastModified { get; set; }
 
         public bool AutoTested { get; set; }
+        public string OutputFileName { get; set; }
 
         public bool IsShared { get; set; }
 

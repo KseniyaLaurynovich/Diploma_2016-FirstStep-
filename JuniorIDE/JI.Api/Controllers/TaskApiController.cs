@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using ExpressMapper;
@@ -22,11 +21,13 @@ namespace JI.Api.Controllers
     public class TaskApiController : BaseApiController
     {
         private readonly ITaskManager _taskManager;
+        private readonly IFileManager _fileManager;
 
         public TaskApiController(
-            ITaskManager taskManager)
+            ITaskManager taskManager, IFileManager fileManager)
         {
             _taskManager = taskManager;
+            _fileManager = fileManager;
         }
 
         [HttpGet]
@@ -62,8 +63,8 @@ namespace JI.Api.Controllers
         }
 
         [HttpPost]
-        [Route("saveTest/{taskId}")]
-        public IHttpActionResult SaveTestFile(string taskId)
+        [Route("saveTest")]
+        public IHttpActionResult SaveTestFile([FromUri]string taskId, [FromUri]string filesIds)
         {
             if (!Request.Content.IsMimeMultipartContent())
             {
@@ -76,9 +77,12 @@ namespace JI.Api.Controllers
 
             if (file != null)
             {
+                if (filesIds != null)
+                    _taskManager.RemoveExtraFiles(taskId, filesIds.Split(','));
+
                 var serviceResult = _taskManager.AssociateTestFile(taskId, new File
                 {
-                    Name = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}",
+                    Name = file.FileName,
                     Data = file.InputStream.toBytesArray()
                 });
                 return serviceResult.Succeeded
@@ -87,6 +91,19 @@ namespace JI.Api.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("testFile")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetTestFile([FromUri]string testFileId)
+        {
+            var file = _fileManager.GetFile(testFileId);
+            var response = Request.CreateResponse(HttpStatusCode.OK);
+            response.Content = new StreamContent(file.Stream);
+            response.Content.Headers.Add("Content-Disposition", $"inline; filename={file.Name}");
+
+            return response;
         }
 
         [HttpPut]
@@ -134,6 +151,7 @@ namespace JI.Api.Controllers
             if (!disposing)
             {
                 _taskManager?.Dispose();
+                _fileManager?.Dispose();
             }
 
             base.Dispose(disposing);

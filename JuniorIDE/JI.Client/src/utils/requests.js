@@ -158,12 +158,12 @@ export function toggleTaskVisibility(token, taskId, isVisible){
   })
 }
 
-export function saveTaskTest(token, taskId, file){
+export function saveTaskTest(token, taskId, filesIds, file){
   var data = new FormData();
   data.append("file", file);
   return axios({
     method : 'post',
-    url    :  BASE_URL + '/tasks/saveTest/' + taskId,
+    url    :  BASE_URL + '/tasks/saveTest' + "?taskId=" + taskId + "&filesIds=" + filesIds.join(),
     contentType: false,
     headers : {"Content-Type": "multipart/form-data", "Authorization": "Bearer " + token },
     data   :  data

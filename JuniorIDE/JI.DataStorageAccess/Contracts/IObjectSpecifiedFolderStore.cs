@@ -9,5 +9,8 @@ namespace JI.DataStorageAccess.Contracts
     {
         SqlHierarchyId SaveFile(Guid objId, File file);
         SqlHierarchyId CreateSpecificObjFolder(T obj);
+        File[] GetAllFiles(Guid objId);
+        bool FileExists(Guid objId, string fileName);
+        void RemoveFile(SqlHierarchyId fileId);
     }
 }

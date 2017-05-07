@@ -17,7 +17,6 @@ namespace JI.Api.Controllers
         [Route("changeinfo")]
         public IHttpActionResult ChangeUserInfo(UserInfoModel userInfoModel)
         {
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

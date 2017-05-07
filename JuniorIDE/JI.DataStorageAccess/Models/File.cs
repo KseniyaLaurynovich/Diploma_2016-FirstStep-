@@ -21,8 +21,5 @@ namespace JI.DataStorageAccess.Models
 
         [Column(Name = "is_directory", SkipOnInsert = true, SkipOnUpdate = true)]
         public bool IsFolder { get; set; }
-
-        [Column(Name = "Path", SkipOnInsert = true, SkipOnUpdate = true)]
-        public string Path { get; set; }
     }
 }

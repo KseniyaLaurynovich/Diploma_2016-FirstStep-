@@ -40,7 +40,8 @@ namespace JI.DataStorageAccess.Linq2DbStores
 
         public override Task FindById(Guid id) => DbConnection.Tasks
             .LoadWith(t => t.Subject)
-            .LoadWith(t => t.Tests)
+            .LoadWith(t => t.Tests[0].InputFile)
+            .LoadWith(t => t.Tests[0].OutputFile)
             .FirstOrDefault(t => t.Id == id);
 
         public Task FindByIdAndGroups(Guid id, Guid[] groupIds)
@@ -94,8 +95,8 @@ namespace JI.DataStorageAccess.Linq2DbStores
             }
             DbConnection.Tests
                 .Where(p => p.Id == test.Id)
-                .Set(p => p.OutputFile, test.OutputFile)
-                .Set(p => p.InputFile, test.InputFile)
+                .Set(p => p.OutputFileId, test.OutputFileId)
+                .Set(p => p.InputFileId, test.InputFileId)
                 .Update();
         }
 

@@ -58,5 +58,36 @@ namespace JI.DataStorageAccess.Linq2DbStores.Base
                 return folderId;
             }
         }
+
+        public bool FileExists(Guid objId, string fileName)
+        {
+            var obj = DbConnection.GetTable<T>()
+                .FirstOrDefault(o => o.Id.Equals(objId));
+
+            var folderId = GetSpecifiedObjFolder(obj);
+            var existingFile = DbConnection.GetTable<File>()
+                .FirstOrDefault(f => f.ParentId.Equals(folderId) && f.Name.Equals(fileName));
+
+            return existingFile!= null;
+        }
+
+        public File[] GetAllFiles(Guid objId)
+        {
+            var obj = DbConnection.GetTable<T>()
+                .FirstOrDefault(o => o.Id.Equals(objId));
+
+            var folderId = GetSpecifiedObjFolder(obj);
+            return DbConnection.GetTable<File>()
+                .Where(f => f.ParentId.Equals(folderId))
+                .ToArray();
+        }
+
+        public void RemoveFile(SqlHierarchyId fileId)
+        {
+            var file = DbConnection.GetTable<File>().FirstOrDefault(f => f.Id.Equals(fileId));
+
+            if (file != null)
+                DbConnection.Delete(file);
+        }
     }
 }

@@ -99,6 +99,7 @@
     <Compile Include="Contracts\IAutoTestedManager.cs" />
     <Compile Include="Contracts\ICompilator.cs" />
     <Compile Include="Contracts\IFileEquatable.cs" />
+    <Compile Include="Contracts\IFileManager.cs" />
     <Compile Include="Contracts\IManager.cs" />
     <Compile Include="Contracts\IProjectManager.cs" />
     <Compile Include="Contracts\IStatisticManager.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Contracts\IGroupManager.cs" />
     <Compile Include="Contracts\IRolesValidator.cs" />
     <Compile Include="Managers\AutoTestedManager.cs" />
+    <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Managers\GroupManager.cs" />
     <Compile Include="Managers\Identity\ApplicationRoleManager.cs" />
     <Compile Include="Managers\Identity\ApplicationUserManager.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Managers\StatisticManager.cs" />
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
+    <Compile Include="Models\FileInfo.cs" />
     <Compile Include="Models\Trying.cs" />
     <Compile Include="Tools\FileEquatable.cs" />
     <Compile Include="Tools\TestExecutor.cs" />

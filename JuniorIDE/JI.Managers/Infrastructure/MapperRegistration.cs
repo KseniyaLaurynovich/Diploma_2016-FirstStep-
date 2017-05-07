@@ -76,14 +76,18 @@ namespace JI.Managers.Infrastructure
             Mapper.Register<Test, Models.Test>()
                .Member(dest => dest.Id, src => src.Id.ToString())
                .Member(dest => dest.TaskId, src => src.TaskId.ToString())
-               .Member(dest => dest.OutputFile, src => src.OutputFile.ToValidString())
-               .Member(dest => dest.InputFile, src => src.InputFile.ToValidString());
+               .Member(dest => dest.OutputFile, src => src.OutputFileId.ToValidString())
+               .Member(dest => dest.InputFile, src => src.InputFileId.ToValidString())
+               .Member(dest => dest.InputFileName, src => src.InputFile.Name)
+               .Member(dest => dest.OutputFileName, src => src.OutputFile.Name);
 
             Mapper.Register<Models.Test, Test>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.TaskId)
-                .Ignore(dest => dest.OutputFile)
+                .Ignore(dest => dest.OutputFileId)
+                .Ignore(dest => dest.InputFileId)
                 .Ignore(dest => dest.InputFile)
+                .Ignore(dest => dest.OutputFile)
                 .After((appTest, test) =>
                 {
                     if (appTest.Id != null)
@@ -94,18 +98,14 @@ namespace JI.Managers.Infrastructure
                     {
                         test.TaskId = new Guid(appTest.TaskId);
                     }
-                    if (appTest.OutputFile != null)
-                    {
-                        test.OutputFile = appTest.OutputFile == null
-                            ? SqlHierarchyId.Null
-                            : SqlHierarchyId.Parse(appTest.OutputFile);
-                    }
-                    if (appTest.InputFile != null)
-                    {
-                        test.InputFile = appTest.OutputFile == null
-                            ? SqlHierarchyId.Null
-                            : SqlHierarchyId.Parse(appTest.InputFile);
-                    }
+
+                    test.OutputFileId = appTest.OutputFile == null
+                        ? SqlHierarchyId.Null
+                        : SqlHierarchyId.Parse(appTest.OutputFile);
+
+                    test.InputFileId = appTest.InputFile == null
+                        ? SqlHierarchyId.Null
+                        : SqlHierarchyId.Parse(appTest.InputFile);
                 });
 
             #endregion
