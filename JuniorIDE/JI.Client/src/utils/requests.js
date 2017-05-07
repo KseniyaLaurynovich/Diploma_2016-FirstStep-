@@ -187,7 +187,26 @@ export function changeUsername(token, username){
   })
 }
 
+export function getDeadlines(token, taskId){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/deadlines/get?taskId=' + taskId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
+export function setDeadline(token, taskId, groupId, deadline){
+  return axios({
+    method  : 'post',
+    url     : BASE_URL + '/deadlines/set?taskId=' + taskId,
+    data    : { groupId: groupId, deadline: deadline },
+    headers : {"Authorization": "Bearer " + token, "Content-Type"  : "application/json"  }
+  })
+}
+
 const requests = {
+  setDeadline,
+  getDeadlines,
   getToken,
   registerUser,
   fetchUserInfo,

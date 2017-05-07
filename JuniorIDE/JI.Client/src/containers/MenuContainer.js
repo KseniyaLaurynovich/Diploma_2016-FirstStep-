@@ -14,14 +14,11 @@ const MenuContainer = React.createClass({
     '' : [
     ],
     'Teacher' : [
-      {to: 'subjects', label:'Subjects', icon: 'briefcase'}
-    ],
-    'Student' : [
-      {to: '/counter', label:'Counter'}
+      {to: 'subjects', icon: 'briefcase'}
     ],
     'Administrator' : [
-      {to: '/usersgrid', label:'Users', icon: 'user'},
-      {to: '/groupsgrid', label:'Groups', icon: 'education'}
+      {to: '/usersgrid', icon: 'user'},
+      {to: '/groupsgrid', icon: 'education'}
     ]
   },
   getNavItems(){
@@ -36,9 +33,6 @@ const MenuContainer = React.createClass({
     })
     return navItems
   },
-  changePassword(){
-    browserHistory.push('/changepassword')
-  },
   getInitialState(){
     this.props.getUserInfo()
     return {}
@@ -48,8 +42,7 @@ const MenuContainer = React.createClass({
       <Menu
         isAuthenticated   = {this.props.isAuthenticated}
         userInfo          = {this.props.userInfo}
-        navItems          = {this.getNavItems()}
-        changePassword    = {this.changePassword}/>
+        navItems          = {this.getNavItems()}/>
     )
   }
 })

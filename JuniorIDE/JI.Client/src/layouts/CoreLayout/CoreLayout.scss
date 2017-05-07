@@ -6,9 +6,10 @@
 
 .container--layout {
   min-height: 100%;
+  padding-top: 64px;
   @include respond-to(wide-screens) {
-    width: calc(100% - 250px);
-    margin-left: 250px;
+    width: calc(100% - 75px);
+    margin-left: 75px;
   }
   @include respond-to(medium-screens) {
       width: 100vh;

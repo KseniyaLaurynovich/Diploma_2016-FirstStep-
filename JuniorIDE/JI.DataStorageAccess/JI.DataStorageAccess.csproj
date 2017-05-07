@@ -83,6 +83,7 @@
     <Compile Include="Contracts\IProjectStore.cs" />
     <Compile Include="Contracts\IStore.cs" />
     <Compile Include="Contracts\IAdvancedUserStore.cs" />
+    <Compile Include="Contracts\ITaskDeadlineStore.cs" />
     <Compile Include="Contracts\ITaskStore.cs" />
     <Compile Include="Contracts\ITestStore.cs" />
     <Compile Include="Contracts\ITryingHistoryStore.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Business\FileTableStoredProcedures.cs" />
     <Compile Include="Linq2DbStores\ProjectFolderStore.cs" />
     <Compile Include="Linq2DbStores\ProjectStore.cs" />
+    <Compile Include="Linq2DbStores\TaskDeadlineStore.cs" />
     <Compile Include="Linq2DbStores\TaskTestsFolderStore.cs" />
     <Compile Include="Linq2DbStores\TaskStore.cs" />
     <Compile Include="Linq2DbStores\TestStore.cs" />

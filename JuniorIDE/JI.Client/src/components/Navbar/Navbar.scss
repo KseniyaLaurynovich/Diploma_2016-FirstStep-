@@ -1,0 +1,47 @@
+.junior-navbar{
+    height: 64px;
+    background-image: linear-gradient(270deg,#89b700,#1cb2c8);
+    border-bottom: 1px solid rgba(0,0,0,.05);
+    margin-bottom: 0px; 
+    border-radius: 0px;
+
+    .nav{
+        margin-top: 10px;
+        margin-left: 20px;
+        width: 94%;
+    }
+
+    .container{
+        width: 100%;
+    }
+
+    .navbar-brand{
+        height: 50px;
+        margin-left: 0px !important;
+        margin-top: 5px;
+    }
+
+    .current-page-name{
+        overflow: hidden;
+        display: inline-block;
+        max-width: 100%;
+        color: white;
+        font-size: 24px;
+        line-height: 40px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+    }
+
+    .account{
+        overflow: hidden;
+        display: inline-block;
+        font-size: 16px;
+        line-height: 40px;
+        font-weight: 300;
+        text-overflow: ellipsis;
+
+        a{
+            color: #fff !important;
+        }
+    }
+}

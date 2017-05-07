@@ -98,6 +98,7 @@
     <Compile Include="Business\Models\ServiceResultExtentions.cs" />
     <Compile Include="Contracts\IAutoTestedManager.cs" />
     <Compile Include="Contracts\ICompilator.cs" />
+    <Compile Include="Contracts\IDeadlineManager.cs" />
     <Compile Include="Contracts\IFileEquatable.cs" />
     <Compile Include="Contracts\IFileManager.cs" />
     <Compile Include="Contracts\IManager.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Contracts\IGroupManager.cs" />
     <Compile Include="Contracts\IRolesValidator.cs" />
     <Compile Include="Managers\AutoTestedManager.cs" />
+    <Compile Include="Managers\DeadlineManager.cs" />
     <Compile Include="Managers\FileManager.cs" />
     <Compile Include="Managers\GroupManager.cs" />
     <Compile Include="Managers\Identity\ApplicationRoleManager.cs" />

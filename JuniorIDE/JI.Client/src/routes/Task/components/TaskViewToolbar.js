@@ -42,7 +42,7 @@ const renderViewMode = (props) => (
        }
        {
          !props.task.isShared
-         ? <Button className='padding-sm ml-5'>
+         ? <Button className='padding-sm ml-5' onClick={props.openDeadlinesDialog}>
              <Glyphicon
                className  = 'glypicon--pointer'
                glyph      = 'calendar'>

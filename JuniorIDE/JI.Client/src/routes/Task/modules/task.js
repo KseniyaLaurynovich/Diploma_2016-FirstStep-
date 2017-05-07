@@ -16,6 +16,8 @@ export const SET_EDIT_MODE            = 'SET_EDIT_MODE'
 export const SAVE_TASK_SUCCESS        = 'SAVE_TASK_SUCCESS'
 export const DELETE_TASK_CONFIRMATION_CHANGE = 'DELETE_TASK_CONFIRMATION_CHANGE'
 export const DELETE_TASK_LOADING_CHANGE = 'DELETE_TASK_LOADING_CHANGE'
+export const SET_DEADLINES_DIALOG_VISIBILITY = 'SET_DEADLINES_DIALOG_VISIBILITY'
+export const SET_DEADLINES              = 'SET_DEADLINES'
 
 // ------------------------------------
 // Actions
@@ -91,6 +93,20 @@ export const onDeleteConfirmation = (event) => {
   }
 }
 
+export const setDeadlinesDialogVisibility = (isVisible) => {
+  return { 
+    type    : SET_DEADLINES_DIALOG_VISIBILITY,
+    payload : isVisible
+  }
+}
+
+export const setDeadlines = (deadlines) => {
+  return {
+    type    : SET_DEADLINES,
+    payload : deadlines
+  }
+}
+
 export const actions = {
   onNameChange,
   onDescriptionChange,
@@ -101,13 +117,17 @@ export const actions = {
   saveTaskSuccess,
   setTaskVisibility,
   onDeleteLoadingChange,
-  onDeleteConfirmation
+  onDeleteConfirmation,
+  setDeadlines
 }
 
 // ------------------------------------
 //  Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [SET_DEADLINES_DIALOG_VISIBILITY] : (state, action) => {
+    return Object.assign({}, state, { isDeadlinesModalOpen: action.payload })
+  },
   [TASK_NAME_CHANGE]        : (state, action) => {
     return Object.assign({}, state, { editingTask:
       Object.assign({}, state.editingTask, { name: action.payload })})
@@ -142,6 +162,9 @@ const ACTION_HANDLERS = {
   },
   [DELETE_TASK_LOADING_CHANGE]      : (state, action) => {
     return Object.assign({}, state, { deleteLoading: action.payload })
+  },
+  [SET_DEADLINES]         : (state, action) => {
+    return Object.assign({}, state, { deadlines: action.payload })
   }
 }
 
@@ -153,7 +176,9 @@ const initialState = {
   editingTask           : null,
   isEditMode            : false,
   deleteConfirmed       : false,
-  deleteLoading         : false
+  deleteLoading         : false,
+  isDeadlinesModalOpen  : false,
+  deadlines             : []
 }
 
 export default function taskReducer (state = initialState, action){
@@ -218,6 +243,35 @@ export function deleteTask(){
     requests.deleteTask(token, getState().task.currentTask.id)
     .then(function(response){
       browserHistory.push('/' + getState().task.currentTask.subjectId + '/tasks')
+    })
+  }
+}
+
+export function openDeadlinesDialog(){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    var taskId = getState().task.currentTask.id;
+
+    requests.getDeadlines(token, taskId).then(function(response){
+      dispatch(setDeadlines(response.data))
+      dispatch(setDeadlinesDialogVisibility(true))
+    });
+  }
+}
+
+export function closeDeadlinesDialog(){
+  return (dispatch, getState) => {
+    dispatch(setDeadlinesDialogVisibility(false))
+  }
+}
+
+export function setDeadline(groupId, deadline){
+  return (dispatch, getState) => {
+    var token = getState().user.credentials.access_token
+    var taskId = getState().task.currentTask.id;
+
+    requests.setDeadline(token, taskId, groupId, deadline).then(function(response){
+      
     })
   }
 }

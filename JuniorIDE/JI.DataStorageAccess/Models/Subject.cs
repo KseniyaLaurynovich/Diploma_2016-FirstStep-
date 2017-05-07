@@ -15,6 +15,7 @@ namespace JI.DataStorageAccess.Models
             UserId = subject.UserId;
             Name = subject.Name;
             Tasks = subject.Tasks;
+            SubjectGroups = subject.SubjectGroups;
         }
 
         [Column(Name = "Id"), PrimaryKey, Identity]

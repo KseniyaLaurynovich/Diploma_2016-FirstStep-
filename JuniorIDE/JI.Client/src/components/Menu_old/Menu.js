@@ -40,14 +40,25 @@ var Menu = React.createClass({
     return(
        <NavItem eventKey={index} key={index} onClick={() => this.navItemClick(item.to)}>
           <Glyphicon className='glypicon-md' glyph={item.icon}/>
+            {item.label}
        </NavItem>
     )
   },
   render(){
     return(
       <Navbar className='leftSidebar' collapseOnSelect>
+        <Navbar.Header className='nav-header-bottom'>
+          <Navbar.Brand>
+            <img className='brand-logo' src={LogoImage}/>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+
          <Navbar.Collapse>
            <Nav className='menu-list'>
+             {
+                 this.props.isAuthenticated ? this.renderAccount(this.props) : ''
+             }
              {
                  this.props.navItems && this.props.navItems.map(this.renderNavItem)
              }

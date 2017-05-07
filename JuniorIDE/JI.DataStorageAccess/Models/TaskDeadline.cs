@@ -4,7 +4,7 @@ using System;
 namespace JI.DataStorageAccess.Models
 {
     [Table(Name = "TaskDeadlines")]
-    public class TaskDeadline
+    public class TaskDeadline : IWithIdentifier
     {
         [Column(Name = "Id"), PrimaryKey, Identity]
         public Guid Id { get; set; }
@@ -16,7 +16,7 @@ namespace JI.DataStorageAccess.Models
         public Guid GroupSubjectId { get; set; }
 
         [Column(Name = "Deadline"), Nullable]
-        public DateTime Deadline { get; set; }
+        public DateTime? Deadline { get; set; }
 
         [Association(ThisKey = "GroupSubjectId", OtherKey = "Id")]
         public GroupSubject GroupSubject { get; set; }
