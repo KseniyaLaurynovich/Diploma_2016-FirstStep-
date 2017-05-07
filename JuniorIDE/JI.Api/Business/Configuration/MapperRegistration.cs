@@ -20,6 +20,9 @@ namespace JI.Api.Business.Configuration
             Mapper.Register<UserModel, ApplicationUser>();
             Mapper.Register<ApplicationUser, UserModel>();
 
+            Mapper.Register<UserInfoModel, ApplicationUser>();
+            Mapper.Register<ApplicationUser, UserInfoModel>();
+
             Mapper.Register<RoleModel, ApplicationRole>();
             Mapper.Register<ApplicationRole, RoleModel> ();
 

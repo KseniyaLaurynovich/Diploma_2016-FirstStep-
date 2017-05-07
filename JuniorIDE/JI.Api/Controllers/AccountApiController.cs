@@ -1,6 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Cors;
 using ExpressMapper;
+using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using Microsoft.AspNet.Identity;
@@ -12,6 +13,26 @@ namespace JI.Api.Controllers
     [Authorize]
     public class AccountApiController : BaseApiController
     {
+        [HttpPut]
+        [Route("changeinfo")]
+        public IHttpActionResult ChangeUserInfo(UserInfoModel userInfoModel)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userModel = userInfoModel.Map<UserInfoModel, ApplicationUser>();
+            userModel.Id = User.Identity.GetUserId();
+
+            var result = UserManager.Value.Update(userModel);
+
+            return !result.Succeeded
+                ? GetErrorResult(result)
+                : Ok();
+        }
+
         [HttpPost]
         [Route("changeusername")]
         public IHttpActionResult ChangeUsername(UsernameModel usernameModel)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace JI.Api.Models
@@ -10,6 +11,7 @@ namespace JI.Api.Models
         public string UserName { get; set; }
 
         [JsonProperty(PropertyName = "email")]
+        [EmailAddress]
         public string Email { get; set; }
 
         [JsonProperty(PropertyName = "lastName")]
