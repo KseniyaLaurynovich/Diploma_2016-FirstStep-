@@ -1,11 +1,9 @@
 ﻿using System.Linq;
 using System.Web.Http;
-using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
 using JI.Api.Models;
 using JI.Identity.Models;
-using JI.Managers.Models;
 using Microsoft.AspNet.Identity;
 
 namespace JI.Api.Controllers
@@ -16,25 +14,19 @@ namespace JI.Api.Controllers
     {
         [HttpGet]
         [Route("all")]
-        public IHttpActionResult GetUsers()
+        public IHttpActionResult Get()
         {
             var users = UserManager.Value
                 .Users
                 .Select(u => u.Map<ApplicationUser, UserModel>())
                 .ToList();
 
-            foreach (var user in users)
-            {
-                user.Groups = UserManager.Value.GetGroups(user.Id)
-                    .Select(Mapper.Map<Group, GroupModel>).ToList();
-            }
-
             return Ok(users);
         }
 
         [HttpPut]
         [Route("edit")]
-        public IHttpActionResult EditUser(UserModel model)
+        public IHttpActionResult Save(UserModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -44,8 +36,7 @@ namespace JI.Api.Controllers
             var user = UserManager.Value.FindById(model.Id);
             user = model.Map(user);
 
-            var result = UserManager.Value.AdvancedUpdate(
-                user, model.Groups.Select(Mapper.Map<GroupModel, Group>).ToArray());
+            var result = UserManager.Value.Update(user);
 
             return !result.Succeeded
                 ? GetErrorResult(result) 
@@ -54,7 +45,7 @@ namespace JI.Api.Controllers
 
         [HttpDelete]
         [Route("delete/{id}")]
-        public IHttpActionResult DeleteUser(string id)
+        public IHttpActionResult Delete(string id)
         {
             var user = UserManager.Value.FindById(id);
 

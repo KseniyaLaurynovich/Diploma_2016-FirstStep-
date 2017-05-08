@@ -11,6 +11,33 @@ namespace JI.DataStorageAccess.Linq2DbStores
 {
     internal class TaskDeadlineStore : BaseStore<TaskDeadline>, ITaskDeadlineStore
     {
+        public void SaveByGroup(Guid taskId, Guid groupId, DateTime? deadline)
+        {
+            var task = DbConnection.Tasks
+                .LoadWith(t => t.Deadlines)
+                .FirstOrDefault(t => t.Id.Equals(taskId));
+
+            var groupSubject = DbConnection.GroupSubjects
+                .FirstOrDefault(gs => gs.SubjectId == task.SubjectId && gs.GroupId == groupId);
+
+            var taskDeadline = task.Deadlines
+                .FirstOrDefault(td => td.GroupSubjectId == groupSubject.Id && td.TaskId == taskId);
+
+            if (taskDeadline == null)
+            {
+                DbConnection.InsertWithIdentity(new TaskDeadline
+                {
+                    TaskId = taskId,
+                    GroupSubjectId = groupSubject.Id,
+                    Deadline = deadline
+                });
+                return;
+            }
+
+            taskDeadline.Deadline = deadline;
+            DbConnection.Update(taskDeadline);
+        }
+
         public IDictionary<Group, DateTime?> FindByTask(Guid taskId)
         {
             var task = DbConnection.Tasks.FirstOrDefault(t => t.Id.Equals(taskId));
@@ -18,20 +45,12 @@ namespace JI.DataStorageAccess.Linq2DbStores
             if(task == null)
                 return new Dictionary<Group, DateTime?>();
 
-            var groups = DbConnection.GroupSubjects
+            var result = DbConnection.GroupSubjects
                 .LoadWith(gs => gs.Group)
-                .Where(gs => gs.SubjectId.Equals(task.SubjectId))
-                .ToArray();
+                .LoadWith(gs => gs.Deadlines)
+                .Where(gs => gs.SubjectId == task.SubjectId)
+                .ToDictionary(g => g.Group, g => g.Deadlines.FirstOrDefault(d => d.TaskId == taskId)?.Deadline);
 
-            var result = new Dictionary<Group, DateTime?>();
-            Array.ForEach(groups, g =>
-            {
-                var deadline =
-                    DbConnection.TaskDeadlines
-                        .FirstOrDefault(td => td.GroupSubjectId.Equals(g.Id) && td.TaskId.Equals(taskId))
-                        ?.Deadline;
-                result.Add(g.Group, deadline);
-            });
             return result;
         }
     }

@@ -21,7 +21,7 @@ export const NavbarCustom = (props) => (
       </Navbar.Brand>
     </Navbar.Header>
     <Nav>
-      <p className="current-page-name">Tasks</p>
+      <p className="current-page-name">{ props.header }</p>
       <NavItem className="account pull-right" onClick={() => navItemClick('/account_settings')}>
           { 
             props.userInfo != null 

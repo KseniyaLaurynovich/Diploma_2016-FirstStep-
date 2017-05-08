@@ -32,7 +32,7 @@ namespace JI.Api.Controllers
         [Route("getByUser")]
         [Authorize(Roles = "Teacher")]
         [HttpGet]
-        public IHttpActionResult GetSubjectsByUser()
+        public IHttpActionResult GetByUser()
         {
             var currentUserId = User.Identity.GetUserId();
             var subjects = _subjectManager.FindByUserId(currentUserId);
@@ -43,7 +43,7 @@ namespace JI.Api.Controllers
         [Route("save")]
         [Authorize(Roles = "Teacher")]
         [HttpPost]
-        public IHttpActionResult SaveSubject(SubjectModel subject)
+        public IHttpActionResult Save(SubjectModel subject)
         {
             var currentUserId = User.Identity.GetUserId();
             subject.UserId = currentUserId;
@@ -58,7 +58,7 @@ namespace JI.Api.Controllers
         [Route("delete/{subjectId}")]
         [Authorize(Roles = "Teacher")]
         [HttpDelete]
-        public IHttpActionResult DeleteSubject(string subjectId)
+        public IHttpActionResult Delete(string subjectId)
         {
             var result = _subjectManager.Delete(subjectId);
 

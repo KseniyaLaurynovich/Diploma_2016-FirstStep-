@@ -11,6 +11,7 @@ using JI.DataStorageAccess.Helpers;
 using JI.DataStorageAccess.Models;
 using JI.Managers.Contracts;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ExpressMapper.Extensions;
 
 namespace JI.Managers.Managers.Identity
@@ -52,18 +53,17 @@ namespace JI.Managers.Managers.Identity
             }
 
             return manager;
-        }
+        }       
 
         public IList<Models.Group> GetGroups(string userId)
         {
             return (Store as IUserGroupStore<ApplicationUser>)
-                   ?.GetGroupsAsync(userId)
+                   ?.GetGroups(userId)
                    .Select(Mapper.Map<Group, Models.Group>)
                    .ToList();
         }
 
-        public IdentityResult AdvancedUpdate(
-            ApplicationUser user, Models.Group[] groups)
+        public override async Task<IdentityResult> UpdateAsync(ApplicationUser user)
         {
             var userValidation = UserValidator.ValidateAsync(user).Result;
 
@@ -78,17 +78,8 @@ namespace JI.Managers.Managers.Identity
                 return rolesValidation;
             }
 
-            try
-            {
-                (Store as IAdvancedUserStore<ApplicationUser>)
-                    ?.AdvancedUpdateAsync(user, groups.Select(g => g.Map<Models.Group, Group>()).ToArray());
-                return IdentityResult.Success;
-            }
-            catch (Exception)
-            {
-                //todo add logging
-                return IdentityResult.Failed("Server error");
-            }
+            await Store.UpdateAsync(user);
+            return IdentityResult.Success;
         }
 
         public IdentityResult ChangeUsername(string userId, string username)

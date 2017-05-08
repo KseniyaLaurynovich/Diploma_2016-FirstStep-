@@ -12,13 +12,17 @@ const mapDispatchToProps = {
   onEmailChange             : actions.handleEmailChange,
   onFirstNameChange         : actions.handleFirstNameChange,
   onLastNameChange          : actions.handleLastNameChange,
-  onPatronymicChange        : actions.handlePatronymicChange
+  onPatronymicChange        : actions.handlePatronymicChange,
+  onRoleChange              : actions.handleRoleChange,
+  onGroupChange             : actions.handleGroupChange
 }
 
 const mapStateToProps = (state) => ({
   validationState       :  state.registration.validationState,
   registrationError     :  state.registration.registrationError,
-  confirmPasswordError  :  state.registration.confirmPasswordError
+  confirmPasswordError  :  state.registration.confirmPasswordError,
+  roles                 : state.registration.roles,
+  groups                : state.registration.groups
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Registration)

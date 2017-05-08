@@ -8,11 +8,6 @@ import SubjectEditFormContainer from './SubjectEditFormContainer'
 import SubjectGridToolbarContainer from './SubjectGridToolbarContainer'
 
 const SubjectGridContainer = React.createClass({
-  getInitialState(){
-    this.props.fetchSubjects()
-    this.props.fetchGroups()
-    return {}
-  },
   render(){
     return(
       <div className='gridPage'>
@@ -38,8 +33,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  fetchSubjects       : actions.fetchSubjects,
-  fetchGroups         : actions.fetchGroups,
   openEditModal       : actions.openEditModal
 }
 

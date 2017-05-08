@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col, Form, Glyphicon, HelpBlock, Checkbox } from 'react-bootstrap'
+import { ControlLabel, Modal, Button, FormGroup, FormControl, DropdownButton, MenuItem, Row, Col, Form, Glyphicon, HelpBlock, Checkbox } from 'react-bootstrap'
 
 function filteredRoles(props){
   return props.roles
@@ -56,46 +56,52 @@ const UserEditFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>
      <Modal.Header>
        <Modal.Title className='modal-title'>Edit user</Modal.Title>
-       <Row>
-         <Col md={6} sm={6} xs={6}>
-           <Checkbox onChange={props.handleDeleteConfirmation}>I undestand that user can not be restored.</Checkbox>
-         </Col>
-         <Col md={6} sm={6} xs={6}>
-           <Button onClick={props.handleDelete}
-             disabled={!props.deleteConfirmed || props.saveUserLoading || props.deleteUserLoading} bsStyle='danger' className='pull-right'>
-             {
-               props.deleteUserLoading
-               ? 'Deleting...'
-               : 'Delete this user'
-             }
-           </Button>
-         </Col>
-       </Row>
+      
      </Modal.Header>
+
+    <Row className='p-15'>
+      <Col md={6} sm={6} xs={6}>
+        <Checkbox onChange={props.handleDeleteConfirmation}>I undestand that user can not be restored.</Checkbox>
+      </Col>
+      <Col md={6} sm={6} xs={6}>
+        <Button onClick={props.handleDelete}
+          disabled={!props.deleteConfirmed || props.saveUserLoading || props.deleteUserLoading} bsStyle='danger' className='pull-right'>
+          {
+            props.deleteUserLoading
+            ? 'Deleting...'
+            : 'Delete this user'
+          }
+        </Button>
+      </Col>
+    </Row>
 
    <Form onSubmit={props.submit}>
      <Modal.Body>
        <h4>Profile</h4>
          <FormGroup controlId="firstName">
-           <FormControl type="text" required placeholder='First name'
+           <ControlLabel>First name</ControlLabel>
+           <FormControl type="text" required
              defaultValue={props.user && props.user.firstName}
              onChange={props.handleFirstNameChange}/>
          </FormGroup>
 
          <FormGroup controlId="lastName">
-           <FormControl type="text" required placeholder='Last name'
+           <ControlLabel>Last name</ControlLabel>
+           <FormControl type="text" required
              defaultValue={props.user && props.user.lastName}
              onChange={props.handleLastNameChange}/>
          </FormGroup>
 
          <FormGroup controlId="patronymic">
-           <FormControl type="text" required placeholder='Patronymic'
+           <ControlLabel>Patronymic</ControlLabel>
+           <FormControl type="text" required 
              defaultValue={props.user && props.user.patronymic}
              onChange={props.handlePatronymicChange}/>
          </FormGroup>
 
          <FormGroup controlId="email">
-           <FormControl type="email" required placeholder='Email'
+           <ControlLabel>Email</ControlLabel>
+           <FormControl type="email" required
              defaultValue={props.user && props.user.email}
              onChange={props.handleEmailChange}/>
          </FormGroup>

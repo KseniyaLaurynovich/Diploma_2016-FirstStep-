@@ -2,27 +2,14 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Grid from '../../../containers/GridContainer'
-import { fetchSubject } from '../modules/taskGrid'
 import TaskGridRowView from '../components/TaskGridRowView'
 import TaskGridToolbarContainer from './TaskGridToolbarContainer'
 import TaskNewFormContainer from './TaskNewFormContainer'
 
 const TaskGridContainer = React.createClass({
-  getInitialState(){
-    this.props.fetchSubject(this.props.params.subjectId)
-    return null
-  },
   render(){
     return(
       <div className='gridPage'>
-        <h2>
-          {
-            this.props.subject
-            ? this.props.subject.name
-            : ''
-          }
-        </h2>
-
         <Grid
           items         = {this.props.subject ? this.props.subject.tasks : []}
           itemComponent = {TaskGridRowView}
@@ -44,7 +31,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  fetchSubject  : fetchSubject
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGridContainer)

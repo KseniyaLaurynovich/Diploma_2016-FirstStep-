@@ -1,4 +1,5 @@
 import { injectReducer } from '../../../store/reducers'
+import { handleHeaderChange } from '../../../store/header'
 import requireAuthorization from '../../requireAuthorization'
 
 export default (store) => ({
@@ -13,6 +14,9 @@ export default (store) => ({
       const reducer = require('./modules/usersgrid').default
 
       injectReducer(store, { key: 'usersGrid', reducer })
+
+      store.dispatch(handleHeaderChange("Users"))
+
       cb(null, UsersGrid)
 
     }, 'usersgrid')

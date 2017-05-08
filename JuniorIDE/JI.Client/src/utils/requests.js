@@ -204,7 +204,25 @@ export function setDeadline(token, taskId, groupId, deadline){
   })
 }
 
+export function fetchRolesWithGroups(){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/roles/get'
+  })
+}
+
+export function fetchGroupsWithUsersForTask(token, taskId){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/statistic/getGroupsWithUsers?taskId=' + taskId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
+
+
 const requests = {
+  fetchGroupsWithUsersForTask,
+  fetchRolesWithGroups,
   setDeadline,
   getDeadlines,
   getToken,

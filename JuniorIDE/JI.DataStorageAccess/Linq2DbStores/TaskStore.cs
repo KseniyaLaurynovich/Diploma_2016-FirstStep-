@@ -10,28 +10,29 @@ namespace JI.DataStorageAccess.Linq2DbStores
 {
     internal class TaskStore : BaseStore<Task>, ITaskStore
     {
-        public override Guid Save(Task task)
+        public override Guid Save(Task obj)
         {
             using (var transaction = DbConnection.BeginTransaction())
             {
-                task.Id = base.Save(task);
+                obj.Id = base.Save(obj);
 
-                var oldTests = GetTests(task);
-                var removedTests = oldTests.Where(ot => !task.Tests.Any(t => ot.Id.Equals(t.Id)));
+                var currentTests = GetTests(obj);
+                var addedTests = obj.Tests.Where(test => currentTests.All(t => test.Id != t.Id)).ToArray();
+                var removedTests = currentTests.Where(test => obj.Tests.All(t => test.Id != t.Id)).ToArray();
 
-                foreach (var test in task.Tests??Enumerable.Empty<Test>())
+                Array.ForEach(addedTests, t =>
                 {
-                    AddTest(task, test);
-                }
+                    AddTest(obj, t);
+                });
 
-                foreach (var test in removedTests)
+                Array.ForEach(removedTests, t =>
                 {
-                    RemoveTest(task, test);
-                }
+                    RemoveTest(obj, t);
+                });
 
                 transaction.Commit();
 
-                return task.Id;
+                return obj.Id;
             }
         }
 
@@ -103,6 +104,19 @@ namespace JI.DataStorageAccess.Linq2DbStores
         public void RemoveTest(Task task, Test test)
         {
             DbConnection.Delete(test);
+        }
+
+        public IDictionary<Group, User[]> GetAssignedUsers(Guid taskId)
+        {
+            var task = FindById(taskId);
+            var groups = DbConnection.GroupSubjects
+                .LoadWith(gs => gs.Group.UserGroups[0].User)
+                .Where(gs => gs.SubjectId == task.SubjectId)
+                .ToList();
+
+            return groups
+                .ToDictionary(g => g.Group, g => g.Group.UserGroups.Select(ug => ug.User)
+                .ToArray());
         }
 
         #endregion

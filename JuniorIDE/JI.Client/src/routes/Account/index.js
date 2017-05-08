@@ -1,4 +1,5 @@
 import { injectReducer } from '../../store/reducers'
+import { handleHeaderChange } from '../../store/header'
 import requireAuthorization from '../requireAuthorization'
 
 export default (store) => ({
@@ -12,6 +13,9 @@ export default (store) => ({
       const reducer = require('./modules/account').default
 
       injectReducer(store, { key: 'account', reducer })
+
+      store.dispatch(handleHeaderChange('Account settings'))
+
       cb(null, Account)
 
     }, 'account_settings')

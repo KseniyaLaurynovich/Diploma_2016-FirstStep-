@@ -7,6 +7,8 @@ import helpers from '../../../utils/helpers'
 // ------------------------------------
 export const USERNAME_CHANGED                         = 'USERNAME_CHANGED'
 export const PASSWORD_CHANGED                         = 'PASSWORD_CHANGED'
+export const ROLE_CHANGED                             = 'ROLE_CHANGED'
+export const GROUP_CHANGED                            = 'GROUP_CHANGED'
 export const CONFIRM_PASSWORD_CHANGED                 = 'CONFIRM_PASSWORD_CHANGED'
 export const FIRST_NAME_CHANGED                       = 'FIRST_NAME_CHANGED'
 export const LAST_NAME_CHANGED                        = 'LAST_NAME_CHANGED'
@@ -18,6 +20,8 @@ export const SET_CONFIRM_PASSWORD_ERROR               = 'SET_CONFIRM_PASSWORD_ER
 export const SET_IS_REGISTRATION_LOADING              = 'SET_IS_REGISTRATION_LOADING'
 export const RESET_REGISTRATION_ERRORS                = 'RESET_REGISTRATION_ERRORS'
 export const REGISTRATION_FAILED                      = 'REGISTRATION_FAILED'
+export const SET_ROLES_WITH_GROURPS                   = 'SET_ROLES_WITH_GROURPS'
+export const SET_GROUPS                               = 'SET_GROUPS'
 
 // ------------------------------------
 // Actions
@@ -105,6 +109,20 @@ export const resetErrors = () => {
   }
 }
 
+export const setRoles = (roles) => {
+  return {
+    type    : SET_ROLES_WITH_GROURPS,
+    payload : roles
+  }
+}
+
+export const setGroups = (groups) => {
+  return {
+    type    : SET_GROUPS,
+    payload : groups
+  }
+}
+
 export function registration(e){
   e.preventDefault();
 
@@ -120,7 +138,9 @@ export function registration(e){
       patronymic      : data.patronymic,
       email           : data.email,
       password        : data.password,
-      confirmPassword : data.confirmPassword
+      confirmPassword : data.confirmPassword,
+      role            : data.role,
+      group           : data.group
     }
 
     if(validateModel(dispatch, dataUser)){
@@ -155,6 +175,27 @@ function validateModel(dispatch, model){
   return isValid
 }
 
+export function handleRoleChange(event){
+  return (dispatch, getState) => {
+    var roleName = event.target.value;
+
+    var role = _.filter(getState().registration.roles, function(r){
+      return r.name === roleName
+    })
+
+    dispatch({ type: ROLE_CHANGED, payload: roleName })
+    dispatch(setGroups(role[0].groups))
+    dispatch(handleGroupChange({ target: { value: role[0].groups && role[0].groups[0].Id } }))
+  }
+}
+
+export const handleGroupChange = (event) => {
+  return {
+    type    : GROUP_CHANGED,
+    payload : event.target.value
+  }
+}
+
 export const actions = {
   registration,
   handleEmailChange,
@@ -163,13 +204,27 @@ export const actions = {
   handlePasswordChange,
   handleFirstNameChange,
   handleLastNameChange,
-  handlePatronymicChange
+  handlePatronymicChange,
+  handleRoleChange,
+  handleGroupChange
 }
 
 // ------------------------------------
 //  Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+[ROLE_CHANGED]                                : (state, action) => {
+    return Object.assign({}, state, { role: action.payload })
+  },
+[GROUP_CHANGED]                               : (state, action) => {
+    return Object.assign({}, state, { group: action.payload })
+  },
+[SET_GROUPS]                                  : (state, action) => {
+    return Object.assign({}, state, { groups: action.payload })
+  },
+[SET_ROLES_WITH_GROURPS]                      : (state, action) => {
+    return Object.assign({}, state, { roles: action.payload })
+  },
 [USERNAME_CHANGED]                            : (state, action) => {
     return Object.assign({}, state, { username: action.payload })
   },
@@ -222,10 +277,24 @@ const initialState = {
   confirmPasswordError: null,
   registrationError   : null,
   validationState     : null,
-  isLoading           : false
+  isLoading           : false,
+  role                : null,
+  group               : null,
+  roles               : [],
+  groups              : []
 }
 
 export default function registrationReducer (state = initialState, action){
   const handler = ACTION_HANDLERS[action.type]
   return handler ? handler(state, action) : state
+}
+
+export function fetchRolesWithGroups(){
+  return(dispatch, getState) => {
+
+    requests.fetchRolesWithGroups().then(function(response){
+      dispatch(setRoles(response.data))
+      dispatch(setGroups(response.data[0].groups))
+    })
+  }
 }

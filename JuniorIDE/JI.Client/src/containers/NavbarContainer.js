@@ -16,7 +16,8 @@ const NavbarContainer = React.createClass({
     return(
       <Navbar 
         isAuthenticated   = {this.props.isAuthenticated}
-        userInfo          = {this.props.userInfo}/>
+        userInfo          = {this.props.userInfo}
+        header            = {this.props.header}/>
     )
   }
 })
@@ -28,7 +29,8 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   userInfo        : state.user.userInfo,
   isAuthenticated : state.user.isAuthenticated,
-  credentials     : state.user.credentials
+  credentials     : state.user.credentials,
+  header          : state.header.value
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarContainer)

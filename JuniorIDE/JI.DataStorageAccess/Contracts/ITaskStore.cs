@@ -11,5 +11,6 @@ namespace JI.DataStorageAccess.Contracts
         void AddTest(Task task, Test test);
         void RemoveTest(Task task, Test test);
         IList<Task> FindByGroups(Guid[] groupIds);
+        IDictionary<Group, User[]> GetAssignedUsers(Guid taskId);
     }
 }

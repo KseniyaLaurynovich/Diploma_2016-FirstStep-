@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, FormGroup, FormControl, Row, Col, Form, HelpBlock, Checkbox } from 'react-bootstrap'
+import { Modal, Button, FormGroup, FormControl, Row, Col, Form, HelpBlock, Checkbox, ControlLabel } from 'react-bootstrap'
 
 const GroupEditFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>
@@ -11,35 +11,37 @@ const GroupEditFormView = (props) => (
            : 'Edit group'
          }
        </Modal.Title>
-       {
-         props.group != null && props.group.id
-         ?     <Row>
-                 <Col md={6} sm={6} xs={6}>
-                   <Checkbox onChange={props.handleDeleteConfirmation}>
-                     I undestand that group can not be restored.
-                   </Checkbox>
-                 </Col>
-                 <Col md={6} sm={6} xs={6}>
-                   <Button onClick={props.handleDelete}
-                     disabled={!props.deleteConfirmed
-                              || props.saveGroupLoading
-                              || props.deleteGroupLoading} bsStyle='danger' className='pull-right'>
-                     {
-                       props.deleteGroupLoading
-                       ? 'Deleting...'
-                       : 'Delete this group'
-                     }
-                   </Button>
-                 </Col>
-               </Row>
-           : ''
-         }
      </Modal.Header>
+
+    {
+      props.group != null && props.group.id
+      ?     <Row className='p-15'>
+              <Col md={6} sm={6} xs={6}>
+                <Checkbox onChange={props.handleDeleteConfirmation}>
+                  I undestand that group can not be restored.
+                </Checkbox> 
+              </Col>
+              <Col md={6} sm={6} xs={6}>
+                <Button onClick={props.handleDelete}
+                  disabled={!props.deleteConfirmed
+                          || props.saveGroupLoading
+                          || props.deleteGroupLoading} bsStyle='danger' className='pull-right'>
+                  {
+                    props.deleteGroupLoading
+                    ? 'Deleting...'
+                    : 'Delete this group'
+                  }
+                </Button>
+              </Col>
+            </Row>
+        : ''
+      }
 
    <Form onSubmit={props.submit}>
      <Modal.Body>
        <FormGroup controlId="groupName">
-         <FormControl type="text" required placeholder='Name'
+         <ControlLabel>Name</ControlLabel>
+         <FormControl type="text" required
            defaultValue={props.group && props.group.name}
            onChange={props.handleNameChange}/>
        </FormGroup>

@@ -2,6 +2,7 @@ import requests from '../../../utils/requests'
 import { browserHistory } from 'react-router'
 import { validationStates } from '../../../utils/constants'
 import helpers from '../../../utils/helpers'
+import { handleHeaderChange } from '../../../store/header'
 import _ from 'lodash'
 // ------------------------------------
 // Constants
@@ -126,6 +127,7 @@ export function fetchTask(taskId){
     var token = getState().user.credentials.access_token
     requests.fetchTask(token, taskId).then(function(response){
       dispatch(fetchTaskSuccess(response.data))
+      dispatch(handleHeaderChange("Tests for '" + response.data.name + "'"))
     })
   }
 }

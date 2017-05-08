@@ -8,17 +8,16 @@
   position: relative;
   z-index: 1;
   background: #FFFFFF;
-  max-width: 50%;
-  margin: 0 auto 100px;
-  padding: 45px;
+  max-width: 70%;
+  margin: 10px auto;
+  padding: 20px 30px;
   text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-radius: 2px;
 }
 
 .registration-logo{
-  width: 50%;
+  width: 40%;
   margin-bottom: 30px;
 }
 

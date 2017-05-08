@@ -124,6 +124,7 @@
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TaskManager.cs" />
     <Compile Include="Models\FileInfo.cs" />
+    <Compile Include="Models\GroupWithUsers.cs" />
     <Compile Include="Models\Trying.cs" />
     <Compile Include="Tools\FileEquatable.cs" />
     <Compile Include="Tools\TestExecutor.cs" />

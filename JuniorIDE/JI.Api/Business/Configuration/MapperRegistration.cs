@@ -11,14 +11,51 @@ namespace JI.Api.Business.Configuration
     {
         public void Register()
         {
-            Mapper.Register<RegisterModel, ApplicationUser>();
+            Mapper.Register<RegisterModel, ApplicationUser>()
+                .Ignore(dest => dest.Groups)
+                .Ignore(dest => dest.Roles)
+                .After((registerModel, user) =>
+                {
+                    if (registerModel.Role != null)
+                    {
+                        user.Roles.Add(registerModel.Role);
+                    }
+                    if (registerModel.Group != null)
+                    {
+                        //user.Groups.Add(registerModel.Group);
+                    }
+                });
             Mapper.Register<ApplicationUser, RegisterModel> ();
 
             Mapper.Register<AccountInfoModel, ApplicationUser>();
             Mapper.Register<ApplicationUser, AccountInfoModel> ();
 
-            Mapper.Register<UserModel, ApplicationUser>();
-            Mapper.Register<ApplicationUser, UserModel>();
+            Mapper.Register<GroupModel, ApplicationGroup>();
+            Mapper.Register<ApplicationGroup, GroupModel>();
+
+            Mapper.Register<UserModel, ApplicationUser>()
+                 .Ignore(dest => dest.Groups)
+                 .Ignore(dest => dest.Roles)
+                 .After((model, user) =>
+                 {
+                    user.Groups = model.Groups
+                        ?.Select(Mapper.Map<GroupModel, ApplicationGroup>)
+                        .ToList();
+
+                    user.Roles = model.Roles;
+                 }); 
+
+            Mapper.Register<ApplicationUser, UserModel>()
+                .Ignore(dest => dest.Groups)
+                .Ignore(dest => dest.Roles)
+                .After((user, model) =>
+                {
+                    model.Groups = user.Groups
+                        ?.Select(Mapper.Map<ApplicationGroup, GroupModel>)
+                        .ToList();
+
+                    model.Roles = user.Roles;
+                });
 
             Mapper.Register<UserInfoModel, ApplicationUser>();
             Mapper.Register<ApplicationUser, UserInfoModel>();

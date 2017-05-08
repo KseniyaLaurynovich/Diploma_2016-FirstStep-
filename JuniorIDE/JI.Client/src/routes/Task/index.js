@@ -1,4 +1,5 @@
 import { injectReducer } from '../../store/reducers'
+import { fetchTask } from './modules/task'
 import requireAuthorization from '../requireAuthorization'
 
 export default (store) => ({
@@ -13,6 +14,9 @@ export default (store) => ({
       const reducer = require('./modules/task').default
 
       injectReducer(store, { key: 'task', reducer })
+
+      store.dispatch(fetchTask(nextState.params.taskId))
+
       cb(null, TaskContainer)
 
     }, 'task')

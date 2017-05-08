@@ -14,16 +14,16 @@ namespace JI.DataStorageAccess.Linq2DbStores.Base
         protected JuniorDbConnection DbConnection
             => _dbConnection ?? (_dbConnection = new JuniorDbConnection());
 
-        public virtual Guid Save(T task)
+        public virtual Guid Save(T obj)
         {
-            if (task.Id == Guid.Empty)
+            if (obj.Id == Guid.Empty)
             {
-                return (Guid)DbConnection.InsertWithIdentity(task);
+                return (Guid)DbConnection.InsertWithIdentity(obj);
             }
 
-            DbConnection.Update(task);
+            DbConnection.Update(obj);
 
-            return task.Id;
+            return obj.Id;
         }
 
         public virtual void Delete(Guid id)

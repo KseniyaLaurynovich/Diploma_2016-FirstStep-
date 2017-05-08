@@ -11,12 +11,12 @@ namespace JI.DataStorageAccess.Linq2DbStores
 {
     internal class TryingHistoryStore : BaseStore<TryingHistory>, ITryingHistoryStore
     {
-        public override Guid Save(TryingHistory task)
+        public override Guid Save(TryingHistory obj)
         {
             using (var transaction = new TransactionScope())
             {
-                var id = base.Save(task);
-                foreach (var item in task.Items)
+                var id = base.Save(obj);
+                foreach (var item in obj.Items)
                 {
                     item.TryingHistoryId = id;
                     DbConnection.Insert(item);

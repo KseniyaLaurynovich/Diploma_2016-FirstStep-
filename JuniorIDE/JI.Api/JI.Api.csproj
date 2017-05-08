@@ -199,6 +199,7 @@
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\ForgotPasswordModel.cs" />
     <Compile Include="Models\GroupModel.cs" />
+    <Compile Include="Models\GroupWithUsersModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleModel.cs" />

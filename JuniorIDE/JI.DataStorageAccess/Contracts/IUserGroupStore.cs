@@ -8,12 +8,12 @@ namespace JI.DataStorageAccess.Contracts
     public interface IUserGroupStore<TUser> : IUserStore<TUser, string>
         where TUser : class, IUser<string>
     {
-        void AddToGroupAsync(TUser user, Guid groupId);
+        void AddToGroup(TUser user, Guid groupId);
 
-        void RemoveFromGroupAsync(TUser user, Guid groupId);
+        void RemoveFromGroup(TUser user, Guid groupId);
 
-        IList<Group> GetGroupsAsync(string userId);
+        IList<Group> GetGroups(string userId);
 
-        bool IsInGroupAsync(TUser user, Guid groupId);
+        bool IsInGroup(TUser user, Guid groupId);
     }
 }

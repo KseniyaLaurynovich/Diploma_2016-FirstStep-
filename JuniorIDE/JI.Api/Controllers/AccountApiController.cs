@@ -1,5 +1,4 @@
 ﻿using System.Web.Http;
-using System.Web.Http.Cors;
 using ExpressMapper;
 using ExpressMapper.Extensions;
 using JI.Api.Controllers.Base;
@@ -15,7 +14,7 @@ namespace JI.Api.Controllers
     {
         [HttpPut]
         [Route("changeinfo")]
-        public IHttpActionResult ChangeUserInfo(UserInfoModel userInfoModel)
+        public IHttpActionResult ChangeInfo(UserInfoModel userInfoModel)
         {
             if (!ModelState.IsValid)
             {
@@ -87,13 +86,7 @@ namespace JI.Api.Controllers
         [Route("info")]
         public IHttpActionResult FetchAccountInfo()
         {
-            var userId = User?.Identity?.GetUserId<string>();
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return BadRequest();
-            }
-
+            var userId = User.Identity.GetUserId<string>();
             var user = UserManager.Value.FindById(userId);
 
             if (user != null)

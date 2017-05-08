@@ -1,4 +1,5 @@
 import { injectReducer } from '../../store/reducers'
+import { fetchSubject } from './modules/taskGrid'
 import requireAuthorization from '../requireAuthorization'
 
 export default (store) => ({
@@ -13,6 +14,9 @@ export default (store) => ({
       const reducer = require('./modules/taskGrid').default
 
       injectReducer(store, { key: 'tasksGrid', reducer })
+
+      store.dispatch(fetchSubject(nextState.params.subjectId))
+
       cb(null, TasksGrid)
 
     }, 'tasks')

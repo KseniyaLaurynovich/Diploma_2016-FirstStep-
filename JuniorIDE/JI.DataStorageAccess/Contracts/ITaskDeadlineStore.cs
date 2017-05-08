@@ -7,5 +7,6 @@ namespace JI.DataStorageAccess.Contracts
     public interface ITaskDeadlineStore : IStore<TaskDeadline>
     {
         IDictionary<Group, DateTime?> FindByTask(Guid taskId);
+        void SaveByGroup(Guid taskId, Guid groupId, DateTime? deadline);
     }
 }

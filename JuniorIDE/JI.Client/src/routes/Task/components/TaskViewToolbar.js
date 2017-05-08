@@ -22,11 +22,14 @@ const renderViewMode = (props) => (
            glyph      = 'pencil'>
          </Glyphicon>
        </Button>
+
        <Button className='padding-sm ml-5'>
-         <Glyphicon
-           className  = 'glypicon--pointer'
-           glyph      = 'user'>
-         </Glyphicon>
+         <Link to={ '/statistic/' +  props.task.id }>
+            <Glyphicon
+              className  = 'glypicon--pointer'
+              glyph      = 'user'>
+            </Glyphicon>
+          </Link>
        </Button>
        {
          props.task.autoTested

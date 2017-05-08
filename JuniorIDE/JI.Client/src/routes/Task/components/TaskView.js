@@ -1,19 +1,13 @@
 import React from 'react'
-import { FormGroup, FormControl, Form, Button, Row, Col, Checkbox, Glyphicon, HelpBlock } from 'react-bootstrap'
+import { ControlLabel, FormGroup, FormControl, Form, Button, Row, Col, Checkbox, Glyphicon, HelpBlock } from 'react-bootstrap'
 import TinyMCE from 'react-tinymce'
 import './Task.scss'
 
 const renderEditMode = (props) => (
   <div className='taskPage'>
-      <h2>
-        {
-          props.editingItem && props.editingItem.id
-          ? 'Edit task'
-          : 'New task'
-        }
-      </h2>
       <FormGroup controlId="taskName">
-        <FormControl type="text" required placeholder='Name'
+        <ControlLabel>Name</ControlLabel>
+        <FormControl type="text" required
           defaultValue={props.editingItem && props.editingItem.name}
           onChange={props.handleNameChange}/>
       </FormGroup>
@@ -65,13 +59,6 @@ const renderEditMode = (props) => (
 
 const renderViewMode = (props) => (
   <div className='taskPage'>
-    <h2>
-      {
-        props.item && props.item != null
-        ? props.item.name
-        : ''
-      }
-    </h2>
     <div dangerouslySetInnerHTML={{
         __html: props.item != null
                 ? props.item.description

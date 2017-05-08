@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, FormGroup, FormControl, Row, Col, Form, HelpBlock, Checkbox } from 'react-bootstrap'
+import { ControlLabel, Modal, Button, FormGroup, FormControl, Row, Col, Form, HelpBlock, Checkbox } from 'react-bootstrap'
 
 const TaskNewFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>
@@ -12,7 +12,8 @@ const TaskNewFormView = (props) => (
    <Form onSubmit={props.submit}>
      <Modal.Body>
        <FormGroup controlId="taskName">
-         <FormControl type="text" required placeholder='Name'
+         <ControlLabel>Name</ControlLabel>
+         <FormControl type="text" required
            onChange={props.handleNameChange}/>
        </FormGroup>
      </Modal.Body>

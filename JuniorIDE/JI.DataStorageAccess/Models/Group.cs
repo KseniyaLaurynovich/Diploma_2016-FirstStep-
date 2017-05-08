@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LinqToDB.Mapping;
 
 namespace JI.DataStorageAccess.Models
@@ -11,5 +12,8 @@ namespace JI.DataStorageAccess.Models
 
         [Column(Name = "Name"), NotNull]
         public string Name { get; set; }
+
+        [Association(ThisKey = "Id", OtherKey = "GroupId")]
+        public IList<UserGroup> UserGroups { get; set; }
     }
 }

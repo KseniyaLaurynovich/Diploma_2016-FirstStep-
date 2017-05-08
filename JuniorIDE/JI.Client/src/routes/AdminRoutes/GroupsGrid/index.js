@@ -1,4 +1,5 @@
 import { injectReducer } from '../../../store/reducers'
+import { handleHeaderChange } from '../../../store/header'
 import requireAuthorization from '../../requireAuthorization'
 
 export default (store) => ({
@@ -13,6 +14,9 @@ export default (store) => ({
       const reducer = require('./modules/groupsgrid').default
 
       injectReducer(store, { key: 'groupsGrid', reducer })
+
+      store.dispatch(handleHeaderChange("Groups"))
+
       cb(null, GroupsGrid)
 
     }, 'groupsgrid')

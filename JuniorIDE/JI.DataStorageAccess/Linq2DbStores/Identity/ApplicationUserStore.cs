@@ -19,54 +19,12 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
         : IUserStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, 
         IUserEmailStore<ApplicationUser>, IUserRoleStore<ApplicationUser>,
         IUserSecurityStampStore<ApplicationUser>, IQueryableUserStore<ApplicationUser>,
-        IAdvancedUserStore<ApplicationUser>, IUserGroupStore<ApplicationUser>
+        IUserGroupStore<ApplicationUser>
     {
         private JuniorDbConnection _dbConnection;
 
         private JuniorDbConnection DbConnection
             => _dbConnection ?? (_dbConnection = new JuniorDbConnection());
-
-        #region IAdvancedUserStore
-
-        public void AdvancedUpdateAsync(ApplicationUser user, Group[] groups)
-        {
-            using (var transaction = new TransactionScope())
-            {
-                UpdateAsync(user);
-
-                var oldGroups = GetGroupsAsync(user.Id);
-                var addedGroups = groups.Where(g => !oldGroups.Any(i => i.Id.Equals(g.Id)));
-                var removedGroups = oldGroups.Where(g => !groups.Any(i => i.Id.Equals(g.Id)));
-
-                foreach (var group in addedGroups)
-                {
-                    AddToGroupAsync(user, group.Id);
-                }
-
-                foreach (var group in removedGroups)
-                {
-                    RemoveFromGroupAsync(user, group.Id);
-                }
-
-                var oldRoles = GetRolesAsync(user).Result;
-                var addedRoles = user.Roles.Where(r => !oldRoles.Contains(r));
-                var removedRoles = oldRoles.Where(r => !user.Roles.Contains(r));
-
-                foreach (var role in addedRoles)
-                {
-                    AddToRoleAsync(user, role);
-                }
-
-                foreach (var role in removedRoles)
-                {
-                    RemoveFromRoleAsync(user, role);
-                }
-
-                transaction.Complete();
-            }
-        }
-
-        #endregion
 
         #region IUserStore
 
@@ -81,10 +39,31 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
             if (dbUser.Id == Guid.Empty)
             {
-                dbUser.RegistrationDate = DateTime.Now;
-                return Task.FromResult(DbConnection.InsertWithIdentity(dbUser));
+                dbUser.Id = (Guid) DbConnection.InsertWithIdentity(dbUser);
+                user.Id = dbUser.Id.ToString();
             }
-            DbConnection.Update(dbUser);
+            else
+            {
+                DbConnection.Update(dbUser);
+            }
+
+            DbConnection.UserRoles.Delete(ur => ur.UserId == dbUser.Id);
+            if (user.Roles.Any())
+            {
+                Array.ForEach(user.Roles.ToArray(), ur =>
+                {
+                    AddToRoleAsync(user, ur);
+                });
+            }
+
+            DbConnection.UserGroups.Delete(ug => ug.UserId == dbUser.Id);
+            if (user.Groups.Any())
+            {
+                Array.ForEach(user.Groups.ToArray(), ug =>
+                {
+                    AddToGroup(user, new Guid(ug.Id));
+                });
+            }
 
             return Task.FromResult(user.Id);
         }
@@ -99,28 +78,22 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
         public Task<ApplicationUser> FindByIdAsync(string userId)
         {
-            var searchedUser = 
-                from user in DbConnection.Users.LoadWith(u => u.UserRoles)
-                where user.Id == new Guid(userId)
-                select new User(user)
-                {
-                    Roles = user.GetRoles().ToList()
-                };
+            var user = DbConnection.Users
+                .LoadWith(u => u.UserRoles[0].Role)
+                .LoadWith(u => u.UserGroups[0].Group)
+                .FirstOrDefault(u => u.Id == new Guid(userId));
 
-            return Task.FromResult(searchedUser.FirstOrDefault()?.Map<User, ApplicationUser>());
+            return Task.FromResult(user?.Map<User, ApplicationUser>());
         }
 
         public Task<ApplicationUser> FindByNameAsync(string userName)
         {
-            var searchedUser =
-                from user in DbConnection.Users.LoadWith(u => u.UserRoles)
-                where user.UserName == userName
-                select new User(user)
-                {
-                    Roles = user.GetRoles().ToList()
-                };
+            var user = DbConnection.Users
+                .LoadWith(u => u.UserRoles[0].Role)
+                .LoadWith(u => u.UserGroups[0].Group)
+                .FirstOrDefault(u => u.UserName == userName);
 
-            return Task.FromResult(searchedUser.FirstOrDefault()?.Map<User, ApplicationUser>());
+            return Task.FromResult(user?.Map<User, ApplicationUser>());
         }
 
         #endregion
@@ -284,37 +257,26 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
 
         #region IQueryableUserStore
 
-        public IQueryable<ApplicationUser> Users
-        {
-            get
-            {
-                var users = from user in DbConnection.Users.LoadWith(u => u.UserRoles)
-                            select new User(user)
-                            {
-                                Roles = user.GetRoles().ToList()
-                            };
-
-                return users.Select(u => u.Map<User, ApplicationUser>());
-            }
-        }
+        public IQueryable<ApplicationUser> Users => DbConnection.Users
+            .LoadWith(u => u.UserRoles[0].Role)
+            .LoadWith(u => u.UserGroups[0].Group)
+            .Select(Mapper.Map<User, ApplicationUser>)
+            .AsQueryable();
 
         #endregion
 
         #region IUserGroupStore
 
-        public void AddToGroupAsync(ApplicationUser user, Guid groupId)
+        public void AddToGroup(ApplicationUser user, Guid groupId)
         {
-            if (groupId != null)
+            DbConnection.Insert(new UserGroup()
             {
-                DbConnection.Insert(new UserGroup()
-                {
-                    UserId = new Guid(user.Id),
-                    GroupId = groupId
-                });
-            }
+                UserId = new Guid(user.Id),
+                GroupId = groupId
+            });
         }
 
-        public void RemoveFromGroupAsync(ApplicationUser user, Guid groupId)
+        public void RemoveFromGroup(ApplicationUser user, Guid groupId)
         {
             var userGroup = DbConnection.UserGroups
                 .FirstOrDefault(ug =>
@@ -326,7 +288,7 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
             }
         }
 
-        public IList<Group> GetGroupsAsync(string userId)
+        public IList<Group> GetGroups(string userId)
         {
             return DbConnection.Users
                 .Where(u => u.Id.Equals(new Guid(userId)))
@@ -335,7 +297,7 @@ namespace JI.DataStorageAccess.Linq2DbStores.Identity
                 ?.ToList();
         }
 
-        public bool IsInGroupAsync(ApplicationUser user, Guid groupId)
+        public bool IsInGroup(ApplicationUser user, Guid groupId)
         {
             var isInGroup = DbConnection.UserGroups
                      .Any(ur => ur.UserId.Equals(new Guid(user.Id)) && ur.GroupId.Equals(groupId));

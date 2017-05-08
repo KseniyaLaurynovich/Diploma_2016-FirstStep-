@@ -7,6 +7,11 @@ namespace JI.Api.Models
 {
     public class AccountInfoModel
     {
+        public AccountInfoModel()
+        {
+            Roles = new List<string>();
+        }
+
         [JsonProperty(PropertyName = "userName")]
         public string UserName { get; set; }
 

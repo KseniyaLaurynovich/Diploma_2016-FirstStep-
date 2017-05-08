@@ -8,11 +8,6 @@ import TaskGridContainer from './TaskToolbarContainer'
 import DeadlinesModal from '../components/Deadlines'
 
 const TaskContainer = React.createClass({
-  getInitialState(){
-    this.props.fetchTask(this.props.params.taskId)
-    return null
-  },
-
   render(){
     return(
       <div className='gridPage'>
@@ -50,7 +45,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  fetchTask           : fetchTask,
   onNameChange        : onNameChange,
   onDescriptionChange : onDescriptionChange,
   onTestedTypeChange  : onTestedTypeChange,

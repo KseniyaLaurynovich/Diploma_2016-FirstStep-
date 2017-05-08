@@ -1,6 +1,7 @@
 import requests from '../../../utils/requests'
 import { browserHistory } from 'react-router'
 import { validationStates } from '../../../utils/constants'
+import { handleHeaderChange } from '../../../store/header'
 import helpers from '../../../utils/helpers'
 import _ from 'lodash'
 // ------------------------------------
@@ -187,11 +188,11 @@ export default function taskReducer (state = initialState, action){
 }
 
 export function fetchTask(taskId){
-
   return (dispatch, getState) => {
     var token = getState().user.credentials.access_token
     requests.fetchTask(token, taskId).then(function(response){
       dispatch(fetchTaskSuccess(response.data))
+      dispatch(handleHeaderChange(response.data.name))
     })
   }
 }

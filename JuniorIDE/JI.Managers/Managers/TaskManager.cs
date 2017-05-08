@@ -29,16 +29,16 @@ namespace JI.Managers.Managers
             TryingHistoryStore = tryingHistoryStore;
         }
 
-        public override ServiceResult<Task> Save(Task project)
+        public override ServiceResult<Task> Save(Task subject)
         {
             var now = DateTime.Now;
-            if (string.IsNullOrWhiteSpace(project.Id))
+            if (string.IsNullOrWhiteSpace(subject.Id))
             {
-                project.CreationDate = now;
+                subject.CreationDate = now;
             }
-            project.LastModified = now;
+            subject.LastModified = now;
 
-            return base.Save(project);
+            return base.Save(subject);
         }
 
         public ServiceResult SetVisibility(string taskId, bool isVisible)

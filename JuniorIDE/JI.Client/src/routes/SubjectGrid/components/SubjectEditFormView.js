@@ -1,5 +1,5 @@
 import React from 'react'
-import { Glyphicon, Modal, Button, FormGroup, FormControl, Row, Col, Form, HelpBlock, Checkbox, DropdownButton, MenuItem } from 'react-bootstrap'
+import { ControlLabel, Glyphicon, Modal, Button, FormGroup, FormControl, Row, Col, Form, HelpBlock, Checkbox, DropdownButton, MenuItem } from 'react-bootstrap'
 
 function filteredGroups(props){
   return props.groups
@@ -37,9 +37,11 @@ const SubjectEditFormView = (props) => (
            : 'Edit subject'
          }
        </Modal.Title>
+     </Modal.Header>
+
        {
          props.subject != null && props.subject.id
-         ?     <Row>
+         ?     <Row className='p-15'>
                  <Col md={6} sm={6} xs={6}>
                    <Checkbox onChange={props.handleDeleteConfirmation}>
                      I undestand that subject can not be restored.
@@ -60,12 +62,12 @@ const SubjectEditFormView = (props) => (
                </Row>
            : ''
          }
-     </Modal.Header>
 
    <Form onSubmit={props.submit}>
      <Modal.Body>
        <FormGroup controlId="subjectName">
-         <FormControl type="text" required placeholder='Name'
+         <ControlLabel>Name</ControlLabel>
+         <FormControl type="text" required
            defaultValue={props.subject && props.subject.name}
            onChange={props.handleSubjectNameChange}/>
        </FormGroup>

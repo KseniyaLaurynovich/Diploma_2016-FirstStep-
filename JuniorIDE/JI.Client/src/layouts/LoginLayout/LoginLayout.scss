@@ -1,8 +1,11 @@
 .login-layout{
+  position: absolute;
   background-image: url('img/layout.png');
   background-color: #fff;
-  background-size: auto 100%;
-  position: static;
-  height: 100%;
-  width: 100%;
+  background-size: 100% 100vh;
+  background-repeat: no-repeat;
+  top:0;
+  left:0;
+  bottom:0;
+  right: 0;
 }

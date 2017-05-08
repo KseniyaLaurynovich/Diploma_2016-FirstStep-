@@ -2,6 +2,7 @@ import requests from '../../../utils/requests'
 import { browserHistory } from 'react-router'
 import { validationStates } from '../../../utils/constants'
 import helpers from '../../../utils/helpers'
+import { handleHeaderChange } from '../../../store/header'
 
 // ------------------------------------
 // Constants
@@ -111,8 +112,12 @@ export default function registrationReducer (state = initialState, action){
 export function fetchSubject(subjectId){
   return (dispatch, getState) => {
     var token = getState().user.credentials.access_token
+
     requests.fetchSubjectById(token, subjectId).then(function(response){
+
       dispatch(fetchSubjectSuccess(response.data))
+      dispatch(handleHeaderChange(response.data.name))
+
     },function(error){
       var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
 

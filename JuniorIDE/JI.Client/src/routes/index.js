@@ -12,6 +12,7 @@ import TasksGridRoute from './TaskGrid/'
 import TestsGridRoute from './TestGrid/'
 import TaskRoute from './Task'
 import AccountRoute from './Account'
+import StatisticRoute from './Statistic'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -27,7 +28,8 @@ export const createRoutes = (store) => ([{
     TasksGridRoute(store),
     TaskRoute(store),
     TestsGridRoute(store),
-    AccountRoute(store)
+    AccountRoute(store),
+    StatisticRoute(store)
   ]
 },
 {

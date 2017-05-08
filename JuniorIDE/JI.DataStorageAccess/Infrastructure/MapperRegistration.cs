@@ -11,18 +11,60 @@ namespace JI.DataStorageAccess.Infrastructure
     {
         public void Register()
         {
+            Mapper.Register<Group, ApplicationGroup>()
+                .Member(dest => dest.Id, src => src.Id.ToString());
+            Mapper.Register<ApplicationGroup, Group>()
+                .Ignore(dest => dest.Id)
+                .After((appGroup, group) =>
+                {
+                    if (appGroup.Id != null)
+                    {
+                        group.Id = new Guid(appGroup.Id);
+                    }
+                }); 
+
             Mapper.Register<User, ApplicationUser>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
-                .Member(dest => dest.Roles, src => src.Roles.Select(r => r.Name));
+                .Ignore(dest => dest.Roles)
+                .Ignore(dest => dest.Groups)
+                .After((user, appUser) =>
+                {
+                    appUser.Groups = user.UserGroups
+                        ?.Select(ug => Mapper.Map<Group, ApplicationGroup>(ug.Group))
+                        .ToList();
+
+                    appUser.Roles = user.UserRoles
+                        .Select(ur => ur.Role.Name)
+                        .ToList();
+                });
+
             Mapper.Register<ApplicationUser, User>()
                 .Ignore(dest => dest.Id)
-                .Ignore(dest => dest.Roles)
+                .Ignore(dest => dest.UserGroups)
+                .Ignore(dest => dest.UserRoles)
                 .After((appUser, user) =>
                 {
-                    if (appUser.Id != null)
-                    {
-                        user.Id = new Guid(appUser.Id);
-                    }
+                    var userId = appUser.Id != null
+                        ? new Guid(appUser.Id)
+                        : Guid.Empty;
+
+                    user.Id = userId;
+
+                    user.UserRoles = appUser.Roles
+                        ?.Select(r => new UserRole
+                        {
+                            UserId = userId,
+                            Role = new Role { Name = r }
+                        })
+                        .ToList();
+
+                    user.UserGroups = appUser.Groups
+                        ?.Select(g => new UserGroup
+                        {
+                            UserId = userId,
+                            Group = Mapper.Map<ApplicationGroup, Group>(g)
+                        })
+                        .ToList();
                 });
 
             Mapper.Register<Role, ApplicationRole>()

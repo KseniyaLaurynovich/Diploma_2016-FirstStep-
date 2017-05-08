@@ -35,29 +35,8 @@ namespace JI.Managers.Managers
 
         public ServiceResult SaveDeadlineForTask(string taskId, string groupId, DateTime? deadline)
         {
-            var subjectId = _taskStore.FindById(new Guid(taskId)).SubjectId;
-            var subjectGroupId = _subjectStore.FindById(subjectId).SubjectGroups
-                .FirstOrDefault(sg => sg.GroupId.Equals(new Guid(groupId)))
-                ?.Id; ;
-            var taskDeadline = _deadlineStore.FindByTask(new Guid(taskId))
-                .FirstOrDefault(d => d.Key.Id.Equals(new Guid(groupId)))
-                .;
-
-            if(subjectGroupId == null)
-                return ServiceResult.Success;
-
-            var newTaskDeadline = new TaskDeadline
-            {
-                TaskId = new Guid(taskId),
-                GroupSubjectId = subjectGroupId.Value,
-                Deadline = deadline
-            };
-
-            if(taskDeadline != null)
-                newTaskDeadline.Id = taskDeadline.Id
-
-            _deadlineStore.Save();
-
+            //TODO validate deadline
+            _deadlineStore.SaveByGroup(new Guid(taskId), new Guid(groupId), deadline);
             return ServiceResult.Success;
         }
 

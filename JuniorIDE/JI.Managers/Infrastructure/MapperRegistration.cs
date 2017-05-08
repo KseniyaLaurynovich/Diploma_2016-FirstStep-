@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ExpressMapper;
+using ExpressMapper.Extensions;
 using JI.Common.Contracts.Contracts;
 using JI.DataStorageAccess.Business.Extensions;
 using JI.DataStorageAccess.Models;
@@ -114,10 +115,19 @@ namespace JI.Managers.Infrastructure
 
             Mapper.Register<Subject, Models.Subject>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
-                .Member(dest => dest.UserId, src => src.UserId.ToString());
+                .Member(dest => dest.UserId, src => src.UserId.ToString())
+                .Ignore(dest => dest.Groups)
+                .After((sub, appSub) =>
+                {
+                    appSub.Groups = sub.SubjectGroups
+                        ?.Select(sg => sg.Group.Map<Group, Models.Group>())
+                        .ToList();
+                });
+
             Mapper.Register<Models.Subject, Subject>()
                 .Ignore(dest => dest.Id)
                 .Ignore(dest => dest.UserId)
+                .Ignore(dest => dest.SubjectGroups)
                 .After((appSubject, subject) =>
                 {
                     if (appSubject.Id != null)
@@ -128,6 +138,15 @@ namespace JI.Managers.Infrastructure
                     {
                         subject.UserId = new Guid(appSubject.UserId);
                     }
+
+                    subject.SubjectGroups =
+                        appSubject.Groups
+                        .Select(g => new GroupSubject
+                            {
+                                GroupId = new Guid(g.Id),
+                                Group = g.Map<Models.Group, Group>()
+                            })
+                        .ToList();
                 });
 
             #endregion

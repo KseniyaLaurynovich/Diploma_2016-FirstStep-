@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Microsoft.AspNet.Identity;
 
 namespace JI.Identity.Models
@@ -10,6 +9,7 @@ namespace JI.Identity.Models
         public ApplicationUser()
         {
             Roles = new List<string>();
+            Groups = new List<ApplicationGroup>();
         }
 
         public string Id { get; set; }
@@ -35,5 +35,7 @@ namespace JI.Identity.Models
         public bool IsActivated { get; set; }
 
         public IList<string> Roles { get; set; }
+
+        public IList<ApplicationGroup> Groups { get; set; }
     }
 }
