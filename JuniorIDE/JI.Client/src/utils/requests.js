@@ -214,13 +214,21 @@ export function fetchRolesWithGroups(){
 export function fetchGroupsWithUsersForTask(token, taskId){
   return axios({
     method  : 'get',
-    url     : BASE_URL + '/statistic/getGroupsWithUsers?taskId=' + taskId,
+    url     : BASE_URL + '/statistic/getAssignedUsers?taskId=' + taskId,
     headers : {"Authorization": "Bearer " + token }
   })
 }
 
+export function fetchStatisticByTaskAndUser(token, taskId, userId){
+  return axios({
+    method  : 'get',
+    url     : BASE_URL + '/statistic/get?taskId=' + taskId + '&userId=' + userId,
+    headers : {"Authorization": "Bearer " + token }
+  })
+}
 
 const requests = {
+  fetchStatisticByTaskAndUser,
   fetchGroupsWithUsersForTask,
   fetchRolesWithGroups,
   setDeadline,

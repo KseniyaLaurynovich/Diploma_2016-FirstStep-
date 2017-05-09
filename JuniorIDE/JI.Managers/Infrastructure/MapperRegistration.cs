@@ -235,6 +235,18 @@ namespace JI.Managers.Infrastructure
 
             #endregion
 
+            #region Trying
+
+            Mapper.Register<DataStorageAccess.Models.Trying, Trying>()
+                .Member(dest => dest.InputFileId, src => src.Test.InputFileId.ToString())
+                .Member(dest => dest.InputFileName, src => src.Test.InputFile.Name)
+                .Member(dest => dest.OutputFileId, src => src.Test.OutputFileId.ToString())
+                .Member(dest => dest.OutputFileName, src => src.Test.OutputFile.Name);
+
+            Mapper.Register<Trying, DataStorageAccess.Models.Trying>();
+
+            #endregion
+
             #region TryingHistory
 
             Mapper.Register<DataStorageAccess.Models.TryingHistory, Models.TryingHistory>()
@@ -254,23 +266,6 @@ namespace JI.Managers.Infrastructure
                     if (testResult.ProjectId != null)
                     {
                         tryingHistory.ProjectId = new Guid(testResult.ProjectId);
-                    }
-                });
-
-            #endregion
-
-            #region TestResult
-
-            Mapper.Register<DataStorageAccess.Models.Trying, Trying>()
-                .Member(dest => dest.TestId, src => src.TestId.ToString());
-
-            Mapper.Register<Trying, DataStorageAccess.Models.Trying>()
-                .Ignore(dest => dest.TestId)
-                .After((testResult, trying) =>
-                {
-                    if (testResult.TestId != null)
-                    {
-                        trying.TestId = new Guid(testResult.TestId);
                     }
                 });
 

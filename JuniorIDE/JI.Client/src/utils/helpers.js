@@ -6,27 +6,18 @@ function getModelStateErrors(modelState){
   return errors
 }
 
+var dateTimeOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    };
+
 function dateTimeToString(date) {
-  var monthNames = [
-    "January", "February", "March",
-    "April", "May", "June", "July",
-    "August", "September", "October",
-    "November", "December"
-  ];
-
-  var day = date.getDate();
-  var monthIndex = date.getMonth();
-  var year = date.getFullYear();
-  var hour = date.getHours();
-  var minutes = date.getMinutes();
-  var seconds = date.getSeconds();
-
-  return day + ' '
-        + monthNames[monthIndex] + ' '
-        + year + ' '
-        + hour + ':'
-        + minutes + ':'
-        + seconds;
+  return new Date(date).toLocaleString("en-US", dateTimeOptions);
 }
 
 const helpers = {

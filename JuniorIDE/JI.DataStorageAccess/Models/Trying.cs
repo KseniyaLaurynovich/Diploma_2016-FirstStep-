@@ -23,5 +23,8 @@ namespace JI.DataStorageAccess.Models
 
         [Association(ThisKey = "TryingHistoryId", OtherKey = "Id")]
         public TryingHistory TryingHistory { get; set; }
+
+        [Association(ThisKey = "TestId", OtherKey = "Id")]
+        public Test Test { get; set; }
     }
 }

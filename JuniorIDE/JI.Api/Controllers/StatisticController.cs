@@ -22,8 +22,8 @@ namespace JI.Api.Controllers
         }
 
         [HttpGet]
-        [Route("getGroupsWithUsers")]
-        public IHttpActionResult GetGroupsWithUsers([FromUri]string taskId)
+        [Route("getAssignedUsers")]
+        public IHttpActionResult GetAssignedUsers([FromUri]string taskId)
         {
             var result = _statisticManager
                 .GetGroupsWithUsers(taskId);
@@ -41,8 +41,8 @@ namespace JI.Api.Controllers
         }
 
         [HttpGet]
-        [Route("getByTask")]
-        public IHttpActionResult GetByTaskId(string taskId)
+        [Route("get")]
+        public IHttpActionResult GetByTask(string taskId)
         {
             var userId = User.Identity.GetUserId();
 
@@ -50,6 +50,17 @@ namespace JI.Api.Controllers
 
             return result.Succeeded
                 ? Ok(result.Result.Select(Mapper.Map<TryingHistory, TryingHistoryModel>))
+                : GetErrorResult(result.Errors);
+        }
+
+        [HttpGet]
+        [Route("get")]
+        public IHttpActionResult GetByTaskAndUser(string taskId, string userId)
+        {
+            var result = _statisticManager.Get(userId, taskId);
+
+            return result.Succeeded
+                ? Ok(result.Result.Select(Mapper.Map<TryingHistory, ExtendedTryingHistoryModel>))
                 : GetErrorResult(result.Errors);
         }
 

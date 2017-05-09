@@ -25,6 +25,6 @@ namespace JI.DataStorageAccess.Models
         public bool Compiled { get; set; }
 
         [Association(ThisKey = "Id", OtherKey = "TryingHistoryId")]
-        public ICollection<Trying> Items { get; set; }
+        public IList<Trying> Items { get; set; }
     }
 }

@@ -35,10 +35,16 @@
     padding: 10px 20px;
     background: #f1f1f1;
     box-shadow: $shadow;
+    margin-bottom: 10px;
     
   .footer{
     text-align: right;
   }
+}
+
+.user-card.active{
+    background: rgba(48, 179, 164, 0.82);
+    color: #fff;
 }
 
 .users-panel{
@@ -47,5 +53,58 @@
       color: gray;
       text-align: center;
   }
+}
+
+.users-panel.active{
+    width: 30%;
+}
+
+.statistic-panel{
+    width: 60%;
+    display: inline-block;
+
+    ul{
+        background-color: none !important;
+    }
+
+    .list-group-item{
+        color: rgb(119, 119, 119) !important;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .icon{
+        display: none;
+    }
+
+    .tag{
+        padding: 5px;
+        color: #fff;
+        border-radius: 2px;
+        margin: 5px;
+    }
+
+    .tag.tag--green{
+        background-color: #72b62a;
+    }
+
+    .tag.tag--red{
+        background-color: #e66969;
+    }
+
+    .toggle{
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: -5px;
+        height: 24px;
+        width: 24px;
+        height: 14;
+        width: 14;
+        .arrow{
+            fill: #9DA5AB;
+            stroke-width: 0;
+        }
+    }
 }
 

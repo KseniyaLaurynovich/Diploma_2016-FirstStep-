@@ -32,6 +32,8 @@ namespace JI.DataStorageAccess.Linq2DbStores
         {
             return DbConnection.TryingHistory
                 .LoadWith(th => th.Items)
+                .LoadWith(th => th.Items[0].Test.InputFile)
+                .LoadWith(th => th.Items[0].Test.OutputFile)
                 .Where(i => i.ProjectId.Equals(projectId));
         }
     }
