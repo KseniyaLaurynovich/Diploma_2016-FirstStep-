@@ -12,7 +12,8 @@ const mapDispatchToProps = {
   handleNewPasswordChange         : actions.onNewPasswordChange,
   handleConfirmNewPasswordChange  : actions.onConfirmNewPasswordChange,
   logoutUser                      : logoutUser,
-  setDetailsEditMode              : actions.setDetailsEditMode                  
+  setDetailsEditMode              : actions.setDetailsEditMode  ,
+  setPrivateInfoEditMode          : actions.setPrivateInfoEditMode                
 }
 
 const mapStateToProps = (state) => ({
@@ -21,7 +22,8 @@ const mapStateToProps = (state) => ({
   validationState             : state.account.validationState,
   isLoading                   : state.account.isLoading,
   isDetailsEditMode           : state.account.isEditDetails,
-  saveError                   : state.account.saveError
+  saveError                   : state.account.saveError,
+  isPrivateInfoEditMode       : state.account.isPrivateInfoEditMode
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountView)

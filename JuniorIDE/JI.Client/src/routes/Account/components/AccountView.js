@@ -52,6 +52,58 @@ function renderDetailsEditMode(props){
     )
 }
 
+function renderPrivateInfoEditMode(props){
+    return(
+        <div className='privateInfoForm'>
+            <Row hidden={props.saveError == null}>
+                <Col md={12}>
+                    <Alert bsStyle="danger">
+                        <p>{props.saveError}</p>
+                    </Alert>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={5}>
+                    <FormGroup controlId="firstName">
+                        <label className='label-left'>First name</label>
+                        <FormControl type="text" onChange={props.handleFirstNameChange}
+                            defaultValue={props.userInfo.firstName}/>
+                    </FormGroup>
+
+                    <FormGroup controlId="lastName">
+                        <label className='label-left'>Last name</label>
+                        <FormControl type="text" onChange={props.handleLastNameChange}
+                            defaultValue={props.userInfo.lastName}/>
+                    </FormGroup>
+
+                    <FormGroup controlId="patronymic">
+                        <label className='label-left'>Patronymic</label>
+                        <FormControl type="text" onChange={props.handlePatronymicChange}
+                            defaultValue={props.userInfo.patronymic}/>
+                    </FormGroup>
+                </Col>
+                <Col md={5}>
+                    <label className='label-left'>Email</label>
+                    <FormControl type="email" onChange={props.handleEmailChange}
+                                defaultValue={props.userInfo.email}/>
+                </Col>
+                <Col md={2}>
+                    <FormGroup className='pull-right'>
+                        <ButtonToolbar>
+                            <Button onClick={() => props.setPrivateInfoEditMode(false)}>
+                                Cancel
+                            </Button>
+                            <Button className='success' onClick={props.save}>
+                                Save
+                            </Button>
+                        </ButtonToolbar>
+                    </FormGroup>
+                </Col>
+            </Row>
+        </div>
+    )
+}
+
 function renderDetailsViewModel(props){
     return (
          <Row>
@@ -70,6 +122,38 @@ function renderDetailsViewModel(props){
     )
 }
 
+function renderPrivateInfoViewModel(props){
+    return (
+        <div>
+            <Row>
+                <Col md={5}>
+                    <h4 className='title'>First name</h4>
+                    <p>{props.userInfo.firstName}</p>
+                </Col>
+                <Col md={5}>
+                    <h4 className='title'>Email</h4>
+                    <p>{props.userInfo.email}</p>
+                </Col>
+                <Col md={2}>
+                    <Button className='pull-right' onClick={() => props.setPrivateInfoEditMode(true)}>Edit</Button>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={5}>
+                    <h4 className='title'>Last Name</h4>
+                    <p>{props.userInfo.lastName}</p>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={5}>
+                    <h4 className='title'>Patronymic</h4>
+                    <p>{props.userInfo.patronymic}</p>
+                </Col>
+            </Row>
+        </div>
+    )
+}
+
 const AccountView = (props) => (
 <div className='accountPage'>
     <Row>
@@ -84,6 +168,16 @@ const AccountView = (props) => (
             props.isDetailsEditMode
             ? renderDetailsEditMode(props)
             : renderDetailsViewModel(props)
+        }
+       
+    </div>
+    <hr/>
+    <div className='privateInfoSection'>
+        <h3><b>Private Details</b></h3>
+        {
+            props.isPrivateInfoEditMode
+            ? renderPrivateInfoEditMode(props)
+            : renderPrivateInfoViewModel(props)
         }
        
     </div>

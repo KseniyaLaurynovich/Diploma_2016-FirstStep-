@@ -13,6 +13,7 @@ export const USERNAME_CHANGED               = 'USERNAME_CHANGED'
 export const RESET_CHANGE_ACCOUNT_ERRORS    = 'RESET_CHANGE_ACCOUNT_ERRORS'
 export const SET_CHANGE_ACCOUNT_ERROR       = 'SET_CHANGE_ACCOUNT_ERROR'
 export const SET_DETAILS_EDIT_MODE          = 'SET_DETAILS_EDIT_MODE'
+export const SET_PRIVATE_INFO_EDIT_MODE     = 'SET_PRIVATE_INFO_EDIT_MODE'
 
 // ------------------------------------
 // Actions
@@ -67,6 +68,13 @@ export const setDetailsEditMode = (isEditMode) => {
   }
 }
 
+export const setPrivateInfoEditMode = (isEditMode) => {
+  return {
+    type    : SET_PRIVATE_INFO_EDIT_MODE,
+    payload : isEditMode
+  }
+}
+
 export const actions = {
   onUsernameChange,
   onOldPasswordChange,
@@ -74,13 +82,17 @@ export const actions = {
   onConfirmNewPasswordChange,
   setDetailsEditMode,
   resetErrors,
-  setChangeAccountError
+  setChangeAccountError,
+  setPrivateInfoEditMode
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [SET_PRIVATE_INFO_EDIT_MODE]      : (state, action) => {
+    return Object.assign({}, state, { isPrivateInfoEditMode: action.payload })
+  },
   [SET_DETAILS_EDIT_MODE]           : (state, action) => {
     return Object.assign({}, state, { isEditDetails: action.payload, username: null, newPassword: null, oldPassword: null, confirmNewPassword: null })
   },
@@ -118,7 +130,8 @@ const initialState = {
   newPassword             : null,
   confirmNewPassword      : null,
   saveError               : null,
-  isEditDetails           : false
+  isEditDetails           : false,
+  isPrivateInfoEditMode   : false
 }
 
 export default function accountReducer (state = initialState, action) {
