@@ -136,6 +136,9 @@ export function openStatisticForUser(userId){
 
         requests.fetchStatisticByTaskAndUser(token, taskId, userId).then(function(response){
             dispatch(statisticChange(response.data))
-        })
+        },function(error){
+            var errorMessage = helpers.getModelStateErrors(error.response.data.ModelState)
+            dispatch(statisticChange([]))
+      })
     }
 }

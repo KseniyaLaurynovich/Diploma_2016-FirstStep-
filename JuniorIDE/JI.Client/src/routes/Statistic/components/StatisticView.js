@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import TreeView from 'treeview-react-bootstrap'
 import _ from 'lodash'
 import helpers from '../../../utils/helpers'
@@ -17,14 +17,20 @@ function toTreeViewData(item){
         toggled: false,
         date: helpers.dateTimeToString(item.dateTime),
         pass: item.compiled && item.items.every((i) => i.pass),
-        compiled: item.compiled
+        compiled: item.compiled,
+        subitem: false
      }
 
-     if(item.items != null && item.items.length > 0)
-        treeItem.children = item.items.map((subItem, index) => {
+     if(item.ext_items != null && item.ext_items.length > 0)
+        treeItem.children = item.ext_items.map((subItem, index) => {
             return {
                 key: index,
-                state: subItem.pass ? 'pass' :'failed'
+                state: subItem.pass ? 'pass' :'failed',
+                inputFileId: subItem.inputFileId,
+                inputFileName: subItem.inputFileName,
+                outputFileId: subItem.outputFileId,
+                outputFileName: subItem.outputFileName,
+                subitem: true
             }
         })
 
@@ -63,20 +69,25 @@ export const Statistic = (props) => (
                     props.currentGroup && props.currentGroup.users.length > 0 
                         && _.chunk(props.currentGroup.users, 3).map((group) => (
                         <Row>
-                            {
+                        {
                             group.map((i) => (
                                     <Col md={props.currentUser == null ? 4 : 12} key={ i.id }>
                                         <div className={ props.currentUser != i.id ? 'user-card' : 'user-card active' }>
                                             <h3> { getFullName(i) } </h3>
                                             <div className='footer'>
-                                                <Button onClick={() => { props.openStatisticForUser(i.id) }}>
-                                                    View
-                                                </Button>
+                                                <ButtonGroup>
+                                                    <Button>
+                                                        Project
+                                                    </Button>
+                                                    <Button bsStyle="info" onClick={() => { props.openStatisticForUser(i.id) }}>
+                                                        View
+                                                    </Button>
+                                                </ButtonGroup>
                                             </div>
                                         </div>
                                     </Col>
                                 )) 
-                            }
+                        }
                         </Row>
                     ))
                 }
@@ -84,7 +95,14 @@ export const Statistic = (props) => (
             {
                 props.currentStatistic != null && 
                 <Col md={8} className='statistic-panel'>
-                    <StatisticTree data={_.sortBy(props.currentStatistic, (i) => { return new Date(i.dateTime) * (-1) }).map(toTreeViewData)}/>
+                {
+                    props.currentStatistic.length === 0 && 
+                       <p>This user does not upload project</p> 
+                }
+                {
+                    props.currentStatistic.length > 0 &&
+                        <StatisticTree data={_.sortBy(props.currentStatistic, (i) => { return new Date(i.dateTime) * (-1) }).map(toTreeViewData)}/>
+                }
                 </Col>
             }
         </Row>

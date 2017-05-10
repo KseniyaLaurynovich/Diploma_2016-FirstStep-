@@ -14,7 +14,7 @@ const MenuContainer = React.createClass({
     '' : [
     ],
     'Teacher' : [
-      {to: 'subjects', icon: 'briefcase'}
+      {to: '/subjects', icon: 'briefcase'}
     ],
     'Administrator' : [
       {to: '/usersgrid', icon: 'user'},

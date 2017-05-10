@@ -75,8 +75,16 @@ namespace JI.Api.Business.Configuration
             Mapper.Register<TryingHistory, TryingHistoryModel>();
             Mapper.Register<TryingHistoryModel, TryingHistory>();
 
+            Mapper.Register<TryingHistory, ExtendedTryingHistoryModel>()
+                .Member(dest => dest.ExtendedItems, src => src.Items.Select(Mapper.Map<Trying, ExtendedTryingModel>).ToList());
+
+            Mapper.Register<ExtendedTryingHistoryModel, TryingHistory>();
+
             Mapper.Register<Trying, TryingModel>();
             Mapper.Register<TryingModel, Trying>();
+
+            Mapper.Register<Trying, ExtendedTryingModel>();
+            Mapper.Register<ExtendedTryingModel, Trying>();
 
             Mapper.Register<Task, TaskPluginModel>()
                 .After((task, model) =>

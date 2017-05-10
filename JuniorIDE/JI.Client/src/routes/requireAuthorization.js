@@ -12,8 +12,23 @@ export default function requireAuthorization(Component, allowedRoles) {
         }
 
         render () {
+          console.log(this.props)
           if(this.checkAuth(this.props.isAuthenticated, this.props.roles))
           {
+            if(this.props.location.pathname === '/'){
+                var role = this.props.roles
+                switch(role){
+                    case('Administrator'): 
+                        browserHistory.push('/usersgrid')
+                        break;
+                    case('Teacher'): 
+                        browserHistory.push('/subjects')
+                        break;
+                    case('Student'): 
+                        browserHistory.push('/account-settings')
+                        break;
+                }
+            }
             return (
               <Component {...this.props}/>
             )

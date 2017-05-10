@@ -67,6 +67,10 @@
         background-color: none !important;
     }
 
+    .mb-10{
+        margin-bottom: 10px;
+    }
+
     .list-group-item{
         color: rgb(119, 119, 119) !important;
         cursor: pointer;
@@ -92,19 +96,17 @@
         background-color: #e66969;
     }
 
-    .toggle{
-        position: relative;
+    .toggle--triangle-right{
         display: inline-block;
-        vertical-align: top;
-        margin-left: -5px;
-        height: 24px;
-        width: 24px;
-        height: 14;
-        width: 14;
-        .arrow{
-            fill: #9DA5AB;
-            stroke-width: 0;
-        }
     }
+
+    .statistic-container{
+        display: inline-block;
+    }
+
+    
+}
+.statistic-container.statistic-subcontainer{
+    margin-top: 10px;
 }
 
