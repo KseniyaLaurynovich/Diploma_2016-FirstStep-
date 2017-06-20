@@ -36,6 +36,9 @@ namespace JI.Api.Controllers
         [Route("save")]
         public IHttpActionResult Save(GroupModel group)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var result = _groupManager.Save(Mapper.Map<GroupModel, Group>(group));
 
             return !result.Succeeded
@@ -47,6 +50,9 @@ namespace JI.Api.Controllers
         [Route("delete/{groupId}")]
         public IHttpActionResult Delete(string groupId)
         {
+            if (string.IsNullOrEmpty(groupId))
+                return BadRequest();
+
             var result = _groupManager.Delete(groupId);
 
             return !result.Succeeded

@@ -6,6 +6,19 @@ function getModelStateErrors(modelState){
   return errors
 }
 
+function getBase64(file, callback) {
+   var reader = new FileReader();
+   reader.readAsDataURL(file);
+
+   reader.onload = function(){
+     callback(null, reader.result);
+   }
+
+   reader.onerror = function (error) {
+     callback(error, null);
+   };
+}
+
 var dateTimeOptions = {
       year: 'numeric',
       month: 'long',
@@ -22,7 +35,8 @@ function dateTimeToString(date) {
 
 const helpers = {
   getModelStateErrors,
-  dateTimeToString
+  dateTimeToString,
+  getBase64
 }
 
 export default helpers

@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 namespace JI.Api.Controllers
 {
     [RoutePrefix("users")]
-    [Authorize(Roles="Administrator")]
+    [Authorize]
     public class UserApiController : BaseApiController
     {
         [HttpGet]
@@ -28,6 +28,9 @@ namespace JI.Api.Controllers
         [Route("edit")]
         public IHttpActionResult Save(UserModel model)
         {
+            if (string.IsNullOrEmpty(model.Id))
+                model.Id = User.Identity.GetUserId();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

@@ -65,6 +65,12 @@ const renderViewMode = (props) => (
                 : ''
       }}>
     </div>
+    {
+      props.item != null && !props.item.description &&
+      <div className='no content'>
+        No description for this task
+      </div>
+    }
   </div>
 )
 

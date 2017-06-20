@@ -10,6 +10,6 @@ namespace JI.Api.Models
         public DateTime? Deadline { get; set; }
 
         [JsonProperty(PropertyName = "users")]
-        public IList<UserModel> Users { get; set; }
+        public IList<StatisticUserModel> Users { get; set; }
     }
 }

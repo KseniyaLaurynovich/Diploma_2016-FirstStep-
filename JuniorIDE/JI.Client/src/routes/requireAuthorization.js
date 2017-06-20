@@ -12,7 +12,6 @@ export default function requireAuthorization(Component, allowedRoles) {
         }
 
         render () {
-          console.log(this.props)
           if(this.checkAuth(this.props.isAuthenticated, this.props.roles))
           {
             if(this.props.location.pathname === '/'){

@@ -9,12 +9,12 @@ import _ from 'lodash'
 
 const MenuContainer = React.createClass({
   navItemsSwitcher : {
-    null : [
-    ],
-    '' : [
-    ],
+    null : [],
+    '' : [],
+    'Student' : [],
     'Teacher' : [
-      {to: '/subjects', icon: 'briefcase'}
+      {to: '/subjects', icon: 'briefcase'},
+      //{to: '/statistic', icon: 'stats'}
     ],
     'Administrator' : [
       {to: '/usersgrid', icon: 'user'},

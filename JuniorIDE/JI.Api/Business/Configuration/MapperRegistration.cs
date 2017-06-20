@@ -28,7 +28,14 @@ namespace JI.Api.Business.Configuration
             Mapper.Register<ApplicationUser, RegisterModel> ();
 
             Mapper.Register<AccountInfoModel, ApplicationUser>();
-            Mapper.Register<ApplicationUser, AccountInfoModel> ();
+            Mapper.Register<ApplicationUser, AccountInfoModel> ()
+                .Ignore(dest => dest.Groups)
+                .After((user, model) =>
+                {
+                    model.Groups = user.Groups
+                        .Select(Mapper.Map<ApplicationGroup, GroupModel>)
+                        .ToList();
+                });
 
             Mapper.Register<GroupModel, ApplicationGroup>();
             Mapper.Register<ApplicationGroup, GroupModel>();

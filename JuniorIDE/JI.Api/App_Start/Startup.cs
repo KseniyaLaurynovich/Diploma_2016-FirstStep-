@@ -31,18 +31,6 @@ namespace JI.Api
 
             GlobalConfiguration.Configuration.DependencyResolver =
                 new SimpleInjectorWebApiDependencyResolver(container);
-
-            //using (container.BeginExecutionContextScope())
-            //{
-            //    var userStore = container.GetInstance<IUserStore<ApplicationUser>>();
-            //    app.CreatePerOwinContext(() => userStore);
-
-            //    var roleStore = container.GetInstance<IRoleStore<ApplicationRole, string>>();
-            //    app.CreatePerOwinContext(() => roleStore);
-
-            //    app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
-            //    app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
-            //}
         }
 
         public void ConfigureAuth(IAppBuilder app)

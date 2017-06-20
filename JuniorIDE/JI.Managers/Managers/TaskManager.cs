@@ -18,15 +18,17 @@ namespace JI.Managers.Managers
         protected readonly IObjectSpecifiedFolderStore<DbModels.Task> TaskTestsFolderStore;
         protected readonly IProjectStore ProjectStore;
         protected readonly ITryingHistoryStore TryingHistoryStore;
+        private readonly IObjectSpecifiedFolderStore<DbModels.Project> _projectFolderStore;
 
         public TaskManager(ITaskStore store, 
             IObjectSpecifiedFolderStore<DbModels.Task> taskTestsFolderStore, 
-            IProjectStore projectStore, ITryingHistoryStore tryingHistoryStore) 
+            IProjectStore projectStore, ITryingHistoryStore tryingHistoryStore, IObjectSpecifiedFolderStore<DbModels.Project> projectFolderStore) 
             : base(store)
         {
             TaskTestsFolderStore = taskTestsFolderStore;
             ProjectStore = projectStore;
             TryingHistoryStore = tryingHistoryStore;
+            _projectFolderStore = projectFolderStore;
         }
 
         public override ServiceResult<Task> Save(Task subject)
@@ -116,6 +118,22 @@ namespace JI.Managers.Managers
                 .ToList();
         }
 
+        public ServiceResult SetMark(string userId, string taskId, int? mark)
+        {
+            var project = GetOrCreate(userId, taskId);
+            project.Mark = mark;
+
+            ProjectStore.Save(project);
+            return ServiceResult.Success;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            ProjectStore?.Dispose();
+            TryingHistoryStore?.Dispose();
+        }
+
         #region protected
 
         protected override ServiceResult Validate(Task task)
@@ -130,6 +148,31 @@ namespace JI.Managers.Managers
             }
 
             return ServiceResult.Success;
+        }
+
+        protected DbModels.Project GetOrCreate(string userId, string taskId)
+        {
+            var project = ProjectStore.FindByTask(new Guid(userId), new Guid(taskId));
+
+            if (project == null)
+            {
+                project = new DbModels.Project
+                {
+                    UserId = new Guid(userId),
+                    CreationDate = DateTime.Now,
+                    TaskId = new Guid(taskId),
+                    ModificationDate = DateTime.Now
+                };
+
+                project.Id = ProjectStore.Save(project);
+            }
+
+            if (project.ProjectFolder.IsNull)
+            {
+                project.ProjectFolder = _projectFolderStore.CreateSpecificObjFolder(project);
+            }
+
+            return project;
         }
 
         protected override DbModels.Task Map(Task model)

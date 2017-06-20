@@ -15,6 +15,16 @@ export const SubjectsGridView = (props) => (
          <p className='title'>
            <Link to={getSubjectTasksLink(props.item)}>{props.item.name}</Link>
          </p>
+         <div className='subject-info'>
+           {
+             props.item.groups &&
+             <p>Groups: { props.item.groups.length }</p>
+           }
+           {
+             props.item.tasks &&
+              <p>Tasks: { props.item.tasks.length }</p>
+           }
+         </div>
        </Col>
 
        <Col md={2} xs={12} sm={2}>

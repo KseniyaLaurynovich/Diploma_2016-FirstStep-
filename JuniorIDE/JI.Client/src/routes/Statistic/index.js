@@ -1,5 +1,5 @@
 import { injectReducer } from '../../store/reducers'
-import { fetchTask, fetchGroups } from './modules/statistic'
+import { fetchTask, fetchGroups, actions } from './modules/statistic'
 import requireAuthorization from '../requireAuthorization'
 
 export default (store) => ({
@@ -15,6 +15,7 @@ export default (store) => ({
 
       injectReducer(store, { key: 'statistic', reducer })
 
+      store.dispatch(actions.changeMode(null))
       store.dispatch(fetchTask(nextState.params.taskId))
       store.dispatch(fetchGroups(nextState.params.taskId))
       

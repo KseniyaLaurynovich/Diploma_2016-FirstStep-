@@ -91,7 +91,8 @@ namespace JI.Api.Controllers
 
             if (user != null)
             {
-                return Ok(Mapper.Map<ApplicationUser, AccountInfoModel>(user));
+                var result = Mapper.Map<ApplicationUser, AccountInfoModel>(user);
+                return Ok(result);
             }
 
             return BadRequest();

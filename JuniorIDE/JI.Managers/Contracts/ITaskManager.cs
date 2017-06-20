@@ -11,5 +11,6 @@ namespace JI.Managers.Contracts
         ServiceResult<File> AssociateTestFile(string taskId, File file);
         ServiceResult<Task> GetTaskForUser(string currentUserId, string taskId, IList<Group> groups);
         void RemoveExtraFiles(string taskId, string[] filesIds);
+        ServiceResult SetMark(string userId, string taskId, int? mark);
     }
 }

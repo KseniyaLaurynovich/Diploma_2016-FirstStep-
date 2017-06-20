@@ -36,7 +36,7 @@ namespace JI.Api.Controllers
                 {
                     Id = i.Group.Id,
                     Name = i.Group.Name,
-                    Users = i.Users.Select(Mapper.Map<ApplicationUser, UserModel>).ToList()
+                    Users = i.Users.Select(Mapper.Map<ApplicationUser, StatisticUserModel>).ToList()
                 }));
         }
 

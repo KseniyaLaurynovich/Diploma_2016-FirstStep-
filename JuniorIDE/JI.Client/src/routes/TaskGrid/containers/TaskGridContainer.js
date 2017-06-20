@@ -15,8 +15,8 @@ const TaskGridContainer = React.createClass({
           itemComponent = {TaskGridRowView}
           filter        = {(item) => {return item;}}
           openEditModal = {this.props.openEditModal}
-          md            = {4}
-          sm            = {6}
+          md            = {12}
+          sm            = {12}
           xs            = {12}/>
 
         <TaskGridToolbarContainer/>

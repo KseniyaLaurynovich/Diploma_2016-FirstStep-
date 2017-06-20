@@ -1,14 +1,10 @@
-﻿using System.IO;
-using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 using JI.Api.Controllers.Base;
 using JI.Managers.Contracts;
 using Microsoft.AspNet.Identity;
-using System.IO.Compression;
-using JI.Api.Business.Helpers;
 
 namespace JI.Api.Controllers
 {
@@ -18,12 +14,14 @@ namespace JI.Api.Controllers
     {
         private readonly IProjectManager _projectManager;
         private readonly IAutoTestedManager _testManager;
+        private readonly IFileManager _fileManager;
 
         public ProjectController(
-            IProjectManager projectManager, IAutoTestedManager testManager)
+            IProjectManager projectManager, IAutoTestedManager testManager, IFileManager fileManager)
         {
             _projectManager = projectManager;
             _testManager = testManager;
+            _fileManager = fileManager;
         }
 
         [HttpPost]
@@ -45,6 +43,26 @@ namespace JI.Api.Controllers
             }
 
             return Ok();
+        }
+
+
+
+        [HttpGet]
+        [Route("getProjectStructure")]
+        public IHttpActionResult GetProjectStructure(string taskId, string userId)
+        {
+            var result = _projectManager.GetProjectStructure(userId, taskId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("getFile")]
+        public IHttpActionResult GetFile(string fileId)
+        {
+            var data = _fileManager.GetFileData(fileId);
+            var stringData = System.Text.Encoding.Default.GetString(data);
+
+            return Ok(stringData);
         }
     }
 }

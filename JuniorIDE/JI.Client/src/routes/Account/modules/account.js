@@ -1,7 +1,7 @@
 import requests from '../../../utils/requests'
 import { validationStates } from '../../../utils/constants'
 import helpers from '../../../utils/helpers'
-import { fetchUserInfo } from '../../../store/user'
+import { fetchUserInfo, setUserInfo } from '../../../store/user'
 
 // ------------------------------------
 // Constants
@@ -10,14 +10,58 @@ export const OLD_PASSWORD_CHANGED           = 'OLD_PASSWORD_CHANGED'
 export const NEW_PASSWORD_CHANGED           = 'NEW_PASSWORD_CHANGED'
 export const CONFIRM_NEW_PASSWORD_CHANGED   = 'CONFIRM_NEW_PASSWORD_CHANGED'
 export const USERNAME_CHANGED               = 'USERNAME_CHANGED'
+export const PHOTO_CHANGE                   = 'PHOTO_CHANGE'
+export const FIRST_NAME_CHANGE              = 'FIRST_NAME_CHANGE'
+export const LAST_NAME_CHANGE               = 'LAST_NAME_CHANGE'
+export const PATRONYMIC_CHANGE              = 'PATRONYMIC_CHANGE'
+export const EMAIL_CHANGE                   = 'EMAIL_CHANGE'
+
 export const RESET_CHANGE_ACCOUNT_ERRORS    = 'RESET_CHANGE_ACCOUNT_ERRORS'
 export const SET_CHANGE_ACCOUNT_ERROR       = 'SET_CHANGE_ACCOUNT_ERROR'
+
 export const SET_DETAILS_EDIT_MODE          = 'SET_DETAILS_EDIT_MODE'
 export const SET_PRIVATE_INFO_EDIT_MODE     = 'SET_PRIVATE_INFO_EDIT_MODE'
+
+export const GET_ACCOUNT_GROUPS_SUCCESS     = 'GET_ACCOUNT_GROUPS_SUCCESS'
 
 // ------------------------------------
 // Actions
 // ------------------------------------
+
+export const onEmailChange = (event) => {
+  return {
+    type    : EMAIL_CHANGE,
+    payload : event.target.value
+  }
+}
+
+export const onPatronymicChange = (event) => {
+  return {
+    type    : PATRONYMIC_CHANGE,
+    payload : event.target.value
+  }
+}
+
+export const onLastNameChange = (event) => {
+  return {
+    type    : LAST_NAME_CHANGE,
+    payload : event.target.value
+  }
+}
+
+export const onFirstNameChange = (event) => {
+  return {
+    type    : FIRST_NAME_CHANGE,
+    payload : event.target.value
+  }
+}
+
+export const onPhotoChange = (file) => {
+  return {
+    type    : PHOTO_CHANGE,
+    payload : file
+  }
+}
 
 export const onConfirmNewPasswordChange = (event) => {
   return {
@@ -75,6 +119,13 @@ export const setPrivateInfoEditMode = (isEditMode) => {
   }
 }
 
+export const getGroupsSuccess = (groups) => {
+  return {
+    type    : GET_ACCOUNT_GROUPS_SUCCESS,
+    payload : groups
+  }
+}
+
 export const actions = {
   onUsernameChange,
   onOldPasswordChange,
@@ -83,13 +134,22 @@ export const actions = {
   setDetailsEditMode,
   resetErrors,
   setChangeAccountError,
-  setPrivateInfoEditMode
+  setPrivateInfoEditMode,
+  getGroupsSuccess,
+  onPhotoChange,
+  onPatronymicChange,
+  onFirstNameChange,
+  onLastNameChange,
+  onEmailChange
 }
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
+  [GET_ACCOUNT_GROUPS_SUCCESS]      : (state, action) => {
+    return Object.assign({}, state, { groups: action.payload })
+  },
   [SET_PRIVATE_INFO_EDIT_MODE]      : (state, action) => {
     return Object.assign({}, state, { isPrivateInfoEditMode: action.payload })
   },
@@ -109,12 +169,27 @@ const ACTION_HANDLERS = {
     return Object.assign({}, state, { confirmNewPassword: action.payload })
   },
   [RESET_CHANGE_ACCOUNT_ERRORS]     : (state, action) => {
-    return Object.assign({}, state, { saveError: null })
+    return Object.assign({}, state, { saveAccountDetailsError: null })
+  },
+  [PHOTO_CHANGE]                    : (state, action) => {
+    return Object.assign({}, state, { photo: action.payload })
+  },
+  [FIRST_NAME_CHANGE]                    : (state, action) => {
+    return Object.assign({}, state, { firstName: action.payload })
+  },
+  [LAST_NAME_CHANGE]                    : (state, action) => {
+    return Object.assign({}, state, { lastName: action.payload })
+  },
+  [PATRONYMIC_CHANGE]                    : (state, action) => {
+    return Object.assign({}, state, { patronymic: action.payload })
+  },
+  [EMAIL_CHANGE]                    : (state, action) => {
+    return Object.assign({}, state, { email: action.payload })
   },
   [SET_CHANGE_ACCOUNT_ERROR]        : (state, action) => {
     return Object.assign({}, state, 
     { 
-      saveError: action.append && state.error != null 
+      saveAccountDetailsError: action.append && state.error != null 
             ? state.error + ' ' + action.payload 
             : action.payload 
     })
@@ -129,10 +204,21 @@ const initialState = {
   oldPassword             : null,
   newPassword             : null,
   confirmNewPassword      : null,
-  saveError               : null,
+  firstName               : null,
+  lastName                : null,
+  patronymic              : null,
+  photo                   : null,
+  email                   : null,
+
+  saveAccountDetailsError : null,
+  savePrivateInfoError    : null,
+
   isEditDetails           : false,
-  isPrivateInfoEditMode   : false
+  isPrivateInfoEditMode   : false,
+
+  groups                  : []
 }
+
 
 export default function accountReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
@@ -140,7 +226,46 @@ export default function accountReducer (state = initialState, action) {
   return handler ? handler(state, action) : state
 }
 
-export function save(event){
+
+export function savePhoto(photo){
+  return(dispatch, getState) => {
+    
+    helpers.getBase64(photo, function(error, result){
+      dispatch(onPhotoChange(result));
+    })
+  }
+}
+
+export function handleGroupsChanges(groups){
+  return (dispatch, getState) => {
+    var userInfo = getState().user.userInfo;
+    userInfo.groups = groups;
+
+    var token = getState().user.credentials.access_token
+    requests.editUser(token, userInfo).then(function(response){
+      dispatch(setUserInfo(response.data))
+    },function(error){})
+  }
+}
+
+export function fetchGroups(){
+  return (dispatch, getState) => {
+
+    var token = getState().user.credentials.access_token
+
+    requests.fetchGroups(token).then(function(response){
+
+      dispatch(getGroupsSuccess(response.data))
+
+    },function(error){
+      //handle error
+      dispatch(getGroupsSuccess([]))
+    })
+
+  }
+}
+
+export function saveAccountDetails(event){
   event.preventDefault()
 
   return (dispatch, getState) => {
@@ -181,6 +306,7 @@ export function save(event){
         })
       }else{
         dispatch(setChangeAccountError(passwordModelValidationError, true))
+        return
       }
     }
 

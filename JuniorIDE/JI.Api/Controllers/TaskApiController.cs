@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using ExpressMapper;
@@ -58,6 +57,7 @@ namespace JI.Api.Controllers
 
             return Ok(_taskManager
                 .GetByGroups(groups)
+                .Where(t => t.IsVisible)
                 .Select(Mapper.Map<Task, TaskPluginModel>)
                 .ToList());
         }
@@ -144,6 +144,17 @@ namespace JI.Api.Controllers
             return serviceResult.Succeeded
                 ? Ok()
                 : GetErrorResult(serviceResult.Errors);
+        }
+
+
+        [HttpPost]
+        [Route("setMark")]
+        public IHttpActionResult SetMark(MarkModel markModel)
+        {
+            var result = _taskManager.SetMark(markModel.UserId, markModel.TaskId, markModel.Mark);
+            return result.Succeeded
+                ? Ok()
+                : GetErrorResult(result.Errors);
         }
 
         protected override void Dispose(bool disposing)

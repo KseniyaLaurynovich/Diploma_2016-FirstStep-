@@ -5,7 +5,6 @@ using ExpressMapper.Extensions;
 using JI.Common.Contracts.Contracts;
 using JI.DataStorageAccess.Business.Extensions;
 using JI.DataStorageAccess.Models;
-using JI.Managers.Models;
 using Microsoft.SqlServer.Types;
 using File = JI.DataStorageAccess.Models.File;
 using Group = JI.DataStorageAccess.Models.Group;
@@ -27,7 +26,8 @@ namespace JI.Managers.Infrastructure
             Mapper.Register<File, Models.File>()
                 .Member(dest => dest.Id, src => src.Id.ToString())
                 .Member(dest => dest.ParentId, 
-                    src => src.ParentId.IsNull ? null : src.ParentId.ToString());
+                    src => src.ParentId.IsNull ? null : src.ParentId.ToString())
+                 .Ignore(dest => dest.Children);
 
             Mapper.Register<Models.File, File>()
                 .Ignore(dest => dest.Id)

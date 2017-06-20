@@ -6,6 +6,7 @@ namespace JI.DataStorageAccess.Contracts
 {
     public interface IProjectStore : IStore<Project>
     {
+        Models.File GetProjectStructure(Guid userId, Guid taskId);
         Project FindByTask(Guid userId, Guid taskId);
         void LoadStream(Guid projectId, Stream projectStream);
         string GetProjectPath(Guid projectId);

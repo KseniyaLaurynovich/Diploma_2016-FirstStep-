@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using LinqToDB.Mapping;
 using Microsoft.SqlServer.Types;
 
@@ -21,5 +22,7 @@ namespace JI.DataStorageAccess.Models
 
         [Column(Name = "is_directory", SkipOnInsert = true, SkipOnUpdate = true)]
         public bool IsFolder { get; set; }
+
+        public IList<File> Children { get; set; }
     }
 }

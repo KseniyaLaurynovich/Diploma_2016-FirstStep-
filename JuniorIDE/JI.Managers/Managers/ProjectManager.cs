@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using ExpressMapper.Extensions;
 using JI.DataStorageAccess.Contracts;
 using JI.Managers.Business.Models;
@@ -45,7 +46,26 @@ namespace JI.Managers.Managers
             return (Store as IProjectStore).GetProjectPath(new Guid(existingProject.Id));
         }
 
+        public Models.File GetProjectStructure(string userId, string taskId)
+        {
+            var result = (Store as IProjectStore)
+                .GetProjectStructure(new Guid(userId), new Guid(taskId));
+
+            return MapFile(result);
+        }
+
         #region protected
+
+        protected Models.File MapFile(DalModels.File file)
+        {
+            return new Models.File
+            {
+                Id = file.Id.ToString(),
+                Name = file.Name,
+                Children = file.Children?.Select(MapFile).ToList(),
+                IsFolder = file.IsFolder
+            };
+        }
 
         protected Project GetOrCreate(string userId, string taskId)
         {

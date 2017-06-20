@@ -15,6 +15,12 @@ namespace JI.Managers.Managers
             _fileStore = fileStore;
         }
 
+        public byte[] GetFileData(string fileId)
+        {
+            var file = _fileStore.FindById(SqlHierarchyId.Parse(fileId));
+            return file.Data;
+        }
+
         public FileInfo GetFile(string fileId)
         {
             var file = _fileStore.FindById(SqlHierarchyId.Parse(fileId));

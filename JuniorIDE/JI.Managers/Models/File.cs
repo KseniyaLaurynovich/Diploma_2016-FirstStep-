@@ -1,4 +1,6 @@
-﻿namespace JI.Managers.Models
+﻿using System.Collections.Generic;
+
+namespace JI.Managers.Models
 {
     public class File
     {
@@ -13,5 +15,7 @@
         public bool IsFolder { get; set; }
 
         public string Path { get; set; }
+
+        public IList<File> Children { get; set; }
     }
 }

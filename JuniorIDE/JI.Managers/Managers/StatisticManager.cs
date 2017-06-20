@@ -48,7 +48,16 @@ namespace JI.Managers.Managers
                 {
                     Group = i.Key.Map<Group, Models.Group>(),
                     Users = i.Value.Select(Mapper.Map<User, ApplicationUser>).ToList()
+                })
+                .ToList();
+
+            Array.ForEach(array: result.ToArray(), action: (group) =>
+            {
+                Array.ForEach(group.Users.ToArray(), user =>
+                {
+                    user.Mark = _projectStore.FindByTaskAndUser(new Guid(user.Id), new Guid(taskId))?.Mark;
                 });
+            });
 
             return ServiceResult<IList<GroupWithUsers>>.Success(result.ToList());
         }

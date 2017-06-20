@@ -39,7 +39,7 @@ namespace JI.DataStorageAccess.Models
         [Column(Name = "TaskFolder")]
         public SqlHierarchyId TaskFolder { get; set; }
 
-        [Column(Name = "OutputFileName")]
+        [Column(Name = "OutputFileName"), Nullable]
         public string OutputFileName { get; set; }
 
         [Column(Name = "TempFolder")]

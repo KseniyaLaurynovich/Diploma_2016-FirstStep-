@@ -35,22 +35,22 @@ function filteredGroups(props){
   })
 }
 
-function addGroup(props, group){
-  var groups = props.user.groups || []
-  groups.push(group)
-
-  props.handleGroupsChanges(groups)
-}
-
-function removeGroup(props, group){
-  var index = props.user.groups.indexOf(group)
-  if(index != -1){
-    var groups = props.user.groups
-    groups.splice(index, 1)
+  function addGroup(props, group){
+    var groups = props.user.groups || []
+    groups.push(group)
 
     props.handleGroupsChanges(groups)
   }
-}
+
+  function removeGroup(props, group){
+    var index = props.user.groups.indexOf(group)
+    if(index != -1){
+      var groups = props.user.groups
+      groups.splice(index, 1)
+
+      props.handleGroupsChanges(groups)
+    }
+  }
 
 const UserEditFormView = (props) => (
   <Modal show={props.showModal} onHide={props.close}>

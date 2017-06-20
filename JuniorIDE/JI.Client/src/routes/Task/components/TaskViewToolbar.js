@@ -12,7 +12,6 @@ const renderViewMode = (props) => (
           className  = 'glypicon--pointer'
           glyph      = { props.task.isVisible ? 'eye-close' : 'eye-open'}>
         </Glyphicon>
-        { props.isVisible ? ' Make unvisible' : ' Make visible'}
       </Button>
      </div>
      <div className='inline padding-sm pull-right'>

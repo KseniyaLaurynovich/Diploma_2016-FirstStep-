@@ -12,7 +12,6 @@ namespace JI.Api.Models
             Groups = new List<GroupModel>();
         }
 
-        [Required]
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }
 

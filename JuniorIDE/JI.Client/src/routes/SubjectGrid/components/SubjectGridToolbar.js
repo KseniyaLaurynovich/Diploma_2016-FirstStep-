@@ -5,13 +5,12 @@ import Toolbar from '../../../containers/ToolbarContainer'
 
 const SubjectGridToolbar = (props) => (
   <Toolbar>
-     <div className='inline'>
-       <FormControl type="text" placeholder="Type for filtering..."
-         onChange={(e) => props.handleTextFilterChange(e.target.value)} />
-     </div>
-
      <div className='inline padding-sm ml-5'>
-       <Button className='padding-sm'>
+        <div className='inline'>
+          <FormControl type="text" placeholder="Type for filtering..." />
+        </div>
+
+       <Button className='padding-sm ml-5'>
          <Glyphicon
            className  = 'glypicon--pointer'
            glyph      = 'plus'

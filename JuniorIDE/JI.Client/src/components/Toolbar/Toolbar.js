@@ -6,7 +6,7 @@ import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 import './Toolbar.scss'
 
 export const Toolbar = (props) => (
-  <Navbar className='navbar-wide' fixedBottom>
+  <Navbar className='navbar-wide navbar-toolbar' fixedBottom>
     <Nav className='toolbar'>
       {
         props.children

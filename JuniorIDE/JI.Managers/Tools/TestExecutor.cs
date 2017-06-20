@@ -8,7 +8,7 @@ namespace JI.Managers.Tools
 {
     internal class TestExecutor : ITestExecutor
     {
-        private string OutputFile(string workingDirectory) => $@"{workingDirectory}\output.txt";
+        private string OutputFile(string workingDirectory, string outputFile) => $@"{workingDirectory}\{outputFile}";
         private readonly IFileEquatable _fileEquatable;
 
 
@@ -17,18 +17,18 @@ namespace JI.Managers.Tools
             _fileEquatable = fileEquatable;
         }
 
-        public ServiceResult Test(string programPath, string input, string output)
+        public ServiceResult Test(string programPath, string input, string output, string outputFileName)
         {
             var fileInfo = new FileInfo(programPath);
             var cmd = new Cmd();
 
             var workingDirectory = fileInfo.DirectoryName;
 
-            var runResult = cmd.Run(workingDirectory, "", fileInfo.FullName);
+            var runResult = cmd.Run(workingDirectory, input, fileInfo.FullName);
 
             if (runResult.Status == ExecutionStatus.OK)
             {
-                var outputFile = OutputFile(workingDirectory);
+                var outputFile = OutputFile(workingDirectory, outputFileName);
 
                 if (File.Exists(outputFile))
                 {

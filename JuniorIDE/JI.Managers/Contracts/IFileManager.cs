@@ -6,5 +6,6 @@ namespace JI.Managers.Contracts
     public interface IFileManager : IDisposable
     {
         FileInfo GetFile(string fileId);
+        byte[] GetFileData(string fileId);
     }
 }

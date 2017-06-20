@@ -36,5 +36,8 @@ namespace JI.Api.Models
 
         [JsonProperty(PropertyName = "roles")]
         public IList<string> Roles { get; set; }
+
+        [JsonProperty(PropertyName = "groups")]
+        public IList<GroupModel> Groups { get; set; }
     }
 }

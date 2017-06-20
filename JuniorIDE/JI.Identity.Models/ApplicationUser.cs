@@ -37,5 +37,7 @@ namespace JI.Identity.Models
         public IList<string> Roles { get; set; }
 
         public IList<ApplicationGroup> Groups { get; set; }
+
+        public int? Mark { get; set; }
     }
 }

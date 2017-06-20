@@ -8,5 +8,6 @@ namespace JI.Managers.Contracts
     {
         ServiceResult CreateProjectByStream(Stream projectStream, string userId, string taskId);
         string GetPhysicalPath(string userId, string taskId);
+        Models.File GetProjectStructure(string userId, string taskId);
     }
 }

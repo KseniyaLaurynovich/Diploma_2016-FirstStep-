@@ -21,7 +21,6 @@ namespace JI.Api
 
             if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
             {
-                //These headers are handling the "pre-flight" OPTIONS call sent by the browser
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
                 HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "authorization,Content-Type");
 

@@ -1,7 +1,7 @@
 @import 'base';
 
 .groups-header{
-    padding: 15px;
+    padding-top: 15px;
 
     .row{
         margin-bottom: 10px;
@@ -110,3 +110,32 @@
     margin-top: 10px;
 }
 
+.btn-with-border{
+    border: solid;
+    border-color: #0e8450;
+}
+
+.avatar{
+    height: 50px;
+}
+
+.mt-5{
+    margin-top: 5px;
+}
+
+.ml-15{
+    margin-left: 15px;
+    width: calc(100% - 15px);
+}
+
+.mt-20{
+    margin-top: 20px;
+}
+
+.fl{
+    float: left;
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

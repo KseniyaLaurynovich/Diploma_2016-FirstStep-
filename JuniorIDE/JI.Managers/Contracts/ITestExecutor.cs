@@ -4,6 +4,6 @@ namespace JI.Managers.Contracts
 {
     public interface ITestExecutor
     {
-        ServiceResult Test(string programPath, string input, string output);
+        ServiceResult Test(string programPath, string input, string output, string outputFileName);
     }
 }

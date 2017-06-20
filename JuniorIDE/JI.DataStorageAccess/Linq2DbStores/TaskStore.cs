@@ -16,19 +16,22 @@ namespace JI.DataStorageAccess.Linq2DbStores
             {
                 obj.Id = base.Save(obj);
 
-                var currentTests = GetTests(obj);
-                var addedTests = obj.Tests.Where(test => currentTests.All(t => test.Id != t.Id)).ToArray();
-                var removedTests = currentTests.Where(test => obj.Tests.All(t => test.Id != t.Id)).ToArray();
-
-                Array.ForEach(addedTests, t =>
+                if (obj.Tests != null)
                 {
-                    AddTest(obj, t);
-                });
+                    var currentTests = GetTests(obj);
+                    var addedTests = obj.Tests.Where(test => currentTests.All(t => test.Id != t.Id)).ToArray();
+                    var removedTests = currentTests.Where(test => obj.Tests.All(t => test.Id != t.Id)).ToArray();
 
-                Array.ForEach(removedTests, t =>
-                {
-                    RemoveTest(obj, t);
-                });
+                    Array.ForEach(addedTests, t =>
+                    {
+                        AddTest(obj, t);
+                    });
+
+                    Array.ForEach(removedTests, t =>
+                    {
+                        RemoveTest(obj, t);
+                    });
+                }
 
                 transaction.Commit();
 
